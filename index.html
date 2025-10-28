@@ -1,437 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-    <title>
-      Shubham Tiwari · Dryland Degradation & Rangeland Connectivity
-    </title>
-
-    <!-- TailwindCSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- FONTS -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-
-    <style>
-      :root {
-        /* earthy palette */
-        --sand-bg: #f8f5ef;
-        --sand-line: #d2c9b5;
-        --ink-dark: #2a2421;
-        --dry-brown: #8a4f2b;
-        --grass-dark: #4b6b3c;
-        --sage-mid: #6a7f4f;
-        --alert-band: #dbe4b1;
-        --news-accent: #7a1a1a;
-        --border-card: rgba(0, 0, 0, 0.12);
-      }
-
-      body {
-        background-color: var(--sand-bg);
-        color: var(--ink-dark);
-        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-        background-image: url("img/paper-texture.png");
-        background-size: 800px 800px;
-      }
-
-      .font-display {
-        font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-        letter-spacing: -0.02em;
-      }
-
-      /* subtle "paper card" */
-      .card-sheet {
-        background-color: rgba(255, 255, 255, 0.7);
-        background-image: url("img/grain.png");
-        background-size: 200px 200px;
-        background-blend-mode: soft-light;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        border: 1px solid var(--border-card);
-        box-shadow:
-          0 20px 40px rgba(0, 0, 0, 0.08),
-          0 2px 4px rgba(0, 0, 0, 0.08);
-      }
-
-      /* --- HEADER / BANNER ---------------------------------- */
-
-      .rangeland-banner {
-        background-image: url("img/banner_contours.jpg"); /* <-- your dryland panorama */
-        background-size: cover;
-        background-position: center;
-        image-rendering: crisp-edges;
-        position: relative;
-      }
-
-      /* light wash so it's not too dark */
-      .rangeland-banner::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-color: rgba(255, 255, 255, 0.1); /* 10% white fade */
-      }
-
-      /* black nav strip under banner */
-      .top-nav-link {
-        color: #fff;
-        font-size: 0.95rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.75rem 0.5rem;
-        white-space: nowrap;
-      }
-      .top-nav-link:hover {
-        color: #fff;
-        text-decoration: underline;
-        text-underline-offset: 3px;
-      }
-
-      /* highlight band used later in page content */
-      .highlight-band {
-        background-color: var(--alert-band);
-        border-left: 8px solid var(--grass-dark);
-        color: var(--ink-dark);
-        font-weight: 600;
-      }
-
-      /* dashed field-note card style */
-      .field-note {
-        position: relative;
-        border: 2px dashed rgba(0, 0, 0, 0.2);
-        box-shadow:
-          4px 4px 0 rgba(0, 0, 0, 0.7),
-          0 0 60px rgba(107, 114, 128, 0.25);
-      }
-
-      .field-note::before,
-      .field-note::after {
-        content: "";
-        position: absolute;
-        width: 60px;
-        height: 24px;
-        background: rgba(255, 255, 255, 0.6);
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        backdrop-filter: blur(2px);
-        -webkit-backdrop-filter: blur(2px);
-      }
-
-      .field-note::before {
-        top: -12px;
-        left: 12px;
-        transform: rotate(-3deg);
-      }
-      .field-note::after {
-        bottom: -12px;
-        right: 12px;
-        transform: rotate(2deg);
-      }
-
-      /* tiny utility for section headings */
-      .section-label {
-        font-size: 0.75rem;
-        letter-spacing: 0.08em;
-        font-weight: 600;
-        text-transform: uppercase;
-        color: var(--grass-dark);
-      }
-
-      /* sticky sidebar on desktop */
-      @media (min-width: 1024px) {
-        .sidebar-sticky {
-          position: sticky;
-          top: 0;
-          align-self: start;
-          height: 100vh;
-          overflow-y: auto;
-          scrollbar-width: thin;
-          scrollbar-color: var(--sand-line) transparent;
-        }
-        .sidebar-sticky::-webkit-scrollbar {
-          width: 6px;
-        }
-        .sidebar-sticky::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .sidebar-sticky::-webkit-scrollbar-thumb {
-          background-color: var(--sand-line);
-          border-radius: 999px;
-        }
-      }
-    </style>
-  </head>
-
-  <body class="text-[15px] leading-relaxed">
-    <!-- ========================================================= -->
-    <!-- 1. BANNER IMAGE (NO TEXT) -->
-    <!-- ========================================================= -->
-    <header
-      class="rangeland-banner min-h-[180px] md:min-h-[220px] border-b border-[rgba(0,0,0,0.4)]"
-    >
-      <!-- intentionally empty -->
-    </header>
-
-    <!-- ========================================================= -->
-    <!-- 2. NAV STRIP UNDER BANNER (BLACK BAR WITH CV BUTTON) -->
-    <!-- ========================================================= -->
-    <nav
-      class="bg-black text-white border-b border-neutral-700 text-sm overflow-x-auto"
-    >
-      <div
-        class="max-w-7xl mx-auto flex flex-row flex-wrap items-center gap-x-4 gap-y-1 px-4"
-      >
-        <a href="#mission" class="top-nav-link">Mission</a>
-        <a href="#field" class="top-nav-link">Field Notes</a>
-        <a href="#outputs" class="top-nav-link">Outputs</a>
-        <a href="#about" class="top-nav-link">Experience</a>
-        <a href="#contact" class="top-nav-link">Contact</a>
-
-        <!-- CV button stays -->
-        <a
-          href="cv/Shubham_Tiwari_CV.pdf"
-          class="top-nav-link bg-[var(--grass-dark)] hover:bg-[var(--sage-mid)] text-white rounded px-3 py-1.5 border border-[rgba(255,255,255,0.2)]"
-        >
-          CV (PDF)
-        </a>
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Shubham Tiwari | Dryland Connectivity & Land Degradation</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <!-- ====== NAVBAR ====== -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <div class="brand">
+        <!-- You can replace this with an actual SVG in /assets/logo.svg -->
+        <div class="brand-mark">🌍</div>
+        <div class="brand-text">
+          <div class="lab-name-top">SHUBHAM TIWARI</div>
+          <div class="lab-name-bottom">Dryland Systems · Durham University</div>
+        </div>
       </div>
-    </nav>
 
-    <!-- ========================================================= -->
-    <!-- NOTE: intro band with "Shubham Tiwari / Dryland Degradation & Connectivity"
-         is REMOVED completely now. We jump straight to main layout. -->
-    <!-- ========================================================= -->
+      <nav class="main-nav">
+        <a href="#research">Research</a>
+        <a href="#news">News</a>
+        <a href="#people">People</a>
+        <a href="#publications">Publications</a>
+        <a href="#contact" class="cta-link">Get in touch</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- ========================================================= -->
-    <!-- 3. PAGE GRID BODY CONTENT -->
-    <!-- ========================================================= -->
-    <main
-      class="max-w-7xl mx-auto px-4 lg:px-6 py-8 md:py-10 grid grid-cols-1 lg:grid-cols-[320px,1fr] gap-8 lg:gap-10"
-    >
-      <!-- ===================================================== -->
-      <!-- LEFT SIDEBAR -->
-      <!-- ===================================================== -->
-      <aside class="sidebar-sticky flex flex-col gap-6">
-        <!-- profile / contact -->
-        <section
-          class="card-sheet rounded-xl p-5 text-[14px] leading-relaxed"
-        >
-          <div class="flex items-start gap-4">
-            <!-- profile image -->
-            <img
-              src="img/profile.jpg"
-              alt="Shubham Tiwari in the field"
-              class="w-16 h-16 object-cover rounded-lg border border-[var(--border-card)] shadow"
-            />
-            <div class="space-y-1">
-              <div
-                class="font-display text-xl font-semibold text-[var(--ink-dark)] leading-snug"
-              >
-                Shubham Tiwari
-              </div>
-              <div class="text-[13px] text-[var(--ink-dark)]/80">
-                Senior Hydrologist<br />
-                Environment Agency (UK)
-              </div>
-              <div class="text-[11px] text-[var(--ink-dark)]/60">
-                Hertfordshire & North London Hydrology / Flood & Drought
-                Risk
-              </div>
-            </div>
-          </div>
+  <!-- ====== HERO / ANIMATION SECTION ====== -->
+  <section class="hero">
+    <!-- Background gradient & subtle texture are CSS. -->
+    <!-- Canvas draws dunes / particles / network. -->
+    <canvas id="drylandCanvas" class="hero-canvas"></canvas>
 
-          <hr class="my-4 border-[var(--sand-line)]/60" />
+    <!-- Hero text overlay -->
+    <div class="hero-content">
+      <h1>
+        Mapping <span class="accent">land degradation</span><br/>
+        and <span class="accent">dryland connectivity</span>
+      </h1>
 
-          <div class="space-y-2">
-            <div class="text-[13px] leading-snug">
-              <div class="font-semibold text-[var(--ink-dark)]">Contact</div>
-              <div class="text-[13px] text-[var(--ink-dark)]/80 break-all">
-                ✉
-                <a
-                  href="mailto:shubham.tiwari@environment-agency.gov.uk"
-                  class="underline decoration-[var(--dry-brown)] underline-offset-2 hover:text-[var(--dry-brown)]"
-                  >shubham.tiwari@environment-agency.gov.uk</a
-                >
-              </div>
-            </div>
+      <p class="hero-tagline">
+        I study how dryland landscapes link up — sediment, water, wind, and human pressure —
+        and how those connections accelerate or slow degradation.
+      </p>
 
-            <div class="flex flex-wrap items-center gap-3 text-[13px]">
-              <a
-                href="https://scholar.google.com"
-                class="px-2 py-1 rounded border border-[var(--border-card)] bg-white/70 hover:bg-white text-[var(--ink-dark)] font-medium"
-                >Google Scholar</a
-              >
-              <a
-                href="https://linkedin.com"
-                class="px-2 py-1 rounded border border-[var(--border-card)] bg-white/70 hover:bg-white text-[var(--ink-dark)] font-medium"
-                >LinkedIn</a
-              >
-              <a
-                href="https://orcid.org"
-                class="px-2 py-1 rounded border border-[var(--border-card)] bg-white/70 hover:bg-white text-[var(--ink-dark)] font-medium"
-                >ORCID</a
-              >
-            </div>
-          </div>
+      <div class="hero-meta">
+        <div class="meta-block">
+          <div class="meta-label">Name</div>
+          <div class="meta-value">Shubham Tiwari</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Role</div>
+          <div class="meta-value">Early Stage Researcher, Durham University</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Focus</div>
+          <div class="meta-value">Drylands · Remote Sensing · Network Ecology</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <hr class="my-4 border-[var(--sand-line)]/60" />
+  <!-- ====== CONTENT SECTIONS (skeleton only for now) ====== -->
+  <main>
 
-          <div class="text-[13px] leading-snug space-y-2">
-            <div class="font-semibold text-[var(--ink-dark)]">Themes</div>
-            <ul class="list-disc list-inside text-[var(--ink-dark)]/80">
-              <li>Dryland degradation</li>
-              <li>Rangeland connectivity</li>
-              <li>Eco-geomorphic tipping points</li>
-              <li>Decision tools for grazing & restoration</li>
-              <li>Drone & LiDAR mapping</li>
-            </ul>
-          </div>
-        </section>
+    <section id="research" class="site-section">
+      <div class="section-inner">
+        <h2>Research</h2>
+        <p class="section-lead">
+          Example text: Quantifying land degradation hotspots and modelling
+          how wind, water, and human use connect those hotspots across drylands.
+        </p>
 
-        <!-- Vision / why this matters -->
-        <section
-          class="relative rounded-xl field-note card-sheet p-5 text-[14px] leading-relaxed bg-[rgba(0,0,0,0.7)] text-white"
-          style="
-            background-image: url('img/pic1_dryland.jpg');
-            background-size: cover;
-            background-position: center;
-          "
-        >
-          <div class="relative z-10 bg-[rgba(0,0,0,0.6)] p-4 rounded">
-            <div
-              class="font-display text-lg font-semibold mb-2 text-white"
-            >
-              Vision
-            </div>
-            <p class="text-[13px] leading-relaxed text-white/90">
-              Rangelands and drylands hold soil, water, food security,
-              and culture. When connectivity breaks — vegetation
-              fragments, bare patches link up, runoff accelerates —
-              systems can shift fast and become hard to reverse.
-            </p>
-            <p class="text-[13px] leading-relaxed text-white/90 mt-3">
-              My work aims to identify <strong>where</strong> those
-              breaks start, <strong>when</strong> they're getting worse,
-              and <strong>how</strong> to intervene early.
-            </p>
-          </div>
-        </section>
-      </aside>
-
-      <!-- ===================================================== -->
-      <!-- RIGHT MAIN CONTENT COLUMN -->
-      <!-- ===================================================== -->
-      <section class="flex flex-col gap-10">
-        <!-- =================== MISSION / INTRO =================== -->
-        <section
-          id="mission"
-          class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-6 md:p-8"
-        >
-          <div class="section-label">Research Mission</div>
-
-          <h1
-            class="font-display text-3xl md:text-[2rem] leading-tight font-semibold text-[var(--ink-dark)] mt-2"
-          >
-            I study how drylands break apart — and how we can stitch them
-            back together.
-          </h1>
-
-          <div
-            class="mt-5 highlight-band text-[14px] leading-snug rounded-md px-3 py-2 font-medium"
-          >
-            My work links patch-scale processes (bare soil, runoff
-            channels, shrub islands) to landscape-scale risk:
-            sediment loss, grazing collapse, and long-term ecosystem
-            resilience.
-          </div>
-
-          <p
-            class="text-[15px] text-[var(--ink-dark)]/90 leading-relaxed mt-6"
-          >
-            I'm an early-career researcher and hydrologist working on
-            land degradation, erosion pathways, and eco-geomorphic
-            resilience in drylands. I use network theory to map how
-            water, sediment, and vegetation are connected. Those maps
-            then help grazing managers decide
-            <span class="font-medium text-[var(--dry-brown)]"
-              >where to rest paddocks, re-seed, or add barriers</span
-            >
-            — before the land shifts into a degraded state.
-          </p>
-        </section>
-
-        <!-- =================== FIELD NOTES =================== -->
-        <section id="field" class="flex flex-col gap-6">
-          <div class="section-label">Field Notes & Ongoing Work</div>
-
-          <!-- CARD 1 -->
-          <article
-            class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6 flex flex-col md:flex-row gap-5"
-          >
-            <div class="md:w-1/2">
-              <div
-                class="relative overflow-hidden rounded-lg border border-[var(--border-card)] shadow"
-              >
-                <img
-                  src="img/pic2_patch.jpg"
-                  alt="Eroded shrubland patch with bare soil and flow pathways"
-                  class="w-full h-48 md:h-full object-cover"
-                />
-                <div
-                  class="absolute top-2 left-2 bg-white/80 text-[11px] px-2 py-1 rounded border border-[var(--border-card)] font-medium text-[var(--ink-dark)] shadow"
-                >
-                  Connectivity hotspot
-                </div>
-              </div>
-            </div>
-
-            <div class="md:w-1/2 flex flex-col gap-3">
-              <div
-                class="text-[13px] font-semibold text-[var(--grass-dark)] uppercase tracking-wide"
-              >
-                Patch → Hillslope
-              </div>
-              <h2
-                class="font-display text-xl font-semibold text-[var(--ink-dark)] leading-snug"
-              >
-                When small bare spots start linking up
-              </h2>
-              <p
-                class="text-[14px] text-[var(--ink-dark)]/90 leading-relaxed"
-              >
-                Bare soil between shrubs creates tiny flow paths. Those
-                paths join, speed up runoff, and pull sediment
-                downslope. I map those paths as a network: each patch is
-                a node, each flow path is an edge. The goal is to find
-                leverage points where a tiny, local fix protects the
-                whole slope.
-              </p>
-              <ul
-                class="text-[13px] text-[var(--ink-dark)]/80 leading-relaxed list-disc list-inside"
-              >
-                <li>Grass → shrub regime shifts</li>
-                <li>Aridity + herd pressure</li>
-                <li>Wind-driven sediment feedbacks</li>
-              </ul>
-              <div
-                class="text-[12px] font-medium text-[var(--dry-brown)] uppercase tracking-wide"
-              >
-                Dryland degradation early-warning
-              </div>
-            </div>
+        <div class="card-grid">
+          <article class="info-card">
+            <h3>Dryland Connectivity</h3>
+            <p>How pulses of sediment and water move through arid systems like a network.</p>
           </article>
 
-          <!-- CARD 2 -->
-          <article
-            class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6 flex flex-col md:flex-row-reverse gap-5"
+          <article class="info-card">
+            <h3>Land Degradation</h3>
+            <p>Identifying early warning signals from satellite time series and field data.</p>
+          </article>
+
+          <article class="info-card">
+            <h3>Remote Sensing + AI</h3>
+            <p>Tracking dune migration, vegetation loss, and crust break-up at scale.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="news" class="site-section alt-bg">
+      <div class="section-inner">
+        <h2>News / Updates</h2>
+        <ul class="timeline">
+          <li>
+            <span class="time-tag">Oct ’25</span>
+            Presented preliminary connectivity maps at [Conference name].
+          </li>
+          <li>
+            <span class="time-tag">Sep ’25</span>
+            Our new field campaign started in [Dryland region placeholder].
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="people" class="site-section">
+      <div class="section-inner">
+        <h2>People</h2>
+        <div class="people-flex">
+          <div class="person-card">
+            <div class="avatar-circle">ST</div>
+            <div class="person-info">
+              <div class="person-name">Shubham Tiwari</div>
+              <div class="person-role">Early Stage Researcher</div>
+              <div class="person-desc">Dryland systems · Durham University</div>
+            </div>
+          </div>
+
+          <div class="person-card">
+            <div class="avatar-circle">PI</div>
+            <div class="person-info">
+              <div class="person-name">Supervisor / PI Name</div>
+              <div class="person-role">Professor of [Area]</div>
+              <div class="person-desc">[Dept / Institute]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="publications" class="site-section alt-bg">
+      <div class="section-inner">
+        <h2>Publications</h2>
+        <ul class="pub-list">
+          <li class="pub-item">
+            <div class="pub-title">
+              Example paper title on dryland connectivity mapping.
+            </div>
+            <div class="pub-meta">Tiwari, S. et al. (in prep)</div>
+          </li>
+          <li class="pub-item">
+            <div class="pub-title">Another placeholder publication title.</div>
+            <div class="pub-meta">Journal of Arid Systems, 2025</div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contact" class="site-section">
+      <div class="section-inner contact-card">
+        <h2>Get in touch</h2>
+        <p>
+          Collaboration, fieldwork, or just want to chat about desert systems?
+          Reach out.
+        </p>
+        <a class="contact-button" href="mailto:your.email@durham.ac.uk">
+          Email me
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>© <span id="year"></span> Shubham Tiwari</div>
+      <div>Dryland Connectivity Research</div>
+    </div>
+  </footer>
+
+  <script src="hero-animation.js"></script>
+  <script>
+    // tiny footer year helper
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
