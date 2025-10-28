@@ -1,0 +1,87 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+>
+  <!-- BACKGROUND PANEL (rounded square, dryland tone) -->
+  <rect
+    x="0" y="0" width="64" height="64"
+    rx="10" ry="10"
+    fill="#8a4f2b"
+  />
+
+  <!-- SUN / HEAT DISK (top-right, harsh warm sun) -->
+  <circle
+    cx="48"
+    cy="16"
+    r="8"
+    fill="#f5d27a"
+    stroke="#2a2421"
+    stroke-width="2"
+  />
+
+  <!-- SHRUB / RESILIENT VEGETATION -->
+  <!-- Bold, simple silhouette so it reads at 16px -->
+  <path
+    d="M32 34
+       c -4 -8 -10 -10 -12 -10
+       c 3 4 3 8 2 10
+       c -3 -2 -5 -2 -7 -1
+       c 3 2 4 4 5 5
+       c -2 0 -4 1 -5 3
+       c 3 0 6 1 8 1
+       c 0 3 1 5 2 6
+       c 0 -2 1 -4 2 -6
+       c 2 0 5 -1 8 -1
+       c -1 -2 -3 -3 -5 -3
+       c 1 -1 3 -3 5 -5
+       c -2 -1 -4 -1 -7 1
+       c -1 -2 -1 -6 2 -10
+       c -2 0 -8 2 -12 10
+       z"
+    fill="#3d5a31"
+    stroke="#2a2421"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+
+  <!-- CRACKED GROUND / DRAINAGE LINES -->
+  <!-- Thicker, fewer, high contrast so it pops -->
+  <path
+    d="M10 46 L24 42 L32 46 L40 40 L54 44"
+    stroke="#f8f5ef"
+    stroke-width="3"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <path
+    d="M24 42 L22 52"
+    stroke="#f8f5ef"
+    stroke-width="3"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <path
+    d="M32 46 L31 56"
+    stroke="#f8f5ef"
+    stroke-width="3"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <path
+    d="M40 40 L42 50"
+    stroke="#f8f5ef"
+    stroke-width="3"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- GROUND SEPARATOR LINE (gives horizon / land vs sky) -->
+  <line
+    x1="8" y1="38" x2="56" y2="38"
+    stroke="#2a2421"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+</svg>
