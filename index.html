@@ -8,7 +8,6 @@
   />
   <title>Shubham Tiwari | Dryland Connectivity & Land Degradation</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet"
@@ -19,8 +18,7 @@
   <header class="site-header">
     <div class="nav-inner">
       <div class="brand">
-        <!-- You can replace this with an actual SVG in /assets/logo.svg -->
-        <div class="brand-mark">🌍</div>
+        <div class="brand-mark">🜃</div>
         <div class="brand-text">
           <div class="lab-name-top">SHUBHAM TIWARI</div>
           <div class="lab-name-bottom">Dryland Systems · Durham University</div>
@@ -39,40 +37,88 @@
 
   <!-- ====== HERO / ANIMATION SECTION ====== -->
   <section class="hero">
-    <!-- Background gradient & subtle texture are CSS. -->
-    <!-- Canvas draws dunes / particles / network. -->
+    <!-- moving background layer -->
     <canvas id="drylandCanvas" class="hero-canvas"></canvas>
 
-    <!-- Hero text overlay -->
-    <div class="hero-content">
-      <h1>
-        Mapping <span class="accent">land degradation</span><br/>
-        and <span class="accent">dryland connectivity</span>
-      </h1>
+    <!-- center stack -->
+    <div class="hero-center">
+      <!-- ROTATING ICONS like the Yesilbaş Lab hero -->
+      <div class="hero-icon-rotator">
 
-      <p class="hero-tagline">
-        I study how dryland landscapes link up — sediment, water, wind, and human pressure —
-        and how those connections accelerate or slow degradation.
-      </p>
+        <!-- ICON 1: dune + satellite (remote sensing of drylands) -->
+        <svg class="rot-icon" viewBox="0 0 200 200" stroke="white" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="100" cy="100" r="60"/>
+          <path d="M40 130c20-10 35-15 50-5 15 10 35 5 45-10 10-15 15-20 25-20" />
+          <path d="M60 150c10-5 20-10 30-8 10 2 15 10 25 13 10 3 20 0 25-3" />
+          <g transform="translate(130 45) rotate(-20)">
+            <rect x="-15" y="-4" width="30" height="8" rx="2" />
+            <line x1="-20" y1="-8" x2="-15" y2="-4" />
+            <line x1="20" y1="8" x2="15" y2="4" />
+            <rect x="-5" y="-15" width="10" height="8" rx="1" />
+            <rect x="-5" y="7" width="10" height="8" rx="1" />
+          </g>
+        </svg>
 
+        <!-- ICON 2: connectivity / network graph -->
+        <svg class="rot-icon" viewBox="0 0 200 200" stroke="white" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+          <!-- nodes -->
+          <circle cx="60" cy="60" r="10"/>
+          <circle cx="140" cy="60" r="10"/>
+          <circle cx="100" cy="100" r="10"/>
+          <circle cx="60" cy="140" r="10"/>
+          <circle cx="140" cy="140" r="10"/>
+          <!-- links -->
+          <line x1="70" y1="70" x2="130" y2="70"/>
+          <line x1="70" y1="70" x2="100" y2="100"/>
+          <line x1="130" y1="70" x2="100" y2="100"/>
+          <line x1="100" y1="100" x2="70" y2="130"/>
+          <line x1="100" y1="100" x2="130" y2="130"/>
+          <line x1="70" y1="130" x2="130" y2="130"/>
+        </svg>
+
+        <!-- ICON 3: circular badge / placeholder lab mark -->
+        <svg class="rot-icon" viewBox="0 0 200 200" stroke="white" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="100" cy="100" r="70"/>
+          <!-- cracked ground / desiccation polygon style -->
+          <path d="M60 120l20-15 20 10 20-18 20 12" />
+          <path d="M60 120l10 25 20-15 10 20 20-18 20 12 10-24" />
+          <path d="M80 105l10-25 20 15 10-20" />
+        </svg>
+
+      </div>
+
+      <!-- TEXT under icon -->
+      <div class="hero-text-group">
+        <h1 class="hero-headline">
+          Understanding <span class="accent-white">land degradation</span><br/>
+          and <span class="accent-white">dryland connectivity</span>
+        </h1>
+
+        <p class="hero-sub">
+          Shubham Tiwari · Early Stage Researcher, Durham University<br/>
+          Mapping how sediment, vegetation, wind and water link across arid landscapes.
+        </p>
+      </div>
+
+      <!-- quick meta row -->
       <div class="hero-meta">
         <div class="meta-block">
-          <div class="meta-label">Name</div>
-          <div class="meta-value">Shubham Tiwari</div>
-        </div>
-        <div class="meta-block">
-          <div class="meta-label">Role</div>
-          <div class="meta-value">Early Stage Researcher, Durham University</div>
-        </div>
-        <div class="meta-block">
           <div class="meta-label">Focus</div>
-          <div class="meta-value">Drylands · Remote Sensing · Network Ecology</div>
+          <div class="meta-value">Desertification · Connectivity networks</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Tools</div>
+          <div class="meta-value">Remote sensing · Spatial analysis</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Goal</div>
+          <div class="meta-value">Resilient drylands</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ====== CONTENT SECTIONS (skeleton only for now) ====== -->
+  <!-- ====== CONTENT SECTIONS ====== -->
   <main>
 
     <section id="research" class="site-section">
@@ -80,7 +126,7 @@
         <h2>Research</h2>
         <p class="section-lead">
           Example text: Quantifying land degradation hotspots and modelling
-          how wind, water, and human use connect those hotspots across drylands.
+          how wind, water, and human land use connect those hotspots across drylands.
         </p>
 
         <div class="card-grid">
@@ -112,7 +158,7 @@
           </li>
           <li>
             <span class="time-tag">Sep ’25</span>
-            Our new field campaign started in [Dryland region placeholder].
+            New field campaign launched in [Dryland region placeholder].
           </li>
         </ul>
       </div>
@@ -186,7 +232,6 @@
 
   <script src="hero-animation.js"></script>
   <script>
-    // tiny footer year helper
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
