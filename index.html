@@ -66,22 +66,22 @@
       /* --- HEADER / BANNER ---------------------------------- */
 
       .rangeland-banner {
-        background-image: url("img/banner_contours.jpg"); /* <-- put your dryland panorama here */
+        background-image: url("img/banner_contours.jpg"); /* <-- your dryland panorama */
         background-size: cover;
         background-position: center;
         image-rendering: crisp-edges;
         position: relative;
       }
 
-      /* 10% white wash so image is lighter but still visible */
+      /* light wash so text later sits on lighter tones below */
       .rangeland-banner::after {
         content: "";
         position: absolute;
         inset: 0;
-        background-color: rgba(255, 255, 255, 0.1); /* <-- change this 0.1 for more/less fade */
+        background-color: rgba(255, 255, 255, 0.1); /* 10% white over image */
       }
 
-      /* nav bar after banner (black strip) */
+      /* nav bar under banner (black strip) */
       .top-nav-link {
         color: #fff;
         font-size: 0.95rem;
@@ -98,7 +98,7 @@
         text-underline-offset: 3px;
       }
 
-      /* highlight band (like "Roxy Mathew Koll" section) */
+      /* band with name + tagline */
       .intro-band-left {
         background-color: var(--dry-brown);
         color: #fff;
@@ -109,7 +109,7 @@
         border-bottom: 1px solid var(--sand-line);
       }
 
-      /* news band style used later in body */
+      /* highlight band later in content */
       .highlight-band {
         background-color: var(--alert-band);
         border-left: 8px solid var(--grass-dark);
@@ -117,7 +117,7 @@
         font-weight: 600;
       }
 
-      /* dashed-note aesthetic like taped field note */
+      /* dashed field-note card style */
       .field-note {
         position: relative;
         border: 2px dashed rgba(0, 0, 0, 0.2);
@@ -186,12 +186,12 @@
 
   <body class="text-[15px] leading-relaxed">
     <!-- ========================================================= -->
-    <!-- 1. BANNER IMAGE (NO TEXT ON TOP) -->
+    <!-- 1. BANNER IMAGE (NO TEXT) -->
     <!-- ========================================================= -->
     <header
       class="rangeland-banner min-h-[180px] md:min-h-[220px] border-b border-[rgba(0,0,0,0.4)]"
     >
-      <!-- nothing inside: pure visual -->
+      <!-- empty on purpose -->
     </header>
 
     <!-- ========================================================= -->
@@ -203,27 +203,17 @@
       <div
         class="max-w-7xl mx-auto flex flex-row flex-wrap items-center gap-x-4 gap-y-1 px-4"
       >
-        <!-- these can be changed to whatever sections you want -->
         <a href="#mission" class="top-nav-link">Mission</a>
         <a href="#field" class="top-nav-link">Field Notes</a>
         <a href="#outputs" class="top-nav-link">Outputs</a>
         <a href="#about" class="top-nav-link">Experience</a>
         <a href="#contact" class="top-nav-link">Contact</a>
-
-        <!-- CV callout styled like nav -->
-        <a
-          href="cv/Shubham_Tiwari_CV.pdf"
-          class="top-nav-link bg-[var(--grass-dark)] hover:bg-[var(--sage-mid)] text-white rounded px-3 py-1.5 border border-[rgba(255,255,255,0.2)]"
-        >
-          CV (PDF)
-        </a>
+        <!-- CV button REMOVED from nav -->
       </div>
     </nav>
 
     <!-- ========================================================= -->
-    <!-- 3. INTRO BAND (NAME ON LEFT, TAGLINE ON RIGHT) -->
-    <!--    matches the screenshot idea: brown block w/ name,
-            and right block with page heading / description.    -->
+    <!-- 3. INTRO BAND (NAME LEFT · TAGLINE RIGHT) -->
     <!-- ========================================================= -->
     <section
       class="grid grid-cols-1 lg:grid-cols-[320px,1fr] max-w-7xl mx-auto w-full"
@@ -255,14 +245,12 @@
 
     <!-- ========================================================= -->
     <!-- 4. PAGE GRID BODY CONTENT -->
-    <!--    below the band we go into sidebar + main content,
-           like your previous design.                           -->
     <!-- ========================================================= -->
     <main
       class="max-w-7xl mx-auto px-4 lg:px-6 py-8 md:py-10 grid grid-cols-1 lg:grid-cols-[320px,1fr] gap-8 lg:gap-10"
     >
       <!-- ===================================================== -->
-      <!-- LEFT SIDEBAR / PROFILE CARD (sticky on desktop) -->
+      <!-- LEFT SIDEBAR -->
       <!-- ===================================================== -->
       <aside class="sidebar-sticky flex flex-col gap-6">
         <!-- profile / contact -->
@@ -271,7 +259,6 @@
         >
           <div class="flex items-start gap-4">
             <!-- profile image -->
-            <!-- Upload: img/profile.jpg (you in field / drone / rangeland) -->
             <img
               src="img/profile.jpg"
               alt="Shubham Tiwari in the field"
@@ -342,7 +329,7 @@
           </div>
         </section>
 
-        <!-- mini "vision / why this matters" block -->
+        <!-- Vision / why this matters -->
         <section
           class="relative rounded-xl field-note card-sheet p-5 text-[14px] leading-relaxed bg-[rgba(0,0,0,0.7)] text-white"
           style="
@@ -423,7 +410,6 @@
             class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6 flex flex-col md:flex-row gap-5"
           >
             <div class="md:w-1/2">
-              <!-- Upload: img/pic2_patch.jpg -->
               <div
                 class="relative overflow-hidden rounded-lg border border-[var(--border-card)] shadow"
               >
@@ -481,7 +467,6 @@
             class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6 flex flex-col md:flex-row-reverse gap-5"
           >
             <div class="md:w-1/2">
-              <!-- Upload: img/pic3_grazing.jpg -->
               <div
                 class="relative overflow-hidden rounded-lg border border-[var(--border-card)] shadow bg-white"
               >
@@ -538,7 +523,6 @@
             class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6 flex flex-col md:flex-row gap-5"
           >
             <div class="md:w-1/2">
-              <!-- Upload: img/pic4_drone.jpg -->
               <div
                 class="relative overflow-hidden rounded-lg border border-[var(--border-card)] shadow bg-white"
               >
@@ -609,9 +593,7 @@
                 connectivity over grassland and shrubland hillslopes
                 (2025)
               </div>
-              <div
-                class="text-[13px] text-[var(--ink-dark)]/70 italic"
-              >
+              <div class="text-[13px] text-[var(--ink-dark)]/70 italic">
                 Journal of Hydrology, 655, 132896
               </div>
               <p class="mt-3 text-[var(--ink-dark)]/90">
