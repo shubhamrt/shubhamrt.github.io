@@ -72,25 +72,26 @@
         position: relative;
       }
 
-      .rangeland-banner::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: radial-gradient(
-            circle at 20% 20%,
-            rgba(255, 255, 255, 0.4) 0%,
-            rgba(0, 0, 0, 0) 60%
-          ),
-          repeating-linear-gradient(
-            -2deg,
-            rgba(0, 0, 0, 0.1) 0px,
-            rgba(0, 0, 0, 0.1) 1px,
-            rgba(0, 0, 0, 0) 1px,
-            rgba(0, 0, 0, 0) 4px
-          );
-        mix-blend-mode: multiply;
-        opacity: 0.4;
-      }
+.rangeland-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* keep some light radial glow but reduce dark overlay */
+  background-image: radial-gradient(
+      circle at 20% 20%,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(0, 0, 0, 0) 60%
+    ),
+    repeating-linear-gradient(
+      -2deg,
+      rgba(0, 0, 0, 0.06) 0px,
+      rgba(0, 0, 0, 0.06) 1px,
+      rgba(0, 0, 0, 0) 1px,
+      rgba(0, 0, 0, 0) 4px
+    );
+  mix-blend-mode: multiply;
+  opacity: 0.25; /* was 0.4, now more image visible */
+}
 
       /* news band style (inspo: "Global Warming is Rewiring the Monsoon") */
       .highlight-band {
