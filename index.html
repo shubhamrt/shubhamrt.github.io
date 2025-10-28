@@ -33,7 +33,6 @@
         --alert-band: #dbe4b1;
         --news-accent: #7a1a1a;
         --border-card: rgba(0, 0, 0, 0.12);
-        --sand-text-on-green: #f8f5ef;
       }
 
       body {
@@ -73,30 +72,46 @@
         position: relative;
       }
 
-      /*
-        Hero overlay:
-        - We tint the whole banner with a semi-opaque green layer
-          (same tone/transparency vibe as the subtitle chip you liked).
-        - This makes the image feel ~40% visible and the text 100% readable.
-      */
+      /* remove previous overlay styling */
       .rangeland-banner::after {
         content: "";
         position: absolute;
         inset: 0;
-        background-color: rgba(75, 107, 60, 0.6); /* var(--grass-dark) w/ ~60% alpha */
-        backdrop-filter: brightness(0.8) saturate(0.9) blur(1px);
-        -webkit-backdrop-filter: brightness(0.8) saturate(0.9) blur(1px);
+        opacity: 0;
       }
 
-      /* text style for everything in banner */
-      .banner-text {
-        color: var(--sand-text-on-green);
-        text-shadow:
-          0 2px 4px rgba(0, 0, 0, 0.8),
-          0 0 2px rgba(0, 0, 0, 0.6);
+      /* white veil over the photo so text is super readable */
+      .banner-wash {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(255, 255, 255, 0.9); /* 90% white over image */
+        pointer-events: none;
       }
 
-      /* news band style (inspo: "Global Warming is Rewiring the Monsoon") */
+      /* global chip style for ALL banner text elements */
+      .chip {
+        display: inline-block;
+        background-color: rgba(75, 107, 60, 0.6); /* semi-transparent rangeland green */
+        color: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        border-radius: 0.5rem;
+        box-shadow:
+          0 6px 12px rgba(0, 0, 0, 0.5),
+          0 0 2px rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        padding: 0.5rem 0.6rem;
+        line-height: 1.3;
+        max-width: max-content;
+      }
+
+      /* we still keep highlight on white text outside banner if needed */
+      .text-glow {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8),
+                     0 0 2px rgba(0, 0, 0, 0.6);
+      }
+
+      /* news band style */
       .highlight-band {
         background-color: var(--alert-band);
         border-left: 8px solid var(--grass-dark);
@@ -177,63 +192,75 @@
     <!-- TOP STRIP / HERO BANNER -->
     <!-- ========================================================= -->
     <header
-      class="rangeland-banner relative border-b border-[rgba(0,0,0,0.4)] min-h-[200px] md:min-h-[260px]"
+      class="rangeland-banner relative text-white border-b border-[rgba(0,0,0,0.4)] min-h-[200px] md:min-h-[260px]"
     >
-      <!-- content layer -->
+      <!-- white wash to fade image to ~10% strength -->
+      <div class="banner-wash"></div>
+
+      <!-- content -->
       <div
         class="relative z-10 h-full border-b border-[rgba(255,255,255,0.15)]"
       >
         <div
-          class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-start gap-4 px-4 py-10 md:py-16"
+          class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-start gap-6 px-4 py-10 md:py-16"
         >
-          <!-- LEFT: keywords / name / subtitle -->
+          <!-- LEFT SIDE: keywords, name, subtitle -->
           <div class="flex-1 min-w-0 flex flex-col gap-3">
-            <!-- Research keywords -->
-            <div
-              class="text-xs font-semibold tracking-wide uppercase banner-text"
-            >
+            <!-- Research keywords chip -->
+            <div class="chip text-[11px] font-semibold tracking-wide uppercase">
               Drylands · Rangelands · Hydrology
             </div>
 
-            <!-- Name -->
+            <!-- Name chip -->
             <div
-              class="text-2xl md:text-4xl font-display font-semibold leading-tight banner-text"
+              class="chip font-display font-semibold text-white text-2xl md:text-4xl leading-tight"
             >
               Shubham Tiwari
             </div>
 
-            <!-- Subtitle -->
-            <div
-              class="text-[13px] md:text-[14px] font-medium leading-snug banner-text"
-            >
+            <!-- Subtitle chip -->
+            <div class="chip text-[13px] font-medium">
               Land Degradation &amp; Dryland Connectivity Research
             </div>
           </div>
 
-          <!-- RIGHT: nav links -->
+          <!-- RIGHT SIDE: nav, all links in chips -->
           <nav
-            class="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] font-medium"
+            class="flex flex-wrap items-center gap-x-3 gap-y-3 text-[13px] font-medium text-white/90"
           >
-            <a href="#mission" class="hover:opacity-100 banner-text"
-              >Mission</a
+            <a
+              href="#mission"
+              class="chip text-[13px] font-medium leading-snug"
             >
-            <a href="#field" class="hover:opacity-100 banner-text"
-              >Field Notes</a
+              Mission
+            </a>
+            <a
+              href="#field"
+              class="chip text-[13px] font-medium leading-snug"
             >
-            <a href="#outputs" class="hover:opacity-100 banner-text"
-              >Outputs</a
+              Field Notes
+            </a>
+            <a
+              href="#outputs"
+              class="chip text-[13px] font-medium leading-snug"
             >
-            <a href="#about" class="hover:opacity-100 banner-text"
-              >Experience</a
+              Outputs
+            </a>
+            <a
+              href="#about"
+              class="chip text-[13px] font-medium leading-snug"
             >
-            <a href="#contact" class="hover:opacity-100 banner-text"
-              >Contact</a
+              Experience
+            </a>
+            <a
+              href="#contact"
+              class="chip text-[13px] font-medium leading-snug"
             >
-
+              Contact
+            </a>
             <a
               href="cv/Shubham_Tiwari_CV.pdf"
-              class="bg-[var(--grass-dark)] hover:bg-[var(--sage-mid)] text-white font-semibold px-3 py-1.5 rounded border border-[rgba(0,0,0,0.5)] shadow-[0_8px_16px_rgba(0,0,0,0.6),0_0_2px_rgba(0,0,0,0.9)] text-[13px] leading-none"
-              style="text-shadow:0 2px 4px rgba(0,0,0,0.8),0 0 2px rgba(0,0,0,0.6);"
+              class="chip text-[13px] font-semibold leading-snug bg-[rgba(75,107,60,0.8)] hover:bg-[rgba(106,127,79,0.8)]"
             >
               CV (PDF)
             </a>
@@ -527,4 +554,526 @@
             class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6 flex flex-col md:flex-row gap-5"
           >
             <div class="md:w-1/2">
-              <!
+              <!-- Upload: img/pic4_drone.jpg -->
+              <div
+                class="relative overflow-hidden rounded-lg border border-[var(--border-card)] shadow bg-white"
+              >
+                <img
+                  src="img/pic4_drone.jpg"
+                  alt="Drone and LiDAR survey in semi-arid rangeland"
+                  class="w-full h-48 md:h-full object-cover"
+                />
+                <div
+                  class="absolute top-2 right-2 bg-white/80 text-[11px] px-2 py-1 rounded border border-[var(--border-card)] font-medium text-[var(--ink-dark)] shadow"
+                >
+                  UAV / LiDAR / ML
+                </div>
+              </div>
+            </div>
+
+            <div class="md:w-1/2 flex flex-col gap-3">
+              <div
+                class="text-[13px] font-semibold text-[var(--grass-dark)] uppercase tracking-wide"
+              >
+                Tech in the dirt
+              </div>
+              <h2
+                class="font-display text-xl font-semibold text-[var(--ink-dark)] leading-snug"
+              >
+                Drones, LiDAR & rainfall networks
+              </h2>
+              <p
+                class="text-[14px] text-[var(--ink-dark)]/90 leading-relaxed"
+              >
+                I work with high-resolution topography (UAV, terrestrial
+                LiDAR), rainfall networks, and machine-learning
+                workflows. That includes QA/QC pipelines, reproducible
+                analysis, and open tools in Python for hydrology teams.
+              </p>
+              <ul
+                class="text-[13px] text-[var(--ink-dark)]/80 leading-relaxed list-disc list-inside"
+              >
+                <li>CAA-certified drone pilot (UK)</li>
+                <li>Flood & drought risk communication</li>
+                <li>HEC-RAS, SWAT, GIS, Earth Engine</li>
+              </ul>
+              <div
+                class="text-[12px] font-medium text-[var(--dry-brown)] uppercase tracking-wide"
+              >
+                Evidence for policy + stakeholders
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- =================== OUTPUTS / NEWS =================== -->
+        <section id="outputs" class="flex flex-col gap-6">
+          <div class="section-label">Selected Outputs</div>
+
+          <!-- FEATURED PAPER / NEWS STRIP -->
+          <div class="card-sheet rounded-xl border border-[var(--sand-line)]/60">
+            <div class="highlight-band px-4 py-2 rounded-t-xl text-[13px]">
+              Landscape tipping points & sediment connectivity in
+              shrub-invaded rangelands
+            </div>
+
+            <div class="p-5 md:p-6 text-[14px] leading-relaxed">
+              <div
+                class="font-display text-lg font-semibold text-[var(--ink-dark)] leading-snug"
+              >
+                Local- and global-scale hydrological and sediment
+                connectivity over grassland and shrubland hillslopes
+                (2025)
+              </div>
+              <div
+                class="text-[13px] text-[var(--ink-dark)]/70 italic"
+              >
+                Journal of Hydrology, 655, 132896
+              </div>
+              <p class="mt-3 text-[var(--ink-dark)]/90">
+                We show how patch-scale flow paths link up into
+                landscape-scale soil loss. This explains why small bare
+                areas can trigger large, persistent degradation across a
+                hillslope — and where small interventions can actually
+                work.
+              </p>
+              <a
+                href="#"
+                class="inline-block mt-3 text-[13px] font-semibold text-[var(--dry-brown)] underline decoration-[var(--dry-brown)] underline-offset-2 hover:text-[var(--grass-dark)] hover:decoration-[var(--grass-dark)]"
+              >
+                Read paper →
+              </a>
+            </div>
+          </div>
+
+          <!-- TALKS / EVENTS GRID -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div
+              class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6 flex flex-col gap-3"
+            >
+              <div
+                class="text-[13px] font-semibold text-[var(--grass-dark)] uppercase tracking-wide"
+              >
+                Recent Talk
+              </div>
+              <div
+                class="font-display text-lg font-semibold text-[var(--ink-dark)] leading-snug"
+              >
+                British Hydrological Society Peter Wolf Symposium
+              </div>
+              <div class="text-[12px] text-[var(--ink-dark)]/60">
+                Aug 2025 · UK
+              </div>
+              <p
+                class="text-[14px] text-[var(--ink-dark)]/90 leading-relaxed"
+              >
+                Gaps in rain-gauge network distribution across
+                Hertfordshire & North London — and what that means for
+                flood and drought risk comms.
+              </p>
+            </div>
+
+            <div
+              class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6 flex flex-col gap-3"
+            >
+              <div
+                class="text-[13px] font-semibold text-[var(--grass-dark)] uppercase tracking-wide"
+              >
+                Recent Talk
+              </div>
+              <div
+                class="font-display text-lg font-semibold text-[var(--ink-dark)] leading-snug"
+              >
+                BHS Annual Conference
+              </div>
+              <div class="text-[12px] text-[var(--ink-dark)]/60">
+                Aug 2024 · Oxford, UK
+              </div>
+              <p
+                class="text-[14px] text-[var(--ink-dark)]/90 leading-relaxed"
+              >
+                Evolution of spatio-temporal rainfall patterns over the
+                UK and implications for local response planning.
+              </p>
+            </div>
+
+            <div
+              class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6 flex flex-col gap-3 md:col-span-2"
+            >
+              <div
+                class="text-[13px] font-semibold text-[var(--grass-dark)] uppercase tracking-wide"
+              >
+                Talk
+              </div>
+              <div
+                class="font-display text-lg font-semibold text-[var(--ink-dark)] leading-snug"
+              >
+                British Society for Geomorphology Annual Conference
+              </div>
+              <div class="text-[12px] text-[var(--ink-dark)]/60">
+                Sep 2023 · Edinburgh
+              </div>
+              <p
+                class="text-[14px] text-[var(--ink-dark)]/90 leading-relaxed"
+              >
+                Weighted networks as improved representations of
+                connectivity in degraded drylands — a more honest way
+                to describe what's actually moving.
+              </p>
+            </div>
+          </div>
+
+          <!-- PUBLICATIONS ACCORDION -->
+          <details
+            class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-5 md:p-6"
+          >
+            <summary
+              class="cursor-pointer flex flex-wrap items-baseline justify-between gap-4 list-none"
+            >
+              <div>
+                <div
+                  class="font-display text-lg font-semibold text-[var(--ink-dark)] leading-snug"
+                >
+                  Peer-reviewed Publications
+                </div>
+                <div class="text-[12px] text-[var(--ink-dark)]/60">
+                  Last updated: Sep 2025
+                </div>
+              </div>
+              <div
+                class="text-[11px] font-semibold border border-[var(--border-card)] rounded px-2 py-1 bg-white/70"
+              >
+                view / hide
+              </div>
+            </summary>
+
+            <ol
+              class="list-decimal list-inside text-[14px] text-[var(--ink-dark)]/90 mt-5 space-y-4"
+            >
+              <li>
+                <span class="font-medium text-[var(--ink-dark)]"
+                  >Local- and global-scale hydrological and sediment
+                  connectivity over grassland and shrubland
+                  hillslopes</span
+                >
+                (2025). Journal of Hydrology, 655, 132896.
+              </li>
+              <li>
+                Water-controlled ecosystems as complex networks:
+                Evaluation of network-based approaches to quantify
+                patterns of connectivity (2024). Ecohydrology, 17(7),
+                e2690.
+              </li>
+              <li>
+                Multilayer Networks in Landscape Ecology: A case study
+                to assess changes in aquatic habitat connectivity for
+                flying and non-flying benthic macroinvertebrates in a
+                Danube floodplain (2024). Landscape Ecology, 39, 186.
+              </li>
+              <li>
+                Evaluation of quantitative precipitation forecast in
+                five Indian river basins (2021). Hydrological Sciences
+                Journal, 66(15), 2216-2231.
+              </li>
+              <li>
+                Quantification of node importance in rain gauge
+                network: influence of temporal resolution and rain
+                gauge density (2020). Scientific Reports, 10(1), 9761.
+              </li>
+              <li>
+                Reconstruction of daily rainfall data using concepts of
+                networks: accounting for spatial connections in
+                neighborhood selection (2019). Journal of Hydrology,
+                579.
+              </li>
+            </ol>
+          </details>
+        </section>
+
+        <!-- =================== EXPERIENCE =================== -->
+        <section id="about" class="flex flex-col gap-6">
+          <div class="section-label">Roles & Background</div>
+
+          <!-- timeline-style blocks -->
+          <div
+            class="space-y-6 relative border-l-2 border-[var(--sand-line)]/80 pl-6"
+          >
+            <!-- ITEM -->
+            <div
+              class="relative card-sheet rounded-lg border border-[var(--sand-line)]/60 p-5"
+            >
+              <div
+                class="absolute -left-[14px] top-4 w-3 h-3 rounded-full bg-[var(--grass-dark)] ring-4 ring-[var(--sand-bg)]"
+              ></div>
+              <div
+                class="text-[13px] font-semibold text-[var(--grass-dark)] uppercase tracking-wide"
+              >
+                2024 — Present
+              </div>
+              <div
+                class="font-display text-lg font-semibold text-[var(--ink-dark)] leading-snug"
+              >
+                Senior Hydrologist · Environment Agency (UK)
+              </div>
+              <p
+                class="text-[14px] text-[var(--ink-dark)]/90 leading-relaxed mt-2"
+              >
+                Regional hydrology for Hertfordshire & North London.
+                Data standards / versioning lead for groundwater and
+                hydrology teams. Support for stakeholder communication
+                on flood and drought risk.
+              </p>
+            </div>
+
+            <!-- ITEM -->
+            <div
+              class="relative card-sheet rounded-lg border border-[var(--sand-line)]/60 p-5"
+            >
+              <div
+                class="absolute -left-[14px] top-4 w-3 h-3 rounded-full bg-[var(--dry-brown)] ring-4 ring-[var(--sand-bg)]"
+              ></div>
+              <div
+                class="text-[13px] font-semibold text-[var(--grass-dark)] uppercase tracking-wide"
+              >
+                2020 — 2023
+              </div>
+              <div
+                class="font-display text-lg font-semibold text-[var(--ink-dark)] leading-snug"
+              >
+                Marie-Curie Early Stage Researcher / PhD researcher ·
+                Durham University (UK) · i-CONN network
+              </div>
+              <p
+                class="text-[14px] text-[var(--ink-dark)]/90 leading-relaxed mt-2"
+              >
+                Dryland connectivity, erosion feedbacks, regime shifts.
+                Visiting researcher in Arizona (US) and Vienna (AT).
+              </p>
+            </div>
+
+            <!-- ITEM -->
+            <div
+              class="relative card-sheet rounded-lg border border-[var(--sand-line)]/60 p-5"
+            >
+              <div
+                class="absolute -left-[14px] top-4 w-3 h-3 rounded-full bg-[var(--news-accent)] ring-4 ring-[var(--sand-bg)]"
+              ></div>
+              <div
+                class="text-[13px] font-semibold text-[var(--grass-dark)] uppercase tracking-wide"
+              >
+                2018 — 2020
+              </div>
+              <div
+                class="font-display text-lg font-semibold text-[var(--ink-dark)] leading-snug"
+              >
+                Junior Research Fellow & Research Assistant · India
+              </div>
+              <p
+                class="text-[14px] text-[var(--ink-dark)]/90 leading-relaxed mt-2"
+              >
+                Hydrological modelling, quantitative precipitation
+                forecasting, data-driven rainfall reconstruction using
+                network theory.
+              </p>
+            </div>
+
+            <!-- ITEM -->
+            <div
+              class="relative card-sheet rounded-lg border border-[var(--sand-line)]/60 p-5"
+            >
+              <div
+                class="absolute -left-[14px] top-4 w-3 h-3 rounded-full bg-[var(--sand-line)] ring-4 ring-[var(--sand-bg)]"
+              ></div>
+              <div
+                class="text-[13px] font-semibold text-[var(--grass-dark)] uppercase tracking-wide"
+              >
+                Training
+              </div>
+              <div
+                class="font-display text-lg font-semibold text-[var(--ink-dark)] leading-snug"
+              >
+                PhD (Physical Geography) · Durham University<br />
+                BSMS (Earth & Environmental Sciences) · IISER Bhopal
+              </div>
+              <p
+                class="text-[14px] text-[var(--ink-dark)]/90 leading-relaxed mt-2"
+              >
+                Focus areas: hydrology, geomorphology, remote sensing,
+                time-series analysis, network science, environmental
+                modelling.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================== CONTACT / COLLAB =================== -->
+        <section
+          id="contact"
+          class="card-sheet rounded-xl border border-[var(--sand-line)]/60 p-6 md:p-8 flex flex-col gap-6"
+        >
+          <div class="section-label">Work With Me</div>
+
+          <h2
+            class="font-display text-2xl font-semibold text-[var(--ink-dark)] leading-snug"
+          >
+            Collaboration, data, or field support?
+          </h2>
+
+          <p
+            class="text-[15px] text-[var(--ink-dark)]/90 leading-relaxed"
+          >
+            I’m happy to talk about dryland restoration, monitoring
+            connectivity, hydrology data standards, drone-based terrain
+            mapping, or communicating drought/flood risk to real
+            stakeholders.
+          </p>
+
+          <div
+            class="grid sm:grid-cols-2 gap-5 text-[14px] leading-relaxed"
+          >
+            <div
+              class="rounded-lg border border-[var(--sand-line)]/60 bg-white/70 p-4 flex gap-4"
+            >
+              <div
+                class="flex-shrink-0 w-10 h-10 rounded bg-[var(--grass-dark)] text-white flex items-center justify-center font-semibold text-sm"
+              >
+                ✉
+              </div>
+              <div class="min-w-0">
+                <div
+                  class="font-semibold text-[var(--ink-dark)] text-[14px]"
+                >
+                  Email
+                </div>
+                <div
+                  class="text-[13px] text-[var(--ink-dark)]/80 break-all"
+                >
+                  shubham.tiwari@environment-agency.gov.uk
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="rounded-lg border border-[var(--sand-line)]/60 bg-white/70 p-4 flex gap-4"
+            >
+              <div
+                class="flex-shrink-0 w-10 h-10 rounded bg-[var(--dry-brown)] text-white flex items-center justify-center font-semibold text-sm"
+              >
+                ↗
+              </div>
+              <div class="min-w-0">
+                <div
+                  class="font-semibold text-[var(--ink-dark)] text-[14px]"
+                >
+                  Profiles
+                </div>
+                <div
+                  class="text-[13px] text-[var(--ink-dark)]/80 break-words"
+                >
+                  Scholar · ORCID · LinkedIn
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- simple contact form (front-end only) -->
+          <form
+            class="rounded-lg border border-[var(--sand-line)]/60 bg-white/70 p-5 text-[14px] leading-relaxed"
+            onsubmit="handleFormSubmit(event)"
+          >
+            <div
+              class="font-semibold text-[var(--ink-dark)] text-[15px] mb-1"
+            >
+              Drop a quick message
+            </div>
+            <div
+              class="text-[12px] text-[var(--ink-dark)]/60 mb-4"
+            >
+              This form is front-end only. Hook it up to Formspree,
+              Netlify Forms, etc. when you're ready.
+            </div>
+
+            <label
+              class="block text-[13px] font-medium text-[var(--ink-dark)] mb-1"
+              for="name"
+              >Name</label
+            >
+            <input
+              id="name"
+              name="name"
+              required
+              class="w-full mb-4 rounded border border-[var(--sand-line)]/80 bg-white px-3 py-2 text-[var(--ink-dark)] placeholder-[var(--ink-dark)]/40 outline-none focus:ring-2 focus:ring-[var(--grass-dark)]"
+              placeholder="Your name"
+            />
+
+            <label
+              class="block text-[13px] font-medium text-[var(--ink-dark)] mb-1"
+              for="email2"
+              >Email</label
+            >
+            <input
+              id="email2"
+              name="email2"
+              type="email"
+              required
+              class="w-full mb-4 rounded border border-[var(--sand-line)]/80 bg-white px-3 py-2 text-[var(--ink-dark)] placeholder-[var(--ink-dark)]/40 outline-none focus:ring-2 focus:ring-[var(--grass-dark)]"
+              placeholder="you@example.com"
+            />
+
+            <label
+              class="block text-[13px] font-medium text-[var(--ink-dark)] mb-1"
+              for="message"
+              >Message</label
+            >
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              required
+              class="w-full mb-4 rounded border border-[var(--sand-line)]/80 bg-white px-3 py-2 text-[var(--ink-dark)] placeholder-[var(--ink-dark)]/40 outline-none focus:ring-2 focus:ring-[var(--grass-dark)]"
+              placeholder="Hi Shubham, I'm working on..."
+            ></textarea>
+
+            <button
+              type="submit"
+              class="w-full rounded bg-[var(--grass-dark)] hover:bg-[var(--sage-mid)] text-white font-semibold px-4 py-2 transition"
+            >
+              Send (demo)
+            </button>
+
+            <p
+              id="form-status"
+              class="text-[11px] text-center text-[var(--ink-dark)]/60 mt-3 hidden"
+            ></p>
+          </form>
+
+          <div
+            class="text-[11px] text-[var(--ink-dark)]/40 text-center leading-snug"
+          >
+            © <span id="year"></span> Shubham Tiwari. Rangeland
+            connectivity · dryland resilience · data for decisions.
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- ========================================================= -->
+    <!-- SCRIPTS -->
+    <!-- ========================================================= -->
+    <script>
+      // Footer year
+      document.getElementById("year").textContent =
+        new Date().getFullYear();
+
+      // Simple contact form status message
+      function handleFormSubmit(e) {
+        e.preventDefault();
+        const status = document.getElementById("form-status");
+        status.classList.remove("hidden");
+        status.textContent =
+          "Thanks! This is a demo form. Connect Formspree or similar to actually send.";
+        e.target.reset();
+      }
+    </script>
+  </body>
+</html>
