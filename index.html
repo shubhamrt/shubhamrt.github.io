@@ -173,51 +173,54 @@
     <!-- ========================================================= -->
     <!-- TOP STRIP / NAV BAR -->
     <!-- ========================================================= -->
-    <header
-      class="rangeland-banner text-white border-b border-[rgba(0,0,0,0.4)]"
+  <header
+  class="rangeland-banner text-white border-b border-[rgba(0,0,0,0.4)] min-h-[200px] md:min-h-[260px]"
+>
+  <!-- darker overlay block behind text/navigation -->
+  <div
+    class="relative z-10 bg-[rgba(0,0,0,0.4)] border-b border-[rgba(255,255,255,0.15)] h-full"
+  >
+    <div
+      class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center gap-4 px-4 py-10 md:py-16"
     >
-      <div
-        class="relative z-10 bg-[rgba(0,0,0,0.55)] border-b border-[rgba(255,255,255,0.15)]"
-      >
+      <!-- left: name + role -->
+      <div class="flex-1 min-w-0">
         <div
-          class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center gap-4 px-4 py-4"
+          class="text-xs font-medium tracking-wide uppercase text-[var(--alert-band)]"
         >
-          <!-- left: name + role -->
-          <div class="flex-1 min-w-0">
-            <div
-              class="text-xs font-medium tracking-wide uppercase text-[var(--alert-band)]"
-            >
-              Drylands · Rangelands · Hydrology
-            </div>
-            <div
-              class="text-2xl md:text-3xl font-display font-semibold leading-tight text-white"
-            >
-              Shubham Tiwari
-            </div>
-            <div class="text-[13px] text-[rgba(255,255,255,0.8)]">
-              Land Degradation & Dryland Connectivity Research
-            </div>
-          </div>
+          Drylands · Rangelands · Hydrology
+        </div>
 
-          <!-- right: mini nav -->
-          <nav
-            class="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] font-medium text-white/90"
-          >
-            <a href="#mission" class="hover:text-white">Mission</a>
-            <a href="#field" class="hover:text-white">Field Notes</a>
-            <a href="#outputs" class="hover:text-white">Outputs</a>
-            <a href="#about" class="hover:text-white">Experience</a>
-            <a href="#contact" class="hover:text-white">Contact</a>
-            <a
-              href="cv/Shubham_Tiwari_CV.pdf"
-              class="bg-[var(--grass-dark)] hover:bg-[var(--sage-mid)] text-white font-semibold px-3 py-1.5 rounded"
-            >
-              CV (PDF)
-            </a>
-          </nav>
+        <div
+          class="text-2xl md:text-4xl font-display font-semibold leading-tight text-white"
+        >
+          Shubham Tiwari
+        </div>
+
+        <div class="text-[13px] md:text-[14px] text-[rgba(255,255,255,0.85)]">
+          Land Degradation & Dryland Connectivity Research
         </div>
       </div>
-    </header>
+
+      <!-- right: mini nav -->
+      <nav
+        class="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] font-medium text-white/90"
+      >
+        <a href="#mission" class="hover:text-white">Mission</a>
+        <a href="#field" class="hover:text-white">Field Notes</a>
+        <a href="#outputs" class="hover:text-white">Outputs</a>
+        <a href="#about" class="hover:text-white">Experience</a>
+        <a href="#contact" class="hover:text-white">Contact</a>
+        <a
+          href="cv/Shubham_Tiwari_CV.pdf"
+          class="bg-[var(--grass-dark)] hover:bg-[var(--sage-mid)] text-white font-semibold px-3 py-1.5 rounded"
+        >
+          CV (PDF)
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
 
     <!-- ========================================================= -->
     <!-- PAGE GRID -->
