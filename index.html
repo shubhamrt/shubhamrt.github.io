@@ -9,13 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --text:#F2FAF6;       /* light, used site-wide to match hero text */
-    --muted:#D3EFE6;      /* softer */
-    --dark:#0b201b;       /* veil color */
+    --text:#F2FAF6;   /* light, used site-wide to match hero text */
+    --muted:#D3EFE6;  /* softer */
+    --dark:#0b201b;   /* veil color */
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
   img{display:block;max-width:100%}
+
   /* Fullscreen hero */
   .hero{
     position:relative;
@@ -26,19 +27,30 @@
     text-align:center;
     overflow:hidden;
     color:var(--text);
-    /* Your full-bleed image */
     background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
     isolation:isolate;
   }
-  /* Start with a dark screen, then fade out to reveal the image */
+
+  /* 1) Start with a dark veil that fades away in 2s */
   .veil{
     position:absolute; inset:0; background:var(--dark);
-    animation: reveal 2s ease forwards;  /* fades the dark away */
-    z-index:0;
+    animation: reveal 2s ease forwards;
+    z-index:1; /* above the shade while fading */
   }
   @keyframes reveal { from{opacity:1} to{opacity:0} }
 
-  .hero-inner{position:relative; z-index:1; padding:24px}
+  /* 2) Then add a *slight* shadow over the image after 2s */
+  .shade{
+    position:absolute; inset:0;
+    background:rgba(0,0,0,.18);  /* subtle black tint */
+    opacity:0;
+    z-index:0;                   /* below content and veil */
+    animation: shadeIn .45s ease forwards;
+    animation-delay:2s;          /* begins after the veil finishes */
+  }
+  @keyframes shadeIn { to{opacity:1} }
+
+  .hero-inner{position:relative; z-index:2; padding:24px}
   .logo{
     width:min(160px,28vw); height:auto; margin:0 auto 18px;
     filter:drop-shadow(0 6px 18px rgba(0,0,0,.35));
@@ -55,7 +67,7 @@
     color:var(--muted);
   }
 
-  /* Optional below-the-fold content keeps the same text color */
+  /* Below-the-fold keeps same palette (optional content) */
   section{padding:72px 20px}
   .wrap{max-width:1100px;margin:0 auto}
   h2{font-family:Spectral,serif;font-size:clamp(26px,3.5vw,38px);margin:0 0 10px}
@@ -66,7 +78,9 @@
 
 <!-- FIRST PAGE ONLY: full-screen hero with logo + new text -->
 <header class="hero" role="banner" aria-label="Intro">
+  <div class="shade" aria-hidden="true"></div>
   <div class="veil" aria-hidden="true"></div>
+
   <div class="hero-inner">
     <img class="logo" src="img/logo.png" alt="Site logo">
     <h1>Connectivity that guides<br>resilient drylands</h1>
@@ -74,7 +88,7 @@
   </div>
 </header>
 
-<!-- Everything below can stay or be removed later; text color already matches hero -->
+<!-- Optional content below (unchanged) -->
 <section id="research">
   <div class="wrap">
     <h2>Our Science</h2>
