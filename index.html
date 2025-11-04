@@ -12,16 +12,14 @@
     --text:#ffffff;
     --muted:#D3EFE6;
     --dark:#0b201b;
-    --bandH: clamp(120px, 14vh, 240px);
-    --scroll: 0;
-    --in-delay: 3s;          /* delay before content appears */
-    --in-dur: .9s;           /* fade/slide duration */
+    --in-delay: 1s;   /* ← show content after 1s */
+    --in-dur: .6s;    /* fade duration */
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
   img{display:block;max-width:100%}
 
-  /* Fullscreen hero: only the image shows at first */
+  /* HERO */
   .hero{
     position:relative;
     min-height:100vh;
@@ -34,18 +32,38 @@
     background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
     isolation:isolate;
   }
-  /* no veil at start anymore */
 
-  /* Top-left brand + hamburger (reveals after 3s) */
-  .topbar{
-    position:fixed; top:18px; left:18px; right:auto;
-    display:flex; align-items:center; gap:12px;
-    z-index:10;
-    opacity:0; transform:translateY(6px);
-    transition: opacity var(--in-dur) ease var(--in-delay),
-                transform var(--in-dur) ease var(--in-delay);
+  /* Film that fades in with text/logo */
+  .film{
+    position:absolute; inset:0; background:rgba(0,0,0,.25);
+    opacity:0; transition:opacity var(--in-dur) ease var(--in-delay);
+    z-index:1;
   }
-  .reveal .topbar{ opacity:1; transform:none; }
+  .reveal .film{ opacity:1; }
+
+  /* Top-left brand + hamburger */
+  .topbar{
+    position:fixed; top:16px; left:16px; right:auto;
+    display:flex; align-items:center; gap:10px;
+    z-index:3;         /* above film & content */
+    opacity:0; transition:opacity var(--in-dur) ease var(--in-delay);
+  }
+  .reveal .topbar{ opacity:1; }
+
+  .hamburger{
+    display:inline-grid; place-items:center;
+    width:38px; height:38px; border-radius:8px;
+    background:transparent; border:1px solid rgba(255,255,255,.55);
+    cursor:pointer; color:var(--text);
+  }
+  .hamburger span,
+  .hamburger span::before,
+  .hamburger span::after{
+    display:block; width:18px; height:2px; background:currentColor; content:"";
+  }
+  .hamburger span{ position:relative; }
+  .hamburger span::before{ position:absolute; top:-6px; left:0; }
+  .hamburger span::after { position:absolute; top: 6px; left:0; }
 
   .brand{
     font-weight:800; letter-spacing:.2px;
@@ -53,49 +71,37 @@
     text-decoration:none; color:var(--text);
     text-shadow:0 2px 8px rgba(0,0,0,.45);
   }
-  .hamburger{
-    display:inline-grid; place-items:center;
-    width:40px; height:40px; border-radius:10px;
-    background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.25);
-    backdrop-filter: blur(6px);
-    cursor:pointer; color:var(--text);
-  }
-  .hamburger span{
-    position:relative; width:18px; height:2px; background:currentColor;
-  }
-  .hamburger span::before,
-  .hamburger span::after{
-    content:""; position:absolute; left:0; width:18px; height:2px; background:currentColor;
-  }
-  .hamburger span::before{ top:-6px }
-  .hamburger span::after { top: 6px }
 
-  /* Slide-out nav */
-  .drawer{
-    position:fixed; inset:0 0 0 auto; width:min(86vw,300px);
-    background:rgba(10,22,18,.92); color:var(--text);
-    transform:translateX(100%);
-    transition: transform .3s ease;
-    z-index:20; padding:16px 18px;
-    backdrop-filter: blur(6px);
+  /* Dropdown menu under the brand; transparent background */
+  .menu{
+    position:absolute; top:46px; left:16px;
+    padding:6px 0;
+    background:transparent;  /* requested transparent */
+    backdrop-filter:none;
+    border:none;
+    z-index:4;
+    opacity:0; pointer-events:none;
+    transition:opacity .2s ease;
   }
-  .drawer.open{ transform:none; }
-  .drawer h3{ margin:6px 0 14px; font: 700 16px/1 Inter, system-ui, sans-serif; }
-  .drawer a{
-    display:block; color:var(--text); text-decoration:none;
-    padding:10px 0; border-bottom:1px solid rgba(255,255,255,.08);
+  .menu.open{ opacity:1; pointer-events:auto; }
+  .menu a{
+    display:block; padding:8px 2px 8px 4px;
+    color:var(--text); text-decoration:none;
+    font-size:14px;
+    /* add a subtle glow for readability on bright areas */
+    text-shadow:0 2px 8px rgba(0,0,0,.55);
   }
 
   .hero-inner{
-    position:relative; z-index:2; padding:24px; top:-1.2cm; /* move up exactly 1.2cm */
-    opacity:0; transform:translateY(14px);
-    transition: opacity var(--in-dur) ease var(--in-delay),
-                transform var(--in-dur) ease var(--in-delay);
+    position:relative; z-index:2; padding:24px; top:-1.2cm; /* exact 1.2 cm upward */
+    opacity:0;                      /* fade-in only (no movement) */
+    transition:opacity var(--in-dur) ease var(--in-delay);
   }
-  .reveal .hero-inner{ opacity:1; transform:none; }
+  .reveal .hero-inner{ opacity:1; }
 
   .logo{
-    width:min(160px,28vw); height:auto;
+    width:min(160px,28vw);
+    height:auto;
     margin: clamp(-40px, -12vh, -200px) auto 18px;
     filter: drop-shadow(0 6px 25px rgba(0,0,0,.35));
   }
@@ -103,7 +109,8 @@
   h1{
     font-family:Spectral,serif;
     font-size:clamp(34px,5.8vw,64px);
-    line-height:1.06; margin:0 0 0;
+    line-height:1.06;
+    margin:0;
     text-shadow: 0 2px 10px rgba(0,0,0,.35);
     font-weight:700;
   }
@@ -114,52 +121,40 @@
     letter-spacing:.2px;
   }
 
+  /* Content sections */
   section{padding:72px 20px; position:relative;}
   .wrap{max-width:1100px;margin:0 auto}
   h2{font-family:Spectral,serif;font-size:clamp(26px,3.5vw,38px);margin:0 0 10px}
   p{color:var(--muted)}
-
-  /* Single transition banner at bottom of page 1 (reveals after 3s) */
-  .transition-band{
-    position:absolute; left:0; bottom:-1px; width:100%; height:var(--bandH);
-    background-image:url('img/transition.png');
-    background-repeat:no-repeat; background-size:100% auto; background-position:center bottom;
-    pointer-events:none; will-change: transform;
-    transform: translateY(calc(var(--scroll) * -0.08)); z-index:2;
-    opacity:0; transition: opacity var(--in-dur) ease var(--in-delay);
-  }
-  .reveal .transition-band{ opacity:1; }
 </style>
 </head>
 <body>
 
-<!-- Top-left brand + hamburger (revealed after 3s) -->
+<!-- Top-left brand + hamburger + dropdown -->
 <div class="topbar" role="navigation" aria-label="Primary">
-  <a class="brand" href="#">Shubham Tiwari</a>
-  <button class="hamburger" id="menuBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
+  <button class="hamburger" id="menuBtn" aria-label="Open menu" aria-controls="menu" aria-expanded="false">
     <span></span>
   </button>
+  <a class="brand" href="#">Shubham Tiwari</a>
+
+  <nav class="menu" id="menu" aria-hidden="true">
+    <a href="#research">Research</a>
+    <a href="#projects">Projects</a>
+    <a href="#publications">Publications</a>
+    <a href="#contact">Contact</a>
+  </nav>
 </div>
 
-<!-- Slide-out drawer menu -->
-<nav class="drawer" id="drawer" aria-hidden="true">
-  <h3>Navigate</h3>
-  <a href="#research">Research</a>
-  <a href="#projects">Projects</a>
-  <a href="#publications">Publications</a>
-  <a href="#contact">Contact</a>
-</nav>
-
 <header class="hero" role="banner" aria-label="Intro">
+  <!-- film fades in with the text/logo -->
+  <div class="film" aria-hidden="true"></div>
+
   <div class="hero-inner">
     <img class="logo" src="img/logo.png" alt="Site logo">
     <h1>
       Connectivity that guides <span class="hero-em">resilient&nbsp;drylands</span>
     </h1>
   </div>
-
-  <!-- Single transition image at bottom of page 1 -->
-  <div class="transition-band" aria-hidden="true"></div>
 </header>
 
 <section id="research">
@@ -170,25 +165,29 @@
 </section>
 
 <script>
-/* Reveal hero content, topbar, and transition after 3 seconds */
+/* 1) Fade in content after 1s. 2) Simple dropdown under the name. */
 (function(){
-  const root = document.documentElement;
-  const setScroll = () => root.style.setProperty('--scroll', String(window.pageYOffset || 0));
-  setScroll(); window.addEventListener('scroll', setScroll, {passive:true});
+  // reveal after 1s
+  setTimeout(()=>document.body.classList.add('reveal'), 1000);
 
-  // reveal after delay (matches --in-delay)
-  setTimeout(() => document.body.classList.add('reveal'), 3000);
-
-  // hamburger drawer
-  const btn = document.getElementById('menuBtn');
-  const drawer = document.getElementById('drawer');
+  // dropdown open/close
+  const btn   = document.getElementById('menuBtn');
+  const menu  = document.getElementById('menu');
   const toggle = () => {
-    const open = drawer.classList.toggle('open');
+    const open = !menu.classList.contains('open');
+    menu.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    menu.setAttribute('aria-hidden', open ? 'false' : 'true');
   };
   btn.addEventListener('click', toggle);
-  drawer.addEventListener('click', (e) => { if(e.target.tagName === 'A') toggle(); });
+
+  // close when clicking a link or outside
+  menu.addEventListener('click', e => { if(e.target.tagName === 'A') toggle(); });
+  document.addEventListener('click', e => {
+    if(!menu.contains(e.target) && !btn.contains(e.target) && menu.classList.contains('open')){
+      toggle();
+    }
+  });
 })();
 </script>
 
