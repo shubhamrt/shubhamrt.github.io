@@ -1,238 +1,278 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-  <title>Shubham Tiwari | Dryland Connectivity & Land Degradation</title>
-  <link rel="stylesheet" href="style.css" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shubham Tiwari | Dryland Connectivity & Degradation</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<meta name="description" content="Researcher focused on connectivity science and dryland degradation: networks, regime shifts, and restoration." />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1C1A; --sea:#224C43; --leaf:#3C7A58; --sand:#EDE9E3; --cloud:#F7F6F3; --accent:#7AC27E;
+    --muted:#6C6C66;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--cloud);color:var(--ink);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
+  img{max-width:100%;display:block}
+  a{color:var(--leaf);text-decoration:none}
+  a:hover{text-decoration:underline}
+  /* Nav */
+  .nav{
+    position:sticky;top:0;z-index:50;background:rgba(247,246,243,.85);backdrop-filter:saturate(140%) blur(8px);
+    border-bottom:1px solid #e3e1dc
+  }
+  .nav .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:24px;padding:14px 20px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+  .brand svg{width:36px;height:36px}
+  .brand b{font-family:Spectral,serif;font-size:20px;letter-spacing:.2px}
+  .links{margin-left:auto;display:flex;gap:20px;flex-wrap:wrap}
+  .cta{background:var(--leaf);color:#fff;padding:10px 14px;border-radius:10px;font-weight:600}
+  .cta:hover{background:#2f6247;text-decoration:none}
+  /* Hero */
+  .hero{
+    position:relative;min-height:72vh;display:grid;place-items:center;color:#fff;
+    background:#222 url('img/banner_contours.jpg') center/cover no-repeat;
+    isolation:isolate;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.55));
+    z-index:0
+  }
+  .hero-inner{z-index:1;text-align:center;padding:60px 20px;max-width:1000px}
+  .kicker{font-family:Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#d7efe0;font-weight:600}
+  h1{font-family:Spectral,serif;font-size:clamp(36px,6vw,64px);line-height:1.1;margin:.2em 0}
+  .sub{font-size:clamp(18px,2.5vw,22px);opacity:.95;max-width:800px;margin:0 auto}
+  .hero-badges{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+  .badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:8px 10px;border-radius:999px;font-size:13px}
+  /* Sections */
+  section{padding:72px 20px}
+  .wrap{max-width:1100px;margin:0 auto}
+  h2{font-family:Spectral,serif;font-size:clamp(28px,4vw,40px);margin:0 0 14px}
+  .lead{color:var(--muted);max-width:800px}
+  /* Pillars */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:22px}
+  .card{
+    grid-column:span 6;background:#fff;border:1px solid #e7e4de;border-radius:18px;padding:22px;box-shadow:0 6px 30px rgba(34,76,67,.06)
+  }
+  @media(min-width:900px){ .card{grid-column:span 3} }
+  .card h3{font-family:Spectral,serif;margin:10px 0 6px}
+  .card p{color:#54524e}
+  .icon{
+    width:44px;height:44px;border-radius:12px;background:var(--sand);display:grid;place-items:center;border:1px solid #e6e2db
+  }
+  /* Split */
+  .split{display:grid;grid-template-columns:1fr;gap:26px;align-items:center}
+  @media(min-width:900px){ .split{grid-template-columns:1.1fr .9fr} }
+  .panel{background:#fff;border:1px solid #e7e4de;border-radius:18px;overflow:hidden}
+  .panel img{aspect-ratio:16/10;object-fit:cover}
+  .panel .p{padding:20px}
+  /* List */
+  .list{display:grid;gap:12px;margin-top:12px}
+  .li{background:#fff;border:1px solid #e7e4de;border-radius:14px;padding:14px 16px}
+  .li b{font-family:Spectral,serif}
+  /* Footer */
+  footer{background:#0f2b25;color:#e9f3ee}
+  .foot{max-width:1100px;margin:0 auto;padding:40px 20px;display:grid;gap:16px}
+  .foot small{opacity:.8}
+  /* Motion bits */
+  .floaty{position:absolute;inset:auto 20px 20px auto;z-index:1;opacity:.9;animation:fly 18s linear infinite}
+  @keyframes fly{
+    0%{transform:translateX(0) translateY(0) rotate(-8deg)}
+    50%{transform:translateX(-20vw) translateY(-3vh) rotate(4deg)}
+    100%{transform:translateX(0) translateY(0) rotate(-8deg)}
+  }
+  /* Nice anchors */
+  :target{scroll-margin-top:82px}
+</style>
 </head>
 <body>
-  <!-- ====== NAVBAR ====== -->
-  <header class="site-header">
-    <div class="nav-inner">
-      <div class="brand">
-        <div class="brand-mark">🜃</div>
-        <div class="brand-text">
-          <div class="lab-name-top">SHUBHAM TIWARI</div>
-          <div class="lab-name-bottom">Dryland Systems · Durham University</div>
-        </div>
-      </div>
 
-      <nav class="main-nav">
-        <a href="#research">Research</a>
-        <a href="#news">News</a>
-        <a href="#people">People</a>
-        <a href="#publications">Publications</a>
-        <a href="#contact" class="cta-link">Get in touch</a>
-      </nav>
+<!-- Nav -->
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Home">
+      <!-- simple desert/bird mark -->
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M8 48c8-10 14-12 24-12s16 2 24 12" />
+        <path d="M22 29c6-8 14-8 20 0" />
+        <circle cx="44" cy="18" r="4" />
+        <path d="M12 40c2-8 8-14 14-16" />
+      </svg>
+      <b>Shubham Tiwari</b>
+    </a>
+    <div class="links">
+      <a href="#research">Our Science</a>
+      <a href="#projects">What I do</a>
+      <a href="#pubs">Publications</a>
+      <a href="#about">Who I am</a>
+      <a href="#contact" class="cta">Get in touch</a>
     </div>
-  </header>
+  </div>
+</nav>
 
-  <!-- ====== HERO / ANIMATION SECTION ====== -->
-  <section class="hero">
-    <!-- background image is handled in CSS with banner_contours.jpg -->
-    <!-- canvas sits ABOVE the bg image so we can draw networks / dust / dunes -->
-    <canvas id="drylandCanvas" class="hero-canvas"></canvas>
+<!-- Hero -->
+<header id="top" class="hero" role="banner" aria-label="Intro">
+  <div class="hero-inner">
+    <div class="kicker">The science we need</div>
+    <h1>for the drylands we want</h1>
+    <p class="sub">I study how <b>connectivity</b> shapes <b>degradation and recovery</b> in drylands—using networks, field data, and simple models to inform <b>restoration and grazing</b> decisions.</p>
+    <div class="hero-badges">
+      <span class="badge">Connectivity science</span>
+      <span class="badge">Network models</span>
+      <span class="badge">Regime shifts</span>
+      <span class="badge">Applied restoration</span>
+    </div>
+  </div>
+  <img class="floaty" src="img/pic4_drone.jpg" alt="" style="width:150px;height:150px;object-fit:cover;border-radius:18px;border:2px solid rgba(255,255,255,.7);box-shadow:0 10px 30px rgba(0,0,0,.25)" />
+</header>
 
-    <!-- center stack -->
-    <div class="hero-center">
-      <!-- ICON ROTATOR -->
-      <div class="hero-icon-rotator">
+<!-- Our Science -->
+<section id="research" aria-labelledby="h2-research">
+  <div class="wrap">
+    <h2 id="h2-research">Our Science</h2>
+    <p class="lead">Four pillars guide my work—focused on **patterns, processes, and decisions** in drylands.</p>
 
-        <!-- ICON 1: dune + satellite (remote sensing of drylands) -->
-        <svg class="rot-icon" viewBox="0 0 200 200" stroke="#ffffff" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="100" cy="100" r="60"/>
-          <path d="M40 130c20-10 35-15 50-5 15 10 35 5 45-10 10-15 15-20 25-20" />
-          <path d="M60 150c10-5 20-10 30-8 10 2 15 10 25 13 10 3 20 0 25-3" />
-          <g transform="translate(130 45) rotate(-20)">
-            <rect x="-15" y="-4" width="30" height="8" rx="2" />
-            <line x1="-20" y1="-8" x2="-15" y2="-4" />
-            <line x1="20" y1="8" x2="15" y2="4" />
-            <rect x="-5" y="-15" width="10" height="8" rx="1" />
-            <rect x="-5" y="7" width="10" height="8" rx="1" />
-          </g>
-        </svg>
+    <div class="grid" style="margin-top:22px">
+      <article class="card">
+        <div class="icon" aria-hidden="true">🧭</div>
+        <h3>Connectivity</h3>
+        <p>Weighted, directed networks to capture how water, sediment, and vegetation interact across hillslopes and landscapes.</p>
+      </article>
+      <article class="card">
+        <div class="icon" aria-hidden="true">🌵</div>
+        <h3>Degradation & regime shifts</h3>
+        <p>Early-warning indicators and minimal models to understand grass–shrub transitions and thresholds in arid systems.</p>
+      </article>
+      <article class="card">
+        <div class="icon" aria-hidden="true">🛠️</div>
+        <h3>Actionable tools</h3>
+        <p>Simple metrics that map critical nodes and pathways—supporting adaptive grazing and restoration planning.</p>
+      </article>
+      <article class="card">
+        <div class="icon" aria-hidden="true">📖</div>
+        <h3>Open science</h3>
+        <p>Reproducible code & data; clear visuals and narratives so results are useful to land managers and researchers alike.</p>
+      </article>
+    </div>
+  </div>
+</section>
 
-        <!-- ICON 2: connectivity / network graph -->
-        <svg class="rot-icon" viewBox="0 0 200 200" stroke="#ffffff" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-          <!-- nodes -->
-          <circle cx="60" cy="60" r="10"/>
-          <circle cx="140" cy="60" r="10"/>
-          <circle cx="100" cy="100" r="10"/>
-          <circle cx="60" cy="140" r="10"/>
-          <circle cx="140" cy="140" r="10"/>
-          <!-- links -->
-          <line x1="70" y1="70" x2="130" y2="70"/>
-          <line x1="70" y1="70" x2="100" y2="100"/>
-          <line x1="130" y1="70" x2="100" y2="100"/>
-          <line x1="100" y1="100" x2="70" y2="130"/>
-          <line x1="100" y1="100" x2="130" y2="130"/>
-          <line x1="70" y1="130" x2="130" y2="130"/>
-        </svg>
-
-        <!-- ICON 3: cracked ground / desiccation badge -->
-        <svg class="rot-icon" viewBox="0 0 200 200" stroke="#ffffff" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="100" cy="100" r="70"/>
-          <path d="M60 120l20-15 20 10 20-18 20 12" />
-          <path d="M60 120l10 25 20-15 10 20 20-18 20 12 10-24" />
-          <path d="M80 105l10-25 20 15 10-20" />
-        </svg>
-
-      </div>
-
-      <!-- TEXT under icon -->
-      <div class="hero-text-group">
-        <h1 class="hero-headline">
-          Understanding <span class="accent-white">land degradation</span><br/>
-          and <span class="accent-white">dryland connectivity</span>
-        </h1>
-
-        <p class="hero-sub">
-          Shubham Tiwari · Early Stage Researcher, Durham University<br/>
-          Mapping how sediment, vegetation, wind and water link across arid landscapes.
-        </p>
-      </div>
-
-      <!-- quick meta row -->
-      <div class="hero-meta">
-        <div class="meta-block">
-          <div class="meta-label">Focus</div>
-          <div class="meta-value">Desertification · Connectivity networks</div>
+<!-- Projects / What I do -->
+<section id="projects" aria-labelledby="h2-projects" style="background:var(--sand)">
+  <div class="wrap">
+    <h2 id="h2-projects">What I do</h2>
+    <div class="split" style="margin-top:8px">
+      <div class="panel">
+        <img src="img/pic4_drone.jpg" alt="Fieldwork in drylands">
+        <div class="p">
+          <h3 style="margin:0 0 6px;font-family:Spectral,serif">Patterns of connectivity in ecogeomorphic systems</h3>
+          <p>PhD work on quantifying local–global hydrological & sediment connectivity over grassland–shrubland hillslopes and its role in degradation/recovery dynamics. Methods: network analysis, field mapping, and pared-down modeling. :contentReference[oaicite:1]{index=1}</p>
         </div>
-        <div class="meta-block">
-          <div class="meta-label">Tools</div>
-          <div class="meta-value">Remote sensing · Spatial analysis</div>
-        </div>
-        <div class="meta-block">
-          <div class="meta-label">Goal</div>
-          <div class="meta-value">Resilient drylands</div>
+      </div>
+      <div class="panel">
+        <img src="img/banner_contours.jpg" alt="Contours and connectivity">
+        <div class="p">
+          <h3 style="margin:0 0 6px;font-family:Spectral,serif">From theory to action: adaptive grazing</h3>
+          <p>Translating connectivity metrics into practical guidance—identifying critical flow/transport nodes to help prioritise interventions and design grazing strategies that reduce erosion risk and support vegetation recovery. :contentReference[oaicite:2]{index=2}</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ====== CONTENT SECTIONS ====== -->
-  <main>
-
-    <section id="research" class="site-section">
-      <div class="section-inner">
-        <h2>Research</h2>
-        <p class="section-lead">
-          Example text: Quantifying land degradation hotspots and modelling
-          how wind, water, and human land use connect those hotspots across drylands.
-        </p>
-
-        <div class="card-grid">
-          <article class="info-card">
-            <h3>Dryland Connectivity</h3>
-            <p>How pulses of sediment and water move through arid systems like a network.</p>
-          </article>
-
-          <article class="info-card">
-            <h3>Land Degradation</h3>
-            <p>Identifying early warning signals from satellite time series and field data.</p>
-          </article>
-
-          <article class="info-card">
-            <h3>Remote Sensing + AI</h3>
-            <p>Tracking dune migration, vegetation loss, and crust break-up at scale.</p>
-          </article>
-        </div>
+<!-- Publications -->
+<section id="pubs" aria-labelledby="h2-pubs">
+  <div class="wrap">
+    <h2 id="h2-pubs">Selected publications</h2>
+    <p class="lead">A few recent, relevant pieces. Full list on <a href="https://scholar.google.com/citations?user=xdspNSQAAAAJ" target="_blank" rel="noopener">Google Scholar</a>.</p>
+    <div class="list">
+      <div class="li">
+        <b>Water-controlled ecosystems as complex networks</b> — Evaluation of network approaches to quantify connectivity patterns. <i>Ecohydrology</i>, 2024. :contentReference[oaicite:3]{index=3}
       </div>
-    </section>
-
-    <section id="news" class="site-section alt-bg">
-      <div class="section-inner">
-        <h2>News / Updates</h2>
-        <ul class="timeline">
-          <li>
-            <span class="time-tag">Oct ’25</span>
-            Presented preliminary connectivity maps at [Conference name].
-          </li>
-          <li>
-            <span class="time-tag">Sep ’25</span>
-            New field campaign launched in [Dryland region placeholder].
-          </li>
-        </ul>
+      <div class="li">
+        <b>Local and global hydrological & sediment connectivity over grassland–shrubland hillslopes</b> — Linking pathways to degradation processes. <i>Journal of Hydrology</i>, 2025. :contentReference[oaicite:4]{index=4}
       </div>
-    </section>
-
-    <section id="people" class="site-section">
-      <div class="section-inner">
-        <h2>People</h2>
-        <div class="people-flex">
-          <div class="person-card">
-            <div class="avatar-circle">ST</div>
-            <div class="person-info">
-              <div class="person-name">Shubham Tiwari</div>
-              <div class="person-role">Early Stage Researcher</div>
-              <div class="person-desc">Dryland systems · Durham University</div>
-            </div>
-          </div>
-
-          <div class="person-card">
-            <div class="avatar-circle">PI</div>
-            <div class="person-info">
-              <div class="person-name">Supervisor / PI Name</div>
-              <div class="person-role">Professor of [Area]</div>
-              <div class="person-desc">[Dept / Institute]</div>
-            </div>
-          </div>
-        </div>
+      <div class="li">
+        <b>From theory to action: Using connectivity to inform adaptive grazing in drylands</b> — Submitted. <i>Journal of Applied Ecology</i>. :contentReference[oaicite:5]{index=5}
       </div>
-    </section>
-
-
-    <section id="publications" class="site-section alt-bg">
-      <div class="section-inner">
-        <h2>Publications</h2>
-        <ul class="pub-list">
-          <li class="pub-item">
-            <div class="pub-title">
-              Example paper title on dryland connectivity mapping.
-            </div>
-            <div class="pub-meta">Tiwari, S. et al. (in prep)</div>
-          </li>
-          <li class="pub-item">
-            <div class="pub-title">Another placeholder publication title.</div>
-            <div class="pub-meta">Journal of Arid Systems, 2025</div>
-          </li>
-        </ul>
+      <div class="li">
+        <b>Minimal-model insights on soil erosion patterns</b> — Under review. <i>Nat. Commun. Earth & Environment</i>. :contentReference[oaicite:6]{index=6}
       </div>
-    </section>
-
-    <section id="contact" class="site-section">
-      <div class="section-inner contact-card">
-        <h2>Get in touch</h2>
-        <p>
-          Collaboration, fieldwork, or just want to chat about desert systems?
-          Reach out.
-        </p>
-        <a class="contact-button" href="mailto:your.email@durham.ac.uk">
-          Email me
-        </a>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div>© <span id="year"></span> Shubham Tiwari</div>
-      <div>Dryland Connectivity Research</div>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script src="hero-animation.js"></script>
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+<!-- About -->
+<section id="about" aria-labelledby="h2-about" style="background:var(--sand)">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <h2 id="h2-about">Who I am</h2>
+        <p class="lead">I’m a researcher fascinated by how **connections**—between rain, soil, plants, and people—shape landscapes. I build network-based methods and minimal models to turn that fascination into practical tools for dryland management. PhD (submitted) in Physical Geography, Durham University. ORCID: 0000-0002-9117-3083. :contentReference[oaicite:7]{index=7}</p>
+        <div class="list">
+          <div class="li"><b>Focus</b> — Dryland degradation, regime shifts, connectivity metrics, restoration. :contentReference[oaicite:8]{index=8}</div>
+          <div class="li"><b>Methods</b> — Network science, field mapping (UAV/LiDAR), simple process models, reproducible analytics. :contentReference[oaicite:9]{index=9}</div>
+          <div class="li"><b>Talks</b> — BSG (connectivity), workshops on early-warning signals & restoration metrics, invited seminars on weighted networks. :contentReference[oaicite:10]{index=10}</div>
+        </div>
+      </div>
+      <aside class="panel" aria-label="Portrait">
+        <img src="img/profile.jpg" alt="Shubham Tiwari">
+        <div class="p">
+          <h3 style="margin:0 0 6px;font-family:Spectral,serif">Let’s collaborate</h3>
+          <p>Open to co-developing practical, low-cost connectivity tools with rangeland managers and restoration projects. :contentReference[oaicite:11]{index=11}</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" aria-labelledby="h2-contact">
+  <div class="wrap">
+    <h2 id="h2-contact">Get in touch</h2>
+    <p class="lead">Email is best. I’m also on Scholar & LinkedIn.</p>
+    <div class="grid" style="margin-top:10px">
+      <div class="card" style="grid-column:span 12">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+          <a class="cta" href="mailto:shubham.tiwari@environment-agency.gov.uk">Email me</a>
+          <a href="https://scholar.google.com/citations?user=xdspNSQAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/shubhamrt/" target="_blank" rel="noopener">LinkedIn</a>
+          <span style="color:var(--muted)">ORCID: 0000-0002-9117-3083</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer role="contentinfo">
+  <div class="foot">
+    <div style="display:flex;gap:14px;align-items:center">
+      <svg viewBox="0 0 64 64" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M8 48c8-10 14-12 24-12s16 2 24 12" />
+        <path d="M22 29c6-8 14-8 20 0" />
+        <circle cx="44" cy="18" r="4" />
+        <path d="M12 40c2-8 8-14 14-16" />
+      </svg>
+      <strong style="font-family:Spectral,serif">Shubham Tiwari</strong>
+    </div>
+    <small>© <span id="y"></span> — Dryland Connectivity & Degradation</small>
+  </div>
+</footer>
+
+<script>
+  // year
+  document.getElementById('y').textContent = new Date().getFullYear();
+  // gentle reveal on scroll
+  const obs = new IntersectionObserver((es)=>es.forEach(e=>{
+    if(e.isIntersecting){ e.target.style.transform = 'translateY(0)'; e.target.style.opacity = 1; obs.unobserve(e.target); }
+  }),{threshold:.08});
+  document.querySelectorAll('.card,.panel,.split > *,.li').forEach(el=>{
+    el.style.opacity=.001; el.style.transform='translateY(14px)'; el.style.transition='all .6s ease';
+    obs.observe(el);
+  });
+</script>
+
 </body>
 </html>
