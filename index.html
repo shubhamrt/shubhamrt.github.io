@@ -52,9 +52,7 @@
 .logo{
   width:min(160px,28vw);
   height:auto;
-  margin: 0 auto 18px;          /* reset top margin if it was negative */
-  position: relative;
-  top: -150px;                    /* move up */
+  margin: clamp(-40px, -12vh, -200px) auto 18px; /* more up */
   filter: drop-shadow(0 6px 25px rgba(0,0,0,.35));
 }
   
