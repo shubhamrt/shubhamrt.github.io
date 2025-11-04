@@ -9,9 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --text:#ffffff;         /* brighter for more contrast */
+    --text:#ffffff;
     --muted:#D3EFE6;
     --dark:#0b201b;
+    --bandH: clamp(120px, 14vh, 240px);   /* height of the transition halves */
+    --scroll: 0;                           /* set by JS for parallax */
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
@@ -30,13 +32,11 @@
     background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
     isolation:isolate;
   }
-  /* Increased overlay opacity to 0.25 */
   .hero::before{
     content:""; position:absolute; inset:0;
     background:rgba(0,0,0,.25);
-    z-index:0;       /* above image, below veil and content */
+    z-index:0;
   }
-  /* Veil now fades in 3s */
   .veil{
     position:absolute; inset:0; background:var(--dark);
     animation: reveal 3s ease forwards;
@@ -44,53 +44,87 @@
   }
   @keyframes reveal { from{opacity:1} to{opacity:0} }
 
-  .hero-inner{
-    position:relative; z-index:2; padding:24px;
-  }
+  .hero-inner{ position:relative; z-index:2; padding:24px; }
 
-  /* Move the logo up a bit */
-.logo{
-  width:min(160px,28vw);
-  height:auto;
-  margin: clamp(-40px, -12vh, -200px) auto 18px; /* more up */
-  filter: drop-shadow(0 6px 25px rgba(0,0,0,.35));
-}
-  
+  .logo{
+    width:min(160px,28vw);
+    height:auto;
+    margin: clamp(-40px, -12vh, -200px) auto 18px;
+    filter: drop-shadow(0 6px 25px rgba(0,0,0,.35));
+  }
 
   h1{
     font-family:Spectral,serif;
     font-size:clamp(34px,5.8vw,64px);
     line-height:1.06;
     margin:0;
-    text-shadow: 0 2px 10px rgba(0,0,0,.35); /* make text more visible */
+    text-shadow: 0 2px 10px rgba(0,0,0,.35);
   }
 
-  /* Removed .sub line under hero */
-
-  section{padding:72px 20px}
+  /* Sections */
+  section{padding:72px 20px; position:relative;}
   .wrap{max-width:1100px;margin:0 auto}
   h2{font-family:Spectral,serif;font-size:clamp(26px,3.5vw,38px);margin:0 0 10px}
   p{color:var(--muted)}
+
+  /* -------- Transition image (split across sections) -------- */
+  .transition-band{
+    position:absolute;
+    left:0; width:100%; height:var(--bandH);
+    background-image:url('img/transition.png');
+    background-repeat:no-repeat;
+    background-size:100% auto;               /* same scale for both halves */
+    pointer-events:none;                     /* decorative only */
+    will-change: transform;
+    transform: translateY(calc(var(--scroll) * -0.08)); /* subtle parallax */
+    z-index:2;
+  }
+  /* Bottom of hero shows the LOWER half of the image */
+  .transition-top{
+    bottom:-1px;                             /* sits on the fold */
+    background-position:center bottom;
+  }
+  /* Top of next section shows the UPPER half of the image */
+  .transition-bottom{
+    top:-1px;                                /* sits on the fold */
+    background-position:center top;
+  }
+  /* push section content below its transition half */
+  #research{ padding-top: calc(72px + var(--bandH)); }
 </style>
 </head>
 <body>
 
-<!-- FIRST PAGE ONLY: full-screen hero with logo + text -->
 <header class="hero" role="banner" aria-label="Intro">
   <div class="veil" aria-hidden="true"></div>
   <div class="hero-inner">
     <img class="logo" src="img/logo.png" alt="Site logo">
     <h1>Connectivity that guides<br>resilient drylands</h1>
-    <!-- removed: <p class="sub">Network thinking for decisions in arid landscapes.</p> -->
   </div>
+
+  <!-- Half 1: bottom of the first page -->
+  <div class="transition-band transition-top" aria-hidden="true"></div>
 </header>
 
 <section id="research">
+  <!-- Half 2: top of the second page -->
+  <div class="transition-band transition-bottom" aria-hidden="true"></div>
+
   <div class="wrap">
     <h2>Our Science</h2>
     <p>Connectivity metrics, regime-shift diagnostics, and simple models to turn patterns into better restoration and grazing choices.</p>
   </div>
 </section>
+
+<!-- Tiny parallax driver -->
+<script>
+(function(){
+  const root = document.documentElement;
+  const set = () => root.style.setProperty('--scroll', String(window.pageYOffset || 0));
+  set();
+  window.addEventListener('scroll', set, {passive:true});
+})();
+</script>
 
 </body>
 </html>
