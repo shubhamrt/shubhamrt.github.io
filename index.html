@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -6,14 +6,15 @@
 <title>Shubham Tiwari | Dryland Connectivity</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Added italic variants so the span can use true italics -->
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --text:#ffffff;
     --muted:#D3EFE6;
     --dark:#0b201b;
-    --bandH: clamp(120px, 14vh, 240px); /* height of the transition image */
-    --scroll: 0;                        /* set by JS for parallax */
+    --bandH: clamp(120px, 14vh, 240px);
+    --scroll: 0;
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
@@ -44,7 +45,12 @@
   }
   @keyframes reveal { from{opacity:1} to{opacity:0} }
 
-  .hero-inner{ position:relative; z-index:2; padding:24px; }
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    padding:24px;
+    top:-1.2cm; /* << move logo + text up by exactly 1.2 cm */
+  }
 
   .logo{
     width:min(160px,28vw);
@@ -57,27 +63,43 @@
     font-family:Spectral,serif;
     font-size:clamp(34px,5.8vw,64px);
     line-height:1.06;
-    margin:0;
+    margin:0 0 10px;
     text-shadow: 0 2px 10px rgba(0,0,0,.35);
+    font-weight:700;
+  }
+  /* keep "resilient drylands" on one line & italic/different feel */
+  .hero-em{
+    white-space:nowrap;
+    font-style:italic;
+    font-weight:600;
+    letter-spacing:.2px;
   }
 
+  /* tagline under the hero text */
+  .tagline{
+    margin-top:8px;
+    font-size:clamp(14px,1.6vw,18px);
+    color:var(--muted);
+    opacity:.95;
+  }
+
+  /* Sections */
   section{padding:72px 20px; position:relative;}
   .wrap{max-width:1100px;margin:0 auto}
   h2{font-family:Spectral,serif;font-size:clamp(26px,3.5vw,38px);margin:0 0 10px}
   p{color:var(--muted)}
 
-  /* --- SINGLE transition image at the end of page 1 --- */
+  /* Single transition banner at bottom of page 1 */
   .transition-band{
-    position:absolute;
-    left:0; bottom:-1px;                /* sits right at the fold */
+    position:absolute; left:0; bottom:-1px;
     width:100%; height:var(--bandH);
     background-image:url('img/transition.png');
     background-repeat:no-repeat;
     background-size:100% auto;
-    background-position:center bottom;  /* show the lower half look */
+    background-position:center bottom;
     pointer-events:none;
     will-change: transform;
-    transform: translateY(calc(var(--scroll) * -0.08)); /* subtle parallax */
+    transform: translateY(calc(var(--scroll) * -0.08));
     z-index:2;
   }
 </style>
@@ -88,10 +110,13 @@
   <div class="veil" aria-hidden="true"></div>
   <div class="hero-inner">
     <img class="logo" src="img/logo.png" alt="Site logo">
-    <h1>Connectivity that guides<br>resilient drylands</h1>
+    <h1>
+      Connectivity that guides
+      <span class="hero-em">resilient&nbsp;drylands</span>
+    </h1>
+    <div class="tagline">Shubham Tiwari | Connectivity | Ecohydrology | Network Theory</div>
   </div>
 
-  <!-- Single transition image at bottom of page 1 -->
   <div class="transition-band" aria-hidden="true"></div>
 </header>
 
@@ -103,12 +128,10 @@
 </section>
 
 <script>
-/* Tiny parallax driver for the single band */
 (function(){
   const root = document.documentElement;
   const set = () => root.style.setProperty('--scroll', String(window.pageYOffset || 0));
-  set();
-  window.addEventListener('scroll', set, {passive:true});
+  set(); window.addEventListener('scroll', set, {passive:true});
 })();
 </script>
 
