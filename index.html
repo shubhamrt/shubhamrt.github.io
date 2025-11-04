@@ -12,8 +12,8 @@
     --text:#ffffff;
     --muted:#D3EFE6;
     --dark:#0b201b;
-    --in-delay:.1s;   /* fade-in starts after 0.4s */
-    --in-dur:.6s;     /* fade duration */
+    --in-delay: 0.3s;   /* ← show content after 1s */
+    --in-dur: .6s;    /* fade duration */
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
@@ -43,9 +43,9 @@
 
   /* Top-left brand + hamburger */
   .topbar{
-    position:fixed; top:16px; left:16px;
+    position:fixed; top:16px; left:16px; right:auto;
     display:flex; align-items:center; gap:10px;
-    z-index:3;
+    z-index:3;         /* above film & content */
     opacity:0; transition:opacity var(--in-dur) ease var(--in-delay);
   }
   .reveal .topbar{ opacity:1; }
@@ -70,60 +70,56 @@
     font-size:clamp(16px,1.4vw,18px);
     text-decoration:none; color:var(--text);
     text-shadow:0 2px 8px rgba(0,0,0,.45);
-    position:relative;
   }
 
-  /* Dropdown under the name; transparent */
+  /* Dropdown menu under the brand; transparent background */
   .menu{
-    position:absolute; top:46px; left:0;
-    padding:6px 0; background:transparent; border:none;
-    z-index:4; opacity:0; pointer-events:none; transition:opacity .2s ease;
+    position:absolute; top:46px; left:16px;
+    padding:6px 0;
+    background:transparent;  /* requested transparent */
+    backdrop-filter:none;
+    border:none;
+    z-index:4;
+    opacity:0; pointer-events:none;
+    transition:opacity .2s ease;
   }
   .menu.open{ opacity:1; pointer-events:auto; }
   .menu a{
-    display:block; padding:8px 2px 8px 0;
-    color:var(--text); text-decoration:none; font-size:14px;
+    display:block; padding:8px 2px 8px 4px;
+    color:var(--text); text-decoration:none;
+    font-size:14px;
+    /* add a subtle glow for readability on bright areas */
     text-shadow:0 2px 8px rgba(0,0,0,.55);
   }
 
   .hero-inner{
-    position:relative; z-index:2; padding:24px; top:-1.2cm; /* exactly 1.2 cm up */
-    opacity:0; transition:opacity var(--in-dur) ease var(--in-delay); /* fade only */
+    position:relative; z-index:2; padding:24px; top:-1.2cm; /* exact 1.2 cm upward */
+    opacity:0;                      /* fade-in only (no movement) */
+    transition:opacity var(--in-dur) ease var(--in-delay);
   }
   .reveal .hero-inner{ opacity:1; }
 
-  /* 125% logo */
   .logo{
-    width:min(200px,35vw);
+    width:min(200px, 35vw);
     height:auto;
     margin: clamp(-40px, -12vh, -200px) auto 18px;
     filter: drop-shadow(0 6px 25px rgba(0,0,0,.35));
   }
 
-  /* 80% hero text */
   h1{
     font-family:Spectral,serif;
-    font-size:clamp(27px, 4.64vw, 51.2px);
+    font-size: clamp(27px, 4.64vw, 51.2px);
     line-height:1.06;
-    margin:0 0 10px;
+    margin:0;
     text-shadow: 0 2px 10px rgba(0,0,0,.35);
     font-weight:700;
   }
-
-  /* Typing quote (bright white) */
-  .quote{
-    margin-top:8px;
-    font-size:clamp(15px,1.8vw,20px);
-    color:#fff;
-    text-shadow:0 2px 12px rgba(0,0,0,.6);
-    min-height:1.4em; /* keep space before typing finishes */
+  .hero-em{
+    white-space:nowrap;
+    font-style:italic;
+    font-weight:600;
+    letter-spacing:.2px;
   }
-  .caret{
-    display:inline-block; width:0.6ch; height:1em;
-    border-right:2px solid #fff; transform:translateY(2px);
-    animation: blink 1s step-end infinite;
-  }
-  @keyframes blink { 50% { border-color: transparent; } }
 
   /* Content sections */
   section{padding:72px 20px; position:relative;}
@@ -139,7 +135,7 @@
   <button class="hamburger" id="menuBtn" aria-label="Open menu" aria-controls="menu" aria-expanded="false">
     <span></span>
   </button>
-  <a class="brand" href="#" id="brand">Shubham Tiwari</a>
+  <a class="brand" href="#">Shubham Tiwari</a>
 
   <nav class="menu" id="menu" aria-hidden="true">
     <a href="#research">Research</a>
@@ -150,17 +146,14 @@
 </div>
 
 <header class="hero" role="banner" aria-label="Intro">
-  <!-- film fades in with content -->
+  <!-- film fades in with the text/logo -->
   <div class="film" aria-hidden="true"></div>
 
   <div class="hero-inner">
     <img class="logo" src="img/logo.png" alt="Site logo">
-    <h1>Using Network Science to Understand Dryland Degradation</h1>
-
-    <!-- typing target -->
-    <p class="quote" aria-live="polite">
-      <span id="type"></span><span class="caret" aria-hidden="true"></span>
-    </p>
+    <h1>
+      Connectivity that guides <span class="hero-em">resilient&nbsp;drylands</span>
+    </h1>
   </div>
 </header>
 
@@ -172,33 +165,12 @@
 </section>
 
 <script>
-/* 1) Reveal after 0.4s. 2) Typewriter quote. 3) Transparent dropdown under name. */
+/* 1) Fade in content after 1s. 2) Simple dropdown under the name. */
 (function(){
-  // Reveal hero content & film after 0.4s
-  setTimeout(()=>document.body.classList.add('reveal'), 400);
+  // reveal after 1s
+  setTimeout(()=>document.body.classList.add('reveal'), 1000);
 
-  // Typewriter after reveal
-  const quoteEl = document.getElementById('type');
-  const caret   = document.querySelector('.caret');
-  const text    = '"The land is not empty. It is full of stories." - Indigenous Australian wisdom';
-  const typeSpeed = 28; // ms per char
-
-  const startTyping = () => {
-    let i = 0;
-    const tick = () => {
-      if (i <= text.length){
-        quoteEl.textContent = text.slice(0, i++);
-        setTimeout(tick, typeSpeed);
-      } else {
-        caret.style.borderColor = 'transparent'; // stop caret after finish
-      }
-    };
-    tick();
-  };
-  // start a moment after fade begins
-  setTimeout(startTyping, 500);
-
-  // Dropdown menu under the brand (triggered by hamburger)
+  // dropdown open/close
   const btn   = document.getElementById('menuBtn');
   const menu  = document.getElementById('menu');
   const toggle = () => {
@@ -209,7 +181,7 @@
   };
   btn.addEventListener('click', toggle);
 
-  // Close on link click or outside click
+  // close when clicking a link or outside
   menu.addEventListener('click', e => { if(e.target.tagName === 'A') toggle(); });
   document.addEventListener('click', e => {
     if(!menu.contains(e.target) && !btn.contains(e.target) && menu.classList.contains('open')){
