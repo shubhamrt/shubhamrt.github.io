@@ -49,10 +49,12 @@
   }
 
   /* Move the logo up a bit */
-  .logo{
-    width:min(160px,28vw); height:auto; margin: -12px auto 18px;
-    filter:drop-shadow(0 6px 18px rgba(0,0,0,.35));
-  }
+.logo{
+  width:min(160px,28vw);
+  height:auto;
+  margin: clamp(-20px, -8vh, -120px) auto 18px;
+  filter: drop-shadow(0 6px 25px rgba(0,0,0,.35));
+}
 
   h1{
     font-family:Spectral,serif;
