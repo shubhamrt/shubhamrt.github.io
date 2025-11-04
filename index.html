@@ -9,8 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --text:#F2FAF6;
-    --muted:#D3EFE6;
+    --text:#FEFFFE;        /* slightly brighter than before */
+    --muted:#E9FFF7;
     --dark:#0b201b;
   }
   *{box-sizing:border-box}
@@ -30,21 +30,31 @@
     background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
     isolation:isolate;
   }
-  /* NEW: subtle black shadow over the image (0.2 opacity) */
+  /* Global subtle shadow over the image (0.2) */
   .hero::before{
     content:""; position:absolute; inset:0;
     background:rgba(0,0,0,.2);
-    z-index:0;       /* sits above the image but below the veil and content */
+    z-index:0;
   }
-  /* Dark veil that fades away in 2s to reveal the image */
+  /* Intro veil that fades away to reveal image (3s) */
   .veil{
     position:absolute; inset:0; background:var(--dark);
-    animation: reveal 2s ease forwards;
+    animation: reveal 3s ease forwards;
     z-index:1;
   }
   @keyframes reveal { from{opacity:1} to{opacity:0} }
 
-  .hero-inner{position:relative; z-index:2; padding:24px}
+  .hero-inner{
+    position:relative; z-index:2; padding:0; display:inline-block;
+  }
+  /* Backdrop directly behind logo + text (0.4) */
+  .hero-inner::before{
+    content:""; position:absolute; inset:-22px -28px;
+    background:rgba(0,0,0,.4);
+    border-radius:18px;
+    z-index:-1;
+  }
+
   .logo{
     width:min(160px,28vw); height:auto; margin:0 auto 18px;
     filter:drop-shadow(0 6px 18px rgba(0,0,0,.35));
@@ -54,37 +64,20 @@
     font-size:clamp(34px,5.8vw,64px);
     line-height:1.06;
     margin:0;
+    color:var(--text);
+    text-shadow:0 2px 14px rgba(0,0,0,.35); /* extra clarity */
   }
-  .sub{
-    margin-top:10px;
-    font-size:clamp(16px,2.4vw,22px);
-    color:var(--muted);
-  }
-
-  section{padding:72px 20px}
-  .wrap{max-width:1100px;margin:0 auto}
-  h2{font-family:Spectral,serif;font-size:clamp(26px,3.5vw,38px);margin:0 0 10px}
-  p{color:var(--muted)}
 </style>
 </head>
 <body>
 
-<!-- FIRST PAGE ONLY: full-screen hero with logo + new text -->
 <header class="hero" role="banner" aria-label="Intro">
   <div class="veil" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner" aria-live="polite">
     <img class="logo" src="img/logo.png" alt="Site logo">
     <h1>Connectivity that guides<br>resilient drylands</h1>
-    <p class="sub">Network thinking for decisions in arid landscapes.</p>
   </div>
 </header>
-
-<section id="research">
-  <div class="wrap">
-    <h2>Our Science</h2>
-    <p>Connectivity metrics, regime-shift diagnostics, and simple models to turn patterns into better restoration and grazing choices.</p>
-  </div>
-</section>
 
 </body>
 </html>
