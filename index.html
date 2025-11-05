@@ -12,8 +12,8 @@
     --text:#ffffff;
     --muted:#D3EFE6;
     --dark:#0b201b;
-    --in-delay: .02s;  /* CSS fade delay for logo/text */
-    --in-dur: .5s;     /* fade duration */
+    --in-delay: 0.02s;  /* fade-in delay */
+    --in-dur: .5s;      /* fade duration */
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
@@ -33,7 +33,7 @@
     isolation:isolate;
   }
 
-  /* Film that fades in with text/logo */
+  /* Black film that fades in with text/logo */
   .film{
     position:absolute; inset:0; background:rgba(0,0,0,.25);
     opacity:0; transition:opacity var(--in-dur) ease var(--in-delay);
@@ -69,30 +69,26 @@
     font-size:clamp(16px,1.4vw,18px);
     text-decoration:none; color:var(--text);
     text-shadow:0 2px 8px rgba(0,0,0,.45);
-    position:relative;
   }
 
-  /* Dropdown menu under the name; transparent background */
+  /* Dropdown menu under the brand; transparent */
   .menu{
-    position:absolute; top:46px; left:0;
+    position:absolute; top:46px; left:16px;
     padding:6px 0;
     background:transparent; border:none;
-    z-index:4;
-    opacity:0; pointer-events:none;
+    z-index:4; opacity:0; pointer-events:none;
     transition:opacity .2s ease;
   }
   .menu.open{ opacity:1; pointer-events:auto; }
   .menu a{
-    display:block; padding:8px 2px 8px 0;
-    color:var(--text); text-decoration:none;
-    font-size:14px;
+    display:block; padding:8px 2px 8px 4px;
+    color:var(--text); text-decoration:none; font-size:14px;
     text-shadow:0 2px 8px rgba(0,0,0,.55);
   }
 
   .hero-inner{
-    position:relative; z-index:2; padding:24px; top:-1.2cm; /* exact 1.2 cm upward */
-    opacity:0;                      /* fade-in only (no movement) */
-    transition:opacity var(--in-dur) ease var(--in-delay);
+    position:relative; z-index:2; padding:24px; top:-1.2cm; /* move up exactly 1.2 cm */
+    opacity:0; transition:opacity var(--in-dur) ease var(--in-delay); /* fade only */
   }
   .reveal .hero-inner{ opacity:1; }
 
@@ -120,22 +116,6 @@
     letter-spacing:.2px;
   }
 
-  /* Tip: SVG arrow + one-line definition */
-  .tip{
-    display:flex; align-items:center; gap:14px;
-    justify-content:center;
-    margin-top:12px;
-    opacity:0; transition:opacity .25s ease;
-  }
-  .show-tip .tip{ opacity:1; }              /* toggled by JS */
-  .tip-arrow{ color:#fff; opacity:.98; }
-  .tip-text{
-    color:#fff; font-weight:700;
-    text-shadow:0 2px 12px rgba(0,0,0,.6);
-    font-size:clamp(14px,1.5vw,18px);
-    letter-spacing:.2px;
-  }
-
   /* Content sections */
   section{padding:72px 20px; position:relative;}
   .wrap{max-width:1100px;margin:0 auto}
@@ -150,7 +130,7 @@
   <button class="hamburger" id="menuBtn" aria-label="Open menu" aria-controls="menu" aria-expanded="false">
     <span></span>
   </button>
-  <a class="brand" href="#" id="brand">Shubham Tiwari</a>
+  <a class="brand" href="#">Shubham Tiwari</a>
 
   <nav class="menu" id="menu" aria-hidden="true">
     <a href="#research">Research</a>
@@ -170,68 +150,9 @@
       Connectivity that guides<br>
       <span class="hero-em">resilient drylands</span>
     </h1>
-
-    <!-- Arrow + definition (built-in SVG, shows briefly) -->
-    <div class="tip" aria-hidden="true">
-      <svg class="tip-arrow" viewBox="0 0 260 90" width="220" height="76" aria-hidden="true">
-        <defs>
-          <filter id="arrowShadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.45"/>
-          </filter>
-          <marker id="arrowHead" markerWidth="12" markerHeight="12" refX="8" refY="6" orient="auto">
-            <path d="M0,0 L12,6 L0,12 z" fill="currentColor"/>
-          </marker>
-        </defs>
-        <path d="M10,50 C40,10 70,85 110,50 S170,25 210,50"
-              fill="none" stroke="currentColor" stroke-width="6"
-              stroke-linecap="round" stroke-linejoin="round"
-              marker-end="url(#arrowHead)" filter="url(#arrowShadow)"/>
-      </svg>
-      <span class="tip-text">the way resources move across the landscape</span>
-    </div>
   </div>
 </header>
 
 <section id="research">
   <div class="wrap">
-    <h2>Our Science</h2>
-    <p>Connectivity metrics, regime-shift diagnostics, and simple models to turn patterns into better restoration and grazing choices.</p>
-  </div>
-</section>
-
-<script>
-/* 1) Reveal hero content after 1s.
-   2) Show arrow+definition 0.1s later; hide after 1.5s.
-   3) Transparent dropdown under the name. */
-(function(){
-  // 1) Reveal hero content (logo, text, film)
-  const revealDelayMs = 1000; // adjust if you want different timing
-  setTimeout(()=>document.body.classList.add('reveal'), revealDelayMs);
-
-  // 2) Tip timing
-  const showTipAfter = revealDelayMs + 100;  // 0.1s after reveal
-  const hideTipAfter = showTipAfter + 1500;  // then hide after 1.5s
-  setTimeout(()=>document.body.classList.add('show-tip'), showTipAfter);
-  setTimeout(()=>document.body.classList.remove('show-tip'), hideTipAfter);
-
-  // 3) Dropdown menu under the brand (triggered by hamburger)
-  const btn   = document.getElementById('menuBtn');
-  const menu  = document.getElementById('menu');
-  const toggle = () => {
-    const open = !menu.classList.contains('open');
-    menu.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    menu.setAttribute('aria-hidden', open ? 'false' : 'true');
-  };
-  btn.addEventListener('click', toggle);
-  menu.addEventListener('click', e => { if(e.target.tagName === 'A') toggle(); });
-  document.addEventListener('click', e => {
-    if(!menu.contains(e.target) && !btn.contains(e.target) && menu.classList.contains('open')){
-      toggle();
-    }
-  });
-})();
-</script>
-
-</body>
-</html>
+    <h2>Our Sci
