@@ -12,8 +12,8 @@
     --text:#ffffff;
     --muted:#D3EFE6;
     --dark:#0b201b;
-    --in-delay: 0.02s;  /* fade-in delay */
-    --in-dur: .5s;      /* fade duration */
+    --in-delay: 0.02s;   /* fade-in delay for logo/text */
+    --in-dur: .5s;       /* fade duration */
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
@@ -33,7 +33,7 @@
     isolation:isolate;
   }
 
-  /* Black film that fades in with text/logo */
+  /* Film that fades in with text/logo */
   .film{
     position:absolute; inset:0; background:rgba(0,0,0,.25);
     opacity:0; transition:opacity var(--in-dur) ease var(--in-delay);
@@ -45,7 +45,8 @@
   .topbar{
     position:fixed; top:16px; left:16px;
     display:flex; align-items:center; gap:10px;
-    z-index:3; opacity:0; transition:opacity var(--in-dur) ease var(--in-delay);
+    z-index:3;         /* above film & content */
+    opacity:0; transition:opacity var(--in-dur) ease var(--in-delay);
   }
   .reveal .topbar{ opacity:1; }
 
@@ -71,24 +72,28 @@
     text-shadow:0 2px 8px rgba(0,0,0,.45);
   }
 
-  /* Dropdown menu under the brand; transparent */
+  /* Dropdown menu under the brand; transparent background */
   .menu{
     position:absolute; top:46px; left:16px;
     padding:6px 0;
-    background:transparent; border:none;
-    z-index:4; opacity:0; pointer-events:none;
+    background:transparent;  /* transparent as requested */
+    border:none;
+    z-index:4;
+    opacity:0; pointer-events:none;
     transition:opacity .2s ease;
   }
   .menu.open{ opacity:1; pointer-events:auto; }
   .menu a{
     display:block; padding:8px 2px 8px 4px;
-    color:var(--text); text-decoration:none; font-size:14px;
-    text-shadow:0 2px 8px rgba(0,0,0,.55);
+    color:var(--text); text-decoration:none;
+    font-size:14px;
+    text-shadow:0 2px 8px rgba(0,0,0,.55);  /* readability on bright areas */
   }
 
   .hero-inner{
     position:relative; z-index:2; padding:24px; top:-1.2cm; /* move up exactly 1.2 cm */
-    opacity:0; transition:opacity var(--in-dur) ease var(--in-delay); /* fade only */
+    opacity:0;                      /* fade-in only (no movement) */
+    transition:opacity var(--in-dur) ease var(--in-delay);
   }
   .reveal .hero-inner{ opacity:1; }
 
@@ -155,4 +160,37 @@
 
 <section id="research">
   <div class="wrap">
-    <h2>Our Sci
+    <h2>Our Science</h2>
+    <p>Connectivity metrics, regime-shift diagnostics, and simple models to turn patterns into better restoration and grazing choices.</p>
+  </div>
+</section>
+
+<script>
+/* Reveal content after 1s and simple transparent dropdown under the name. */
+(function(){
+  // reveal after 1s
+  setTimeout(()=>document.body.classList.add('reveal'), 1000);
+
+  // dropdown open/close
+  const btn   = document.getElementById('menuBtn');
+  const menu  = document.getElementById('menu');
+  const toggle = () => {
+    const open = !menu.classList.contains('open');
+    menu.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+  };
+  btn.addEventListener('click', toggle);
+
+  // close when clicking a link or outside
+  menu.addEventListener('click', e => { if(e.target.tagName === 'A') toggle(); });
+  document.addEventListener('click', e => {
+    if(!menu.contains(e.target) && !btn.contains(e.target) && menu.classList.contains('open')){
+      toggle();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
