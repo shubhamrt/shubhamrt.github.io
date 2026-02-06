@@ -10,49 +10,67 @@
 
 <style>
   :root{
+    /* HERO */
     --text:#fff;
-    --muted:#D3EFE6;
-    --dark:#0b201b;
-
     --in-delay:.02s;
     --in-dur:.5s;
 
-    /* Minimal page-2 palette */
-    --sage:#eaf1ea;              /* base */
-    --sand:#efe9db;              /* warm tint */
-    --ink:#22312c;               /* body text on light */
-    --accent:#2e9b7f;            /* teal lines/icons */
-    --chip:#ffffff;              /* chip surface */
-    --chip-br:18px;
+    /* NEW (Page 2) palette: warm paper + cool sage */
+    --paper:#f7f3ea;
+    --paper2:#edf4f0;
+    --ink:#1f2a25;
+    --muted:#4f635a;
+    --line:rgba(0,0,0,.08);
+    --card:#ffffff;
 
+    /* Accent (matches your site) */
+    --accent:#2e9b7f;
+    --accent2:#1f6f5b;
+
+    /* Layout */
     --nav-h:64px;
     --max:1100px;
+    --radius:18px;
+    --shadow:0 16px 36px rgba(10,30,20,.08);
   }
 
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
+  html,body{height:100%;margin:0}
+  body{
+    background:#000;
+    color:var(--text);
+    font-family:Inter,system-ui,Arial,Helvetica,sans-serif;
+  }
   img{display:block;max-width:100%}
+  a{color:inherit}
 
-  /* Make anchor jumps land below the fixed nav */
+  /* anchor offsets under fixed nav */
   section{scroll-margin-top: calc(var(--nav-h) + 16px);}
 
   /* ---------------- HERO (Page 1) ---------------- */
   .hero{
-    position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
-    text-align:center; overflow:hidden; color:var(--text);
-    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed; isolation:isolate;
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    color:var(--text);
+    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
+    isolation:isolate;
   }
   .film{
     position:absolute; inset:0;
     background:rgba(0,0,0,.25);
     opacity:0;
     transition:opacity var(--in-dur) ease var(--in-delay);
-    z-index:1
+    z-index:1;
   }
   .reveal .film{opacity:1}
 
-  /* ---------------- TOP HORIZONTAL BAND (requested) ---------------- */
+  /* ---------------- TOP HORIZONTAL BAND ---------------- */
   .navband{
     position:fixed;
     top:0; left:0; right:0;
@@ -80,10 +98,10 @@
     -webkit-backdrop-filter: blur(12px);
   }
 
-  /* On light sections (after scrolling), switch nav to a light surface */
+  /* when scrolling onto light sections */
   body.scrolled .nav-surface{
-    background:rgba(234,241,234,.86);
-    border-bottom:1px solid rgba(34,49,44,.12);
+    background:rgba(247,243,234,.92);
+    border-bottom:1px solid rgba(0,0,0,.10);
   }
 
   .nav-inner{
@@ -101,7 +119,6 @@
     font-weight:800;
     letter-spacing:.2px;
     font-size:clamp(16px,1.4vw,18px);
-    color:var(--text);
     text-decoration:none;
     text-shadow:0 2px 8px rgba(0,0,0,.45);
     white-space:nowrap;
@@ -111,20 +128,20 @@
   .nav-links{
     display:flex;
     align-items:center;
-    gap:18px;
+    gap:10px;
     flex-wrap:wrap;
     justify-content:flex-end;
   }
+
+  /* NO ALL CAPS */
   .nav-links a{
     color:var(--text);
     text-decoration:none;
-    font-weight:700;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    font-size:12px;
-    padding:10px 10px;
+    font-weight:650;
+    font-size:14px;
+    padding:10px 12px;
     border-radius:999px;
-    transition:background .2s ease, color .2s ease, transform .2s ease;
+    transition:background .2s ease, transform .2s ease, color .2s ease;
     text-shadow:0 2px 8px rgba(0,0,0,.35);
   }
   .nav-links a:hover{
@@ -136,23 +153,17 @@
     outline-offset:2px;
   }
 
-  body.scrolled .nav-links a{
-    color:var(--ink);
-    text-shadow:none;
-  }
-  body.scrolled .nav-links a:hover{
-    background:rgba(46,155,127,.10);
-  }
+  body.scrolled .nav-links a{ color:var(--ink); text-shadow:none; }
+  body.scrolled .nav-links a:hover{ background:rgba(46,155,127,.10); }
 
-  /* Stack nav links on very small screens (still horizontal band, no burger) */
   @media (max-width:520px){
     :root{ --nav-h:78px; }
     .nav-inner{align-items:flex-start; padding-top:10px}
     .nav-links{gap:8px}
-    .nav-links a{padding:8px 10px; font-size:11px; letter-spacing:.12em}
+    .nav-links a{padding:8px 10px; font-size:13px}
   }
 
-  /* Hero content */
+  /* ---------------- HERO CONTENT (unchanged) ---------------- */
   .hero-inner{
     position:relative;
     z-index:2;
@@ -160,7 +171,7 @@
     margin-top:var(--nav-h);
     opacity:0;
     transition:opacity var(--in-dur) ease var(--in-delay);
-    transform:translateY(-1.2cm); /* keeps your original “lift” */
+    transform:translateY(-1.2cm);
   }
   .reveal .hero-inner{opacity:1}
 
@@ -168,7 +179,7 @@
     width:min(200px,35vw);
     height:auto;
     margin:clamp(-40px,-12vh,-200px) auto 18px;
-    filter:drop-shadow(0 6px 25px rgba(0,0,0,.35))
+    filter:drop-shadow(0 6px 25px rgba(0,0,0,.35));
   }
   h1{
     font-family:Spectral,serif;
@@ -176,96 +187,191 @@
     line-height:1.06;
     margin:0;
     text-shadow:0 2px 10px rgba(0,0,0,.35);
-    font-weight:700
+    font-weight:700;
   }
   .hero-em{white-space:nowrap; font-style:italic; font-weight:600; letter-spacing:.2px}
 
-  /* ---------------- PAGE 2 (Minimal) ---------------- */
+  /* ---------------- PAGE 2 (REDESIGNED) ---------------- */
   .page2{
-    background: linear-gradient(180deg, var(--sage) 0, var(--sand) 100%);
     color:var(--ink);
+    background:
+      radial-gradient(900px 420px at 18% 10%, rgba(46,155,127,.12), transparent 60%),
+      radial-gradient(820px 360px at 82% 28%, rgba(0,0,0,.05), transparent 62%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper2) 100%);
     padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 12vh, 128px);
   }
   .page2-wrap{max-width:var(--max); margin:0 auto}
 
-  .p2-title{
-    font-family:Spectral,serif; font-weight:700; letter-spacing:.2px;
-    font-size:clamp(22px,3vw,34px); text-align:center;
-    margin:0 auto clamp(28px,5vh,48px);
-    color:var(--ink);
+  .welcome-title{
+    font-family:Spectral,serif;
+    font-weight:700;
+    letter-spacing:.2px;
+    font-size:clamp(30px,4vw,44px);
+    margin:0 0 10px;
+  }
+  .welcome-sub{
+    margin:0 0 26px;
+    color:rgba(31,42,37,.74);
+    font-weight:500;
+    max-width:78ch;
+    line-height:1.7;
+    font-size:15px;
   }
 
-  /* Minimal chips row */
-  .chips{
-    display:grid; grid-template-columns:repeat(2,1fr); gap:14px;
-  }
-  @media (min-width:820px){ .chips{ grid-template-columns:repeat(4,1fr); gap:18px } }
-
-  .chip{
-    background:var(--chip);
-    border:1px solid rgba(0,0,0,.06);
-    border-radius:var(--chip-br);
-    padding:18px;
-    display:flex; flex-direction:column; align-items:center; gap:10px;
-    box-shadow:0 10px 24px rgba(10,30,20,.06);
-    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-  }
-  .chip:focus-within, .chip:hover{
-    transform:translateY(-2px);
-    box-shadow:0 14px 30px rgba(10,30,20,.10);
-    border-color:rgba(46,155,127,.35);
-  }
-
-  .chip-icon{
-    width:54px; height:54px; border-radius:14px;
-    display:grid; place-items:center; color:var(--accent);
-    background:radial-gradient(120% 120% at -20% -20%, rgba(46,155,127,.16), rgba(46,155,127,.06));
-    border:1px solid rgba(46,155,127,.25);
-  }
-  .chip h3{
-    margin:0; font:700 clamp(14px,1.6vw,16px)/1 Inter,system-ui,sans-serif; color:var(--ink);
-  }
-  .chip p{
-    margin:0; font:500 13px/1.4 Inter,system-ui,sans-serif; color:#3a4e45; opacity:.9;
-    text-align:center;
-  }
-
-  /* Simple light cards for sections */
-  .cards{
+  .about-grid{
     display:grid;
     grid-template-columns: 1fr;
-    gap:14px;
-    margin-top:18px;
+    gap:18px;
+    align-items:start;
   }
-  @media (min-width:820px){ .cards{grid-template-columns:repeat(3,1fr); gap:18px;} }
+  @media (min-width: 920px){
+    .about-grid{ grid-template-columns: 1.25fr .75fr; }
+  }
 
   .card{
-    background:var(--chip);
-    border:1px solid rgba(0,0,0,.06);
-    border-radius:var(--chip-br);
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
     padding:18px;
-    box-shadow:0 10px 24px rgba(10,30,20,.06);
+    box-shadow:var(--shadow);
   }
-  .card h3{margin:0 0 8px; font-size:15px; font-weight:800; color:var(--ink)}
-  .card p{margin:0; font-size:13px; color:#3a4e45; opacity:.95; line-height:1.5}
 
-  .news{
-    display:grid;
+  .card h3{
+    margin:0 0 10px;
+    font-size:15px;
+    font-weight:850;
+    letter-spacing:.1px;
+  }
+
+  .prose{
+    margin:0;
+    color:rgba(31,42,37,.82);
+    line-height:1.75;
+    font-size:15px;
+  }
+  .prose + .prose{ margin-top:12px; }
+
+  .pills{
+    display:flex;
+    flex-wrap:wrap;
     gap:10px;
-    margin-top:18px;
+    margin-top:14px;
   }
-  .news-item{
-    background:rgba(255,255,255,.72);
-    border:1px solid rgba(0,0,0,.06);
-    border-radius:16px;
-    padding:14px 16px;
-    box-shadow:0 10px 24px rgba(10,30,20,.05);
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 10px;
+    border-radius:999px;
+    background:rgba(46,155,127,.08);
+    border:1px solid rgba(46,155,127,.18);
+    color:rgba(31,42,37,.85);
+    font-weight:650;
+    font-size:13px;
   }
-  .news-item b{display:block; color:var(--ink); font-size:14px}
-  .news-item small{color:rgba(34,49,44,.70); font-weight:600}
-  .news-item p{margin:8px 0 0; color:#3a4e45; font-size:13px; line-height:1.55}
 
-  .spacer{height:8vh}
+  .mini-grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:12px;
+    margin-top:14px;
+  }
+  @media (min-width: 720px){
+    .mini-grid{ grid-template-columns: repeat(3, 1fr); }
+  }
+  .mini{
+    border-radius:16px;
+    border:1px solid rgba(46,155,127,.16);
+    background:linear-gradient(180deg, rgba(46,155,127,.08), rgba(46,155,127,.03));
+    padding:14px;
+  }
+  .mini b{display:block; font-size:14px; margin-bottom:6px}
+  .mini span{display:block; color:rgba(31,42,37,.75); font-size:13px; line-height:1.55}
+
+  .profile{
+    display:grid;
+    gap:12px;
+  }
+  .avatar{
+    height:220px;
+    border-radius:16px;
+    background:
+      radial-gradient(70% 90% at 30% 20%, rgba(46,155,127,.20), transparent 60%),
+      radial-gradient(70% 90% at 80% 70%, rgba(0,0,0,.06), transparent 65%),
+      rgba(31,42,37,.04);
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  /* optional: drop your portrait at img/profile.jpg */
+  .avatar::after{
+    content:"";
+    display:block;
+    width:100%; height:100%;
+    background:url('img/profile.jpg') center/cover no-repeat;
+    opacity:.98;
+  }
+
+  .who{
+    margin:0;
+    font-weight:850;
+    letter-spacing:.2px;
+  }
+  .role{
+    margin:6px 0 0;
+    color:rgba(31,42,37,.76);
+    font-size:14px;
+    line-height:1.55;
+  }
+
+  .links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:10px 12px;
+    border-radius:14px;
+    border:1px solid rgba(0,0,0,.10);
+    background:rgba(255,255,255,.85);
+    text-decoration:none;
+    font-weight:700;
+    font-size:13px;
+    color:var(--ink);
+    transition: transform .18s ease, background .18s ease, border-color .18s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); border-color:rgba(46,155,127,.30); }
+  .btn.primary{
+    background:linear-gradient(135deg, rgba(46,155,127,.95), rgba(46,155,127,.78));
+    color:#fff;
+    border-color:rgba(46,155,127,.25);
+  }
+
+  /* ---------------- PAGES 3 & 4 (EMPTY) ---------------- */
+  .empty{
+    padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 12vh, 128px);
+    background: linear-gradient(180deg, var(--paper2) 0%, var(--paper) 100%);
+    color:var(--ink);
+  }
+  .empty h2{
+    max-width:var(--max);
+    margin:0 auto;
+    font-family:Spectral,serif;
+    font-weight:700;
+    letter-spacing:.2px;
+    font-size:clamp(22px,3vw,34px);
+  }
+  .spacer{height:10vh}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .film, .navband, .hero-inner{transition:none}
+    .btn, .nav-links a{transition:none}
+  }
 </style>
 </head>
 
@@ -275,7 +381,8 @@
 <div class="navband" role="navigation" aria-label="Primary">
   <div class="nav-surface" aria-hidden="true"></div>
   <div class="nav-inner">
-    <a class="nav-brand" href="#top">Shubham Tiwari</a>
+    <!-- brand goes to Page 2 (Welcome) -->
+    <a class="nav-brand" href="#research">Shubham Tiwari</a>
     <div class="nav-links" aria-label="Site sections">
       <a href="#research">Research</a>
       <a href="#key-concepts">Key Concept</a>
@@ -284,7 +391,7 @@
   </div>
 </div>
 
-<!-- PAGE 1: HERO -->
+<!-- PAGE 1: HERO (same as your earlier version) -->
 <header class="hero" id="top" role="banner" aria-label="Intro">
   <div class="film" aria-hidden="true"></div>
 
@@ -297,124 +404,100 @@
   </div>
 </header>
 
-<!-- PAGE 2 -->
-<section id="research" class="page2" aria-label="Research">
+<!-- PAGE 2: WELCOME / ABOUT (redesigned + better color) -->
+<section id="research" class="page2" aria-label="Welcome">
   <div class="page2-wrap">
-    <h2 class="p2-title">What drives connectivity in drylands</h2>
 
-    <div class="chips">
-      <!-- Wind -->
-      <article class="chip" tabindex="0" aria-label="Wind connectivity">
-        <div class="chip-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M3 8h9c2.5 0 2.5-3 0-3-1.2 0-2 .8-2 1.7"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M3 12h14c2.5 0 2.5-3 0-3-1.2 0-2 .8-2 1.7"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+    <h2 class="welcome-title">Welcome</h2>
+    <p class="welcome-sub">
+      I’m a computational geomorphologist and ecohydrologist working at the interface of applied science
+      and environmental management—using networks and models to make connectivity usable for decisions.
+    </p>
+
+    <div class="about-grid">
+      <!-- LEFT: readable “welcome text” -->
+      <article class="card" aria-label="About">
+        <h3>About</h3>
+
+        <p class="prose">
+          My work focuses on quantifying hydrologic connectivity and stability in ecogeomorphic systems,
+          with a particular emphasis on understanding land degradation processes in drylands.
+        </p>
+
+        <p class="prose">
+          I combine network analysis, spatial–temporal methods, and numerical modeling to identify
+          key pathways, critical nodes, and early-warning signals—translating complex dynamics into
+          practical guidance for land and water management.
+        </p>
+
+        <div class="pills" aria-label="Methods">
+          <span class="pill">Complex networks</span>
+          <span class="pill">Numerical modeling</span>
+          <span class="pill">Spatial–temporal analysis</span>
+          <span class="pill">Hydrologic connectivity</span>
         </div>
-        <h3>Wind</h3>
-        <p>Dust & sand pathways</p>
+
+        <div class="mini-grid" aria-label="Highlights">
+          <div class="mini">
+            <b>Applied + academic</b>
+            <span>Senior Hydrologist (Environment Agency) and early-career researcher (Durham).</span>
+          </div>
+          <div class="mini">
+            <b>Dryland focus</b>
+            <span>Connectivity patterns and stability signals for degradation and restoration.</span>
+          </div>
+          <div class="mini">
+            <b>Outreach</b>
+            <span>Invited talks, stakeholder engagement, and hydrology outreach activities.</span>
+          </div>
+        </div>
       </article>
 
-      <!-- Water -->
-      <article class="chip" tabindex="0" aria-label="Water connectivity">
-        <div class="chip-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M6 14c2 0 3 2 5 2s3-2 5-2" stroke="currentColor" stroke-width="2" fill="none"/>
-            <path d="M4 11h16" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </div>
-        <h3>Water</h3>
-        <p>Overland flow links</p>
-      </article>
+      <!-- RIGHT: simple profile card -->
+      <aside class="profile" aria-label="Profile">
+        <div class="card">
+          <div class="avatar" aria-label="Portrait (optional: img/profile.jpg)"></div>
 
-      <!-- Patches -->
-      <article class="chip" tabindex="0" aria-label="Vegetation patches and gaps">
-        <div class="chip-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <circle cx="7" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-            <circle cx="17" cy="16" r="4" stroke="currentColor" stroke-width="2"/>
-            <path d="M10 9l4 4" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </div>
-        <h3>Patches</h3>
-        <p>Cover, gaps, spacing</p>
-      </article>
+          <h3 class="who" style="margin-top:12px;">Shubham Tiwari</h3>
+          <p class="role">
+            Senior Hydrologist, Environment Agency (UK)<br>
+            PhD, Physical Geography — Durham University
+          </p>
 
-      <!-- Decisions -->
-      <article class="chip" tabindex="0" aria-label="Decision tools">
-        <div class="chip-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <circle cx="5" cy="12" r="2" stroke="currentColor" stroke-width="2"/>
-            <circle cx="12" cy="5" r="2" stroke="currentColor" stroke-width="2"/>
-            <circle cx="19" cy="12" r="2" stroke="currentColor" stroke-width="2"/>
-            <path d="M7 12h10M12 7v3" stroke="currentColor" stroke-width="2"/>
-          </svg>
+          <div class="links" aria-label="Links">
+            <a class="btn primary" href="CV_shubham_tiwari_290126.pdf">CV</a>
+            <a class="btn" href="mailto:shubham.tiwari@environment-agency.gov.uk">Email</a>
+            <a class="btn" href="https://linkedin.com/in/shubhamrt" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a class="btn" href="#" target="_blank" rel="noreferrer">Google Scholar</a>
+            <a class="btn" href="#" target="_blank" rel="noreferrer">ORCID</a>
+          </div>
         </div>
-        <h3>Decisions</h3>
-        <p>Simple, usable metrics</p>
-      </article>
+      </aside>
     </div>
 
     <div class="spacer"></div>
   </div>
 </section>
 
-<!-- KEY CONCEPTS (placeholder section for your new nav link) -->
-<section id="key-concepts" class="page2" aria-label="Key concepts">
-  <div class="page2-wrap">
-    <h2 class="p2-title">Key concept</h2>
-
-    <div class="cards">
-      <article class="card">
-        <h3>Connectivity</h3>
-        <p>How resources, sediment, and water move through landscapes—and what blocks or amplifies that flow.</p>
-      </article>
-      <article class="card">
-        <h3>Pattern</h3>
-        <p>Vegetation patches and gaps create feedbacks that change capture vs. loss across space.</p>
-      </article>
-      <article class="card">
-        <h3>Resilience</h3>
-        <p>Which configurations persist under stress, and what early signals indicate a shift toward degradation.</p>
-      </article>
-    </div>
-
-    <div class="spacer"></div>
-  </div>
+<!-- PAGE 3: EMPTY -->
+<section id="key-concepts" class="empty" aria-label="Key concept">
+  <h2>Key concept</h2>
+  <div class="spacer"></div>
 </section>
 
-<!-- NEWS (placeholder section for your new nav link) -->
-<section id="news" class="page2" aria-label="News">
-  <div class="page2-wrap">
-    <h2 class="p2-title">News</h2>
-
-    <div class="news">
-      <div class="news-item">
-        <b>Update title (replace)</b>
-        <small>Month YYYY</small>
-        <p>One or two lines describing the new paper, talk, field campaign, award, or collaboration.</p>
-      </div>
-      <div class="news-item">
-        <b>Another update (replace)</b>
-        <small>Month YYYY</small>
-        <p>Keep it short—this section looks best with brief, frequent items.</p>
-      </div>
-    </div>
-
-    <div class="spacer"></div>
-  </div>
+<!-- PAGE 4: EMPTY -->
+<section id="news" class="empty" aria-label="News">
+  <h2>News</h2>
+  <div class="spacer"></div>
 </section>
 
 <script>
 /* Reveal hero + nav band after delay (like your version).
-   Also: switch nav styling when scrolling onto light sections. */
+   Switch nav styling when scrolling onto light sections. */
 (function(){
   setTimeout(()=>document.body.classList.add('reveal'), 1000);
 
   const onScroll = () => {
-    // toggle when user scrolls a bit (nav becomes light-friendly)
     document.body.classList.toggle('scrolled', window.scrollY > 40);
   };
   onScroll();
