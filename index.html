@@ -10,49 +10,68 @@
 
 <style>
   :root{
+    /* Hero */
     --text:#fff;
-    --muted:#D3EFE6;
-    --dark:#0b201b;
 
+    /* Elegant light palette (redesigned) */
+    --bg:#f6f2e9;        /* warm paper */
+    --bg2:#eef3f0;       /* cool paper */
+    --card:#ffffff;
+    --ink:#1f2a25;
+    --muted:#51645b;
+    --line:rgba(0,0,0,.08);
+
+    /* Accent derived from your theme */
+    --accent:#2e9b7f;    /* teal */
+    --accent2:#1f6f5b;   /* deeper teal */
+
+    /* Layout */
+    --max:1100px;
+    --nav-h:66px;
+
+    /* Your reveal timing */
     --in-delay:.02s;
     --in-dur:.5s;
-
-    /* Minimal page-2 palette */
-    --sage:#eaf1ea;              /* base */
-    --sand:#efe9db;              /* warm tint */
-    --ink:#22312c;               /* body text on light */
-    --accent:#2e9b7f;            /* teal lines/icons */
-    --chip:#ffffff;              /* chip surface */
-    --chip-br:18px;
-
-    --nav-h:64px;
-    --max:1100px;
   }
 
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
+  html,body{height:100%;margin:0}
+  body{
+    background:#000;
+    color:var(--text);
+    font-family:Inter,system-ui,Arial,Helvetica,sans-serif;
+  }
   img{display:block;max-width:100%}
+  a{color:inherit}
 
   /* Make anchor jumps land below the fixed nav */
   section{scroll-margin-top: calc(var(--nav-h) + 16px);}
 
   /* ---------------- HERO (Page 1) ---------------- */
   .hero{
-    position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
-    text-align:center; overflow:hidden; color:var(--text);
-    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed; isolation:isolate;
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    color:var(--text);
+    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
+    isolation:isolate;
   }
+
   .film{
     position:absolute; inset:0;
-    background:rgba(0,0,0,.25);
+    background:rgba(0,0,0,.28);
     opacity:0;
     transition:opacity var(--in-dur) ease var(--in-delay);
-    z-index:1
+    z-index:1;
   }
   .reveal .film{opacity:1}
 
-  /* ---------------- TOP HORIZONTAL BAND (requested) ---------------- */
+  /* ---------------- TOP HORIZONTAL BAND ---------------- */
   .navband{
     position:fixed;
     top:0; left:0; right:0;
@@ -80,10 +99,10 @@
     -webkit-backdrop-filter: blur(12px);
   }
 
-  /* On light sections (after scrolling), switch nav to a light surface */
+  /* When scrolling onto light sections, the nav adapts */
   body.scrolled .nav-surface{
-    background:rgba(234,241,234,.86);
-    border-bottom:1px solid rgba(34,49,44,.12);
+    background:rgba(246,242,233,.90);
+    border-bottom:1px solid rgba(0,0,0,.10);
   }
 
   .nav-inner{
@@ -101,40 +120,30 @@
     font-weight:800;
     letter-spacing:.2px;
     font-size:clamp(16px,1.4vw,18px);
-    color:var(--text);
     text-decoration:none;
-    text-shadow:0 2px 8px rgba(0,0,0,.45);
     white-space:nowrap;
+    text-shadow:0 2px 8px rgba(0,0,0,.45);
   }
   body.scrolled .nav-brand{ color:var(--ink); text-shadow:none; }
 
   .nav-links{
     display:flex;
     align-items:center;
-    gap:18px;
+    gap:10px;
     flex-wrap:wrap;
     justify-content:flex-end;
   }
   .nav-links a{
-    color:var(--text);
     text-decoration:none;
-    font-weight:700;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    font-size:12px;
-    padding:10px 10px;
+    font-weight:600;
+    font-size:14px;          /* no ALL CAPS */
+    padding:10px 12px;
     border-radius:999px;
-    transition:background .2s ease, color .2s ease, transform .2s ease;
+    transition:background .2s ease, transform .2s ease, color .2s ease;
     text-shadow:0 2px 8px rgba(0,0,0,.35);
   }
-  .nav-links a:hover{
-    background:rgba(255,255,255,.10);
-    transform:translateY(-1px);
-  }
-  .nav-links a:focus-visible{
-    outline:3px solid rgba(46,155,127,.45);
-    outline-offset:2px;
-  }
+  .nav-links a:hover{ background:rgba(255,255,255,.10); transform:translateY(-1px); }
+  .nav-links a:focus-visible{ outline:3px solid rgba(46,155,127,.45); outline-offset:2px; }
 
   body.scrolled .nav-links a{
     color:var(--ink);
@@ -144,128 +153,228 @@
     background:rgba(46,155,127,.10);
   }
 
-  /* Stack nav links on very small screens (still horizontal band, no burger) */
   @media (max-width:520px){
-    :root{ --nav-h:78px; }
+    :root{ --nav-h:82px; }
     .nav-inner{align-items:flex-start; padding-top:10px}
-    .nav-links{gap:8px}
-    .nav-links a{padding:8px 10px; font-size:11px; letter-spacing:.12em}
+    .nav-links a{padding:8px 10px; font-size:13px}
   }
 
-  /* Hero content */
+  /* ---------------- HERO CONTENT: Welcome/About ---------------- */
   .hero-inner{
     position:relative;
     z-index:2;
+    width:min(var(--max), calc(100% - 48px));
     padding:24px;
     margin-top:var(--nav-h);
     opacity:0;
     transition:opacity var(--in-dur) ease var(--in-delay);
-    transform:translateY(-1.2cm); /* keeps your original “lift” */
   }
   .reveal .hero-inner{opacity:1}
 
   .logo{
-    width:min(200px,35vw);
+    width:min(190px,35vw);
     height:auto;
-    margin:clamp(-40px,-12vh,-200px) auto 18px;
-    filter:drop-shadow(0 6px 25px rgba(0,0,0,.35))
+    margin:clamp(-36px,-10vh,-160px) auto 14px;
+    filter:drop-shadow(0 6px 25px rgba(0,0,0,.35));
   }
-  h1{
+
+  .welcome{
     font-family:Spectral,serif;
-    font-size:clamp(27px,4.64vw,51.2px);
-    line-height:1.06;
-    margin:0;
+    font-size:clamp(22px,3.2vw,34px);
+    margin:0 0 6px;
+    letter-spacing:.2px;
     text-shadow:0 2px 10px rgba(0,0,0,.35);
-    font-weight:700
   }
-  .hero-em{white-space:nowrap; font-style:italic; font-weight:600; letter-spacing:.2px}
 
-  /* ---------------- PAGE 2 (Minimal) ---------------- */
-  .page2{
-    background: linear-gradient(180deg, var(--sage) 0, var(--sand) 100%);
+  .tagline{
+    font-family:Spectral,serif;
+    font-size:clamp(28px,4.8vw,54px);
+    line-height:1.06;
+    margin:0 0 14px;
+    font-weight:700;
+    text-shadow:0 2px 12px rgba(0,0,0,.38);
+  }
+  .tagline em{font-style:italic; font-weight:600}
+
+  .about{
+    margin:0 auto;
+    max-width:78ch;
+    font-size:clamp(14px,1.35vw,18px);
+    color:rgba(255,255,255,.88);
+    text-shadow:0 2px 12px rgba(0,0,0,.32);
+    line-height:1.6;
+  }
+
+  .cta{
+    margin-top:18px;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 14px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14px;
+    border:1px solid rgba(255,255,255,.24);
+    background:rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+    transition: transform .18s ease, background .18s ease, border-color .18s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.32); }
+  .btn.primary{
+    background: linear-gradient(135deg, rgba(46,155,127,.96), rgba(46,155,127,.72));
+    border-color: rgba(255,255,255,.18);
+  }
+
+  /* ---------------- LIGHT PAGES (redesigned) ---------------- */
+  .light{
     color:var(--ink);
-    padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 12vh, 128px);
-  }
-  .page2-wrap{max-width:var(--max); margin:0 auto}
-
-  .p2-title{
-    font-family:Spectral,serif; font-weight:700; letter-spacing:.2px;
-    font-size:clamp(22px,3vw,34px); text-align:center;
-    margin:0 auto clamp(28px,5vh,48px);
-    color:var(--ink);
+    background:
+      radial-gradient(900px 420px at 15% 10%, rgba(46,155,127,.10), transparent 55%),
+      radial-gradient(820px 360px at 85% 30%, rgba(0,0,0,.05), transparent 60%),
+      linear-gradient(180deg, var(--bg) 0, var(--bg2) 100%);
   }
 
-  /* Minimal chips row */
-  .chips{
-    display:grid; grid-template-columns:repeat(2,1fr); gap:14px;
-  }
-  @media (min-width:820px){ .chips{ grid-template-columns:repeat(4,1fr); gap:18px } }
-
-  .chip{
-    background:var(--chip);
-    border:1px solid rgba(0,0,0,.06);
-    border-radius:var(--chip-br);
-    padding:18px;
-    display:flex; flex-direction:column; align-items:center; gap:10px;
-    box-shadow:0 10px 24px rgba(10,30,20,.06);
-    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-  }
-  .chip:focus-within, .chip:hover{
-    transform:translateY(-2px);
-    box-shadow:0 14px 30px rgba(10,30,20,.10);
-    border-color:rgba(46,155,127,.35);
+  .wrap{
+    width:min(var(--max), calc(100% - 48px));
+    margin:0 auto;
+    padding: clamp(52px, 7vh, 86px) 0;
   }
 
-  .chip-icon{
-    width:54px; height:54px; border-radius:14px;
-    display:grid; place-items:center; color:var(--accent);
-    background:radial-gradient(120% 120% at -20% -20%, rgba(46,155,127,.16), rgba(46,155,127,.06));
-    border:1px solid rgba(46,155,127,.25);
+  .section-head{
+    display:flex;
+    gap:18px;
+    align-items:flex-end;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    margin-bottom:18px;
   }
-  .chip h3{
-    margin:0; font:700 clamp(14px,1.6vw,16px)/1 Inter,system-ui,sans-serif; color:var(--ink);
+  .section-title{
+    margin:0;
+    font-family:Spectral,serif;
+    font-weight:700;
+    letter-spacing:.2px;
+    font-size:clamp(22px,3vw,34px);
   }
-  .chip p{
-    margin:0; font:500 13px/1.4 Inter,system-ui,sans-serif; color:#3a4e45; opacity:.9;
-    text-align:center;
+  .section-note{
+    margin:0;
+    max-width:70ch;
+    color:rgba(31,42,37,.72);
+    font-weight:500;
+    font-size:14px;
   }
 
-  /* Simple light cards for sections */
-  .cards{
+  .grid-2{
     display:grid;
     grid-template-columns: 1fr;
-    gap:14px;
+    gap:16px;
     margin-top:18px;
   }
-  @media (min-width:820px){ .cards{grid-template-columns:repeat(3,1fr); gap:18px;} }
+  @media (min-width: 900px){
+    .grid-2{ grid-template-columns: 1.2fr .8fr; gap:18px; }
+  }
 
   .card{
-    background:var(--chip);
-    border:1px solid rgba(0,0,0,.06);
-    border-radius:var(--chip-br);
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
     padding:18px;
-    box-shadow:0 10px 24px rgba(10,30,20,.06);
+    box-shadow:0 14px 34px rgba(10,30,20,.08);
   }
-  .card h3{margin:0 0 8px; font-size:15px; font-weight:800; color:var(--ink)}
-  .card p{margin:0; font-size:13px; color:#3a4e45; opacity:.95; line-height:1.5}
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:.1px;
+  }
+  .card p{
+    margin:0;
+    color:rgba(31,42,37,.78);
+    font-size:14px;
+    line-height:1.6;
+  }
+
+  .pillrow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:12px;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 10px;
+    border-radius:999px;
+    background:rgba(46,155,127,.08);
+    border:1px solid rgba(46,155,127,.18);
+    color:rgba(31,42,37,.85);
+    font-weight:600;
+    font-size:13px;
+  }
+
+  .tiles{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:12px;
+    margin-top:14px;
+  }
+  @media (min-width: 780px){
+    .tiles{ grid-template-columns: repeat(3, 1fr); gap:14px; }
+  }
+  .tile{
+    background:linear-gradient(180deg, rgba(46,155,127,.08), rgba(46,155,127,.03));
+    border:1px solid rgba(46,155,127,.16);
+    border-radius:18px;
+    padding:14px;
+  }
+  .tile b{display:block; font-size:14px; margin-bottom:6px}
+  .tile span{display:block; color:rgba(31,42,37,.75); font-size:13px; line-height:1.5}
+
+  .list{
+    margin:0;
+    padding-left:18px;
+    color:rgba(31,42,37,.80);
+    font-size:14px;
+    line-height:1.7;
+  }
 
   .news{
     display:grid;
     gap:10px;
-    margin-top:18px;
+    margin-top:16px;
   }
   .news-item{
-    background:rgba(255,255,255,.72);
-    border:1px solid rgba(0,0,0,.06);
+    background:rgba(255,255,255,.76);
+    border:1px solid var(--line);
     border-radius:16px;
     padding:14px 16px;
-    box-shadow:0 10px 24px rgba(10,30,20,.05);
+    box-shadow:0 12px 26px rgba(10,30,20,.06);
   }
-  .news-item b{display:block; color:var(--ink); font-size:14px}
-  .news-item small{color:rgba(34,49,44,.70); font-weight:600}
-  .news-item p{margin:8px 0 0; color:#3a4e45; font-size:13px; line-height:1.55}
+  .news-item b{display:block; font-size:14px}
+  .news-item small{color:rgba(31,42,37,.65); font-weight:600}
+  .news-item p{margin:8px 0 0; color:rgba(31,42,37,.78); font-size:13px; line-height:1.55}
 
-  .spacer{height:8vh}
+  footer{
+    padding: 0 0 44px;
+    color:rgba(31,42,37,.68);
+    font-size:13px;
+    font-weight:600;
+    text-align:center;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .film, .navband, .hero-inner{transition:none}
+    .btn, .nav-links a{transition:none}
+  }
 </style>
 </head>
 
@@ -275,150 +384,196 @@
 <div class="navband" role="navigation" aria-label="Primary">
   <div class="nav-surface" aria-hidden="true"></div>
   <div class="nav-inner">
-    <a class="nav-brand" href="#top">Shubham Tiwari</a>
+    <a class="nav-brand" href="#welcome">Shubham Tiwari</a>
     <div class="nav-links" aria-label="Site sections">
       <a href="#research">Research</a>
-      <a href="#key-concepts">Key Concept</a>
+      <a href="#key-concepts">Key Concepts</a>
       <a href="#news">News</a>
     </div>
   </div>
 </div>
 
-<!-- PAGE 1: HERO -->
-<header class="hero" id="top" role="banner" aria-label="Intro">
+<!-- PAGE 1: WELCOME / ABOUT -->
+<header class="hero" id="welcome" role="banner" aria-label="Welcome">
   <div class="film" aria-hidden="true"></div>
 
   <div class="hero-inner">
     <img class="logo" src="img/logo.png" alt="Site logo">
-    <h1>
+
+    <h1 class="welcome">Welcome</h1>
+
+    <div class="tagline">
       Connectivity that guides<br>
-      <span class="hero-em">resilient drylands</span>
-    </h1>
+      <em>resilient drylands</em>
+    </div>
+
+    <p class="about">
+      I’m a computational geomorphologist and ecohydrologist working at the interface of applied science
+      and environmental management. My work uses network analysis and numerical modeling to quantify
+      hydrologic and sediment connectivity—translating complex system dynamics into actionable guidance
+      for land and water management.
+    </p>
+
+    <div class="cta" aria-label="Primary actions">
+      <a class="btn primary" href="#research">Explore research</a>
+      <a class="btn" href="CV_shubham_tiwari_290126.pdf">Download CV</a>
+      <a class="btn" href="mailto:shubham.tiwari@environment-agency.gov.uk">Email</a>
+    </div>
   </div>
 </header>
 
-<!-- PAGE 2 -->
-<section id="research" class="page2" aria-label="Research">
-  <div class="page2-wrap">
-    <h2 class="p2-title">What drives connectivity in drylands</h2>
+<!-- LIGHT CONTENT -->
+<main class="light" role="main">
 
-    <div class="chips">
-      <!-- Wind -->
-      <article class="chip" tabindex="0" aria-label="Wind connectivity">
-        <div class="chip-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M3 8h9c2.5 0 2.5-3 0-3-1.2 0-2 .8-2 1.7"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M3 12h14c2.5 0 2.5-3 0-3-1.2 0-2 .8-2 1.7"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>Wind</h3>
-        <p>Dust & sand pathways</p>
-      </article>
-
-      <!-- Water -->
-      <article class="chip" tabindex="0" aria-label="Water connectivity">
-        <div class="chip-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M6 14c2 0 3 2 5 2s3-2 5-2" stroke="currentColor" stroke-width="2" fill="none"/>
-            <path d="M4 11h16" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </div>
-        <h3>Water</h3>
-        <p>Overland flow links</p>
-      </article>
-
-      <!-- Patches -->
-      <article class="chip" tabindex="0" aria-label="Vegetation patches and gaps">
-        <div class="chip-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <circle cx="7" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-            <circle cx="17" cy="16" r="4" stroke="currentColor" stroke-width="2"/>
-            <path d="M10 9l4 4" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </div>
-        <h3>Patches</h3>
-        <p>Cover, gaps, spacing</p>
-      </article>
-
-      <!-- Decisions -->
-      <article class="chip" tabindex="0" aria-label="Decision tools">
-        <div class="chip-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <circle cx="5" cy="12" r="2" stroke="currentColor" stroke-width="2"/>
-            <circle cx="12" cy="5" r="2" stroke="currentColor" stroke-width="2"/>
-            <circle cx="19" cy="12" r="2" stroke="currentColor" stroke-width="2"/>
-            <path d="M7 12h10M12 7v3" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </div>
-        <h3>Decisions</h3>
-        <p>Simple, usable metrics</p>
-      </article>
-    </div>
-
-    <div class="spacer"></div>
-  </div>
-</section>
-
-<!-- KEY CONCEPTS (placeholder section for your new nav link) -->
-<section id="key-concepts" class="page2" aria-label="Key concepts">
-  <div class="page2-wrap">
-    <h2 class="p2-title">Key concept</h2>
-
-    <div class="cards">
-      <article class="card">
-        <h3>Connectivity</h3>
-        <p>How resources, sediment, and water move through landscapes—and what blocks or amplifies that flow.</p>
-      </article>
-      <article class="card">
-        <h3>Pattern</h3>
-        <p>Vegetation patches and gaps create feedbacks that change capture vs. loss across space.</p>
-      </article>
-      <article class="card">
-        <h3>Resilience</h3>
-        <p>Which configurations persist under stress, and what early signals indicate a shift toward degradation.</p>
-      </article>
-    </div>
-
-    <div class="spacer"></div>
-  </div>
-</section>
-
-<!-- NEWS (placeholder section for your new nav link) -->
-<section id="news" class="page2" aria-label="News">
-  <div class="page2-wrap">
-    <h2 class="p2-title">News</h2>
-
-    <div class="news">
-      <div class="news-item">
-        <b>Update title (replace)</b>
-        <small>Month YYYY</small>
-        <p>One or two lines describing the new paper, talk, field campaign, award, or collaboration.</p>
+  <!-- Research -->
+  <section id="research">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Research</h2>
+        <p class="section-note">
+          A focused overview of what I work on—kept intentionally short and easy to scan.
+        </p>
       </div>
-      <div class="news-item">
-        <b>Another update (replace)</b>
-        <small>Month YYYY</small>
-        <p>Keep it short—this section looks best with brief, frequent items.</p>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>What I study</h3>
+          <p>
+            My research examines patterns of connectivity in ecogeomorphic systems, with an emphasis on
+            understanding land degradation processes in drylands. I build network-based representations
+            of landscape processes to identify key pathways, thresholds, and stability signals.
+          </p>
+
+          <div class="pillrow" aria-label="Research keywords">
+            <span class="pill">Hydrologic connectivity</span>
+            <span class="pill">Sediment transport</span>
+            <span class="pill">Complex networks</span>
+            <span class="pill">Dryland resilience</span>
+          </div>
+
+          <div class="tiles" aria-label="Research highlights">
+            <div class="tile">
+              <b>Networks for ecosystems</b>
+              <span>Using connectivity as a measurable structure for inference and comparison.</span>
+            </div>
+            <div class="tile">
+              <b>Model + data together</b>
+              <span>Linking numerical modeling with spatial-temporal analysis and field observations.</span>
+            </div>
+            <div class="tile">
+              <b>From theory to action</b>
+              <span>Turning complex dynamics into usable metrics for management and monitoring.</span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="card">
+          <h3>At a glance</h3>
+          <ul class="list">
+            <li><b>Senior Hydrologist</b>, Environment Agency (UK)</li>
+            <li><b>PhD</b>, Durham University — Physical Geography</li>
+            <li>Experience with applied hydrology + research translation</li>
+            <li>Invited talks and outreach / stakeholder engagement</li>
+          </ul>
+
+          <div class="pillrow" style="margin-top:14px">
+            <span class="pill">GIS / Remote sensing</span>
+            <span class="pill">Python / R / MATLAB</span>
+            <span class="pill">Modeling workflows</span>
+          </div>
+        </aside>
       </div>
     </div>
+  </section>
 
-    <div class="spacer"></div>
-  </div>
-</section>
+  <!-- Key Concepts -->
+  <section id="key-concepts">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Key Concepts</h2>
+        <p class="section-note">
+          Four ideas that organize most of my work.
+        </p>
+      </div>
+
+      <div class="tiles">
+        <div class="tile">
+          <b>Connectivity</b>
+          <span>How water, sediment, and resources move—and what controls their pathways.</span>
+        </div>
+        <div class="tile">
+          <b>Networks</b>
+          <span>Representing landscapes as nodes and links to measure structure and change.</span>
+        </div>
+        <div class="tile">
+          <b>Stability & thresholds</b>
+          <span>Detecting early signals of shifts (e.g., grass–shrub transitions) and regime change.</span>
+        </div>
+        <div class="tile">
+          <b>Decision-ready metrics</b>
+          <span>Simple outputs that support monitoring, restoration, and adaptive management.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section id="news">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">News</h2>
+        <p class="section-note">
+          Short updates—replace or add items as needed.
+        </p>
+      </div>
+
+      <div class="news" aria-label="News list">
+        <div class="news-item">
+          <b>Joined the Environment Agency as a Senior Hydrologist</b>
+          <small>2024</small>
+          <p>Working on applied hydrology and translating science into management guidance.</p>
+        </div>
+
+        <div class="news-item">
+          <b>New work on hydrological & sediment connectivity</b>
+          <small>2025</small>
+          <p>Local- and global-scale connectivity analysis over grassland and shrubland hillslopes.</p>
+        </div>
+
+        <div class="news-item">
+          <b>Ecohydrology paper on water-controlled ecosystems as complex networks</b>
+          <small>2024</small>
+          <p>Evaluating network-based approaches to quantify patterns of connectivity.</p>
+        </div>
+
+        <div class="news-item">
+          <b>Co-chairing the National Hydrology Outreach Group</b>
+          <small>2024–present</small>
+          <p>Supporting outreach and engagement across hydrology communities.</p>
+        </div>
+      </div>
+
+      <footer>
+        © <span id="year"></span> Shubham Tiwari • Dryland Connectivity
+      </footer>
+    </div>
+  </section>
+</main>
 
 <script>
-/* Reveal hero + nav band after delay (like your version).
-   Also: switch nav styling when scrolling onto light sections. */
+/* Reveal film + nav band after delay (like your version)
+   + switch nav surface style when scrolling onto light content */
 (function(){
   setTimeout(()=>document.body.classList.add('reveal'), 1000);
 
   const onScroll = () => {
-    // toggle when user scrolls a bit (nav becomes light-friendly)
     document.body.classList.toggle('scrolled', window.scrollY > 40);
   };
   onScroll();
   window.addEventListener('scroll', onScroll, {passive:true});
+
+  const y = document.getElementById('year');
+  if(y) y.textContent = new Date().getFullYear();
 })();
 </script>
 
