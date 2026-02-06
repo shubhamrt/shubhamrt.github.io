@@ -10,56 +10,36 @@
 
 <style>
   :root{
-    /* HERO */
     --text:#fff;
     --in-delay:.02s;
     --in-dur:.5s;
 
-    /* NEW (Page 2) palette: warm paper + cool sage */
-    --paper:#f7f3ea;
-    --paper2:#edf4f0;
-    --ink:#1f2a25;
-    --muted:#4f635a;
-    --line:rgba(0,0,0,.08);
-    --card:#ffffff;
+    /* Page 2 (white, like your screenshot) */
+    --p2-bg:#ffffff;
+    --p2-ink:#1b2622;
+    --p2-muted:#4d6158;
+    --p2-link:#2e9b7f;        /* your teal */
+    --p2-link-hover:#1f6f5b;
+    --p2-line:rgba(0,0,0,.10);
 
-    /* Accent (matches your site) */
-    --accent:#2e9b7f;
-    --accent2:#1f6f5b;
-
-    /* Layout */
-    --nav-h:64px;
+    --nav-h:70px;             /* ~10% bigger than 64px */
     --max:1100px;
-    --radius:18px;
-    --shadow:0 16px 36px rgba(10,30,20,.08);
   }
 
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   html,body{height:100%;margin:0}
-  body{
-    background:#000;
-    color:var(--text);
-    font-family:Inter,system-ui,Arial,Helvetica,sans-serif;
-  }
+  body{background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
   img{display:block;max-width:100%}
   a{color:inherit}
 
-  /* anchor offsets under fixed nav */
   section{scroll-margin-top: calc(var(--nav-h) + 16px);}
 
   /* ---------------- HERO (Page 1) ---------------- */
   .hero{
-    position:relative;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    overflow:hidden;
-    color:var(--text);
-    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
-    isolation:isolate;
+    position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    text-align:center; overflow:hidden; color:var(--text);
+    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed; isolation:isolate;
   }
   .film{
     position:absolute; inset:0;
@@ -98,9 +78,9 @@
     -webkit-backdrop-filter: blur(12px);
   }
 
-  /* when scrolling onto light sections */
+  /* When scrolling onto white sections */
   body.scrolled .nav-surface{
-    background:rgba(247,243,234,.92);
+    background:rgba(255,255,255,.94);
     border-bottom:1px solid rgba(0,0,0,.10);
   }
 
@@ -115,52 +95,47 @@
     gap:18px;
   }
 
+  /* slightly larger */
   .nav-brand{
     font-weight:800;
     letter-spacing:.2px;
-    font-size:clamp(16px,1.4vw,18px);
+    font-size:clamp(18px,1.7vw,20px); /* bigger */
     text-decoration:none;
     text-shadow:0 2px 8px rgba(0,0,0,.45);
     white-space:nowrap;
   }
-  body.scrolled .nav-brand{ color:var(--ink); text-shadow:none; }
+  body.scrolled .nav-brand{ color:var(--p2-ink); text-shadow:none; }
 
   .nav-links{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
     flex-wrap:wrap;
     justify-content:flex-end;
   }
 
-  /* NO ALL CAPS */
+  /* 10–20% bigger text */
   .nav-links a{
     color:var(--text);
     text-decoration:none;
-    font-weight:650;
-    font-size:14px;
-    padding:10px 12px;
+    font-weight:700;
+    font-size:16px;           /* was 14px */
+    padding:11px 14px;
     border-radius:999px;
     transition:background .2s ease, transform .2s ease, color .2s ease;
     text-shadow:0 2px 8px rgba(0,0,0,.35);
   }
-  .nav-links a:hover{
-    background:rgba(255,255,255,.10);
-    transform:translateY(-1px);
-  }
-  .nav-links a:focus-visible{
-    outline:3px solid rgba(46,155,127,.45);
-    outline-offset:2px;
-  }
+  .nav-links a:hover{ background:rgba(255,255,255,.10); transform:translateY(-1px); }
+  .nav-links a:focus-visible{ outline:3px solid rgba(46,155,127,.45); outline-offset:2px; }
 
-  body.scrolled .nav-links a{ color:var(--ink); text-shadow:none; }
+  body.scrolled .nav-links a{ color:var(--p2-ink); text-shadow:none; }
   body.scrolled .nav-links a:hover{ background:rgba(46,155,127,.10); }
 
   @media (max-width:520px){
-    :root{ --nav-h:78px; }
+    :root{ --nav-h:86px; }
     .nav-inner{align-items:flex-start; padding-top:10px}
     .nav-links{gap:8px}
-    .nav-links a{padding:8px 10px; font-size:13px}
+    .nav-links a{padding:9px 11px; font-size:15px}
   }
 
   /* ---------------- HERO CONTENT (unchanged) ---------------- */
@@ -191,181 +166,108 @@
   }
   .hero-em{white-space:nowrap; font-style:italic; font-weight:600; letter-spacing:.2px}
 
-  /* ---------------- PAGE 2 (REDESIGNED) ---------------- */
+  /* ---------------- PAGE 2 (like screenshot: white + text + portrait) ---------------- */
   .page2{
-    color:var(--ink);
-    background:
-      radial-gradient(900px 420px at 18% 10%, rgba(46,155,127,.12), transparent 60%),
-      radial-gradient(820px 360px at 82% 28%, rgba(0,0,0,.05), transparent 62%),
-      linear-gradient(180deg, var(--paper) 0%, var(--paper2) 100%);
-    padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 12vh, 128px);
+    background:var(--p2-bg);
+    color:var(--p2-ink);
+    padding: clamp(56px, 7vh, 88px) 24px clamp(72px, 10vh, 120px);
   }
-  .page2-wrap{max-width:var(--max); margin:0 auto}
+  .page2-wrap{max-width:var(--max); margin:0 auto;}
 
-  .welcome-title{
-    font-family:Spectral,serif;
-    font-weight:700;
-    letter-spacing:.2px;
-    font-size:clamp(30px,4vw,44px);
-    margin:0 0 10px;
-  }
-  .welcome-sub{
-    margin:0 0 26px;
-    color:rgba(31,42,37,.74);
-    font-weight:500;
-    max-width:78ch;
-    line-height:1.7;
-    font-size:15px;
-  }
-
-  .about-grid{
-    display:grid;
-    grid-template-columns: 1fr;
-    gap:18px;
-    align-items:start;
-  }
-  @media (min-width: 920px){
-    .about-grid{ grid-template-columns: 1.25fr .75fr; }
-  }
-
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:18px;
-    box-shadow:var(--shadow);
-  }
-
-  .card h3{
-    margin:0 0 10px;
-    font-size:15px;
-    font-weight:850;
+  .welcome{
+    font-family:Inter,system-ui,sans-serif;
+    font-size:clamp(38px,4.5vw,54px);
+    line-height:1.05;
+    margin:0 0 18px;
+    font-weight:500; /* closer to screenshot feel */
     letter-spacing:.1px;
   }
 
-  .prose{
-    margin:0;
-    color:rgba(31,42,37,.82);
-    line-height:1.75;
-    font-size:15px;
-  }
-  .prose + .prose{ margin-top:12px; }
-
-  .pills{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:14px;
-  }
-  .pill{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 10px;
-    border-radius:999px;
-    background:rgba(46,155,127,.08);
-    border:1px solid rgba(46,155,127,.18);
-    color:rgba(31,42,37,.85);
-    font-weight:650;
-    font-size:13px;
-  }
-
-  .mini-grid{
+  .two-col{
     display:grid;
     grid-template-columns: 1fr;
-    gap:12px;
-    margin-top:14px;
+    gap:32px;
+    align-items:start;
   }
-  @media (min-width: 720px){
-    .mini-grid{ grid-template-columns: repeat(3, 1fr); }
+  @media (min-width: 920px){
+    .two-col{ grid-template-columns: 1fr 360px; gap:44px; }
   }
-  .mini{
-    border-radius:16px;
-    border:1px solid rgba(46,155,127,.16);
-    background:linear-gradient(180deg, rgba(46,155,127,.08), rgba(46,155,127,.03));
-    padding:14px;
-  }
-  .mini b{display:block; font-size:14px; margin-bottom:6px}
-  .mini span{display:block; color:rgba(31,42,37,.75); font-size:13px; line-height:1.55}
 
-  .profile{
+  .prose{
+    font-size:16px;
+    line-height:1.85;
+    color:rgba(27,38,34,.88);
+    max-width:78ch;
+  }
+  .prose p{ margin:0 0 16px; }
+  .prose p:last-child{ margin-bottom:0; }
+
+  .prose a{
+    color:var(--p2-link);
+    text-decoration:none;
+    border-bottom:1px solid rgba(46,155,127,.35);
+  }
+  .prose a:hover{
+    color:var(--p2-link-hover);
+    border-bottom-color:rgba(31,111,91,.55);
+  }
+
+  .side{
     display:grid;
-    gap:12px;
+    gap:14px;
   }
-  .avatar{
-    height:220px;
-    border-radius:16px;
-    background:
-      radial-gradient(70% 90% at 30% 20%, rgba(46,155,127,.20), transparent 60%),
-      radial-gradient(70% 90% at 80% 70%, rgba(0,0,0,.06), transparent 65%),
-      rgba(31,42,37,.04);
-    border:1px solid var(--line);
-    overflow:hidden;
+
+  .portrait{
+    border:1px solid var(--p2-line);
+    box-shadow:0 14px 30px rgba(0,0,0,.08);
+    padding:8px;
+    background:#fff;
   }
-  /* optional: drop your portrait at img/profile.jpg */
-  .avatar::after{
-    content:"";
+  .portrait img{
+    width:100%;
+    height:auto;
     display:block;
-    width:100%; height:100%;
-    background:url('img/profile.jpg') center/cover no-repeat;
-    opacity:.98;
+  }
+  /* If img/profile.jpg is missing, you'll see a nice placeholder block */
+  .portrait.fallback{
+    height:430px;
+    display:grid;
+    place-items:center;
+    color:rgba(27,38,34,.55);
+    background:linear-gradient(180deg, rgba(46,155,127,.10), rgba(0,0,0,.02));
   }
 
-  .who{
-    margin:0;
-    font-weight:850;
-    letter-spacing:.2px;
-  }
-  .role{
-    margin:6px 0 0;
-    color:rgba(31,42,37,.76);
-    font-size:14px;
-    line-height:1.55;
-  }
-
-  .links{
+  .quick-links{
     display:flex;
     flex-wrap:wrap;
     gap:10px;
-    margin-top:10px;
   }
   .btn{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    gap:8px;
     padding:10px 12px;
-    border-radius:14px;
-    border:1px solid rgba(0,0,0,.10);
-    background:rgba(255,255,255,.85);
+    border-radius:10px;
+    border:1px solid rgba(0,0,0,.12);
+    background:#fff;
+    color:var(--p2-ink);
     text-decoration:none;
     font-weight:700;
     font-size:13px;
-    color:var(--ink);
-    transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    transition:transform .16s ease, border-color .16s ease;
   }
-  .btn:hover{ transform:translateY(-1px); border-color:rgba(46,155,127,.30); }
+  .btn:hover{ transform:translateY(-1px); border-color:rgba(46,155,127,.35); }
   .btn.primary{
-    background:linear-gradient(135deg, rgba(46,155,127,.95), rgba(46,155,127,.78));
+    background:var(--p2-link);
+    border-color:rgba(46,155,127,.35);
     color:#fff;
-    border-color:rgba(46,155,127,.25);
   }
 
   /* ---------------- PAGES 3 & 4 (EMPTY) ---------------- */
   .empty{
-    padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 12vh, 128px);
-    background: linear-gradient(180deg, var(--paper2) 0%, var(--paper) 100%);
-    color:var(--ink);
+    background:#fff;
+    min-height:70vh;
   }
-  .empty h2{
-    max-width:var(--max);
-    margin:0 auto;
-    font-family:Spectral,serif;
-    font-weight:700;
-    letter-spacing:.2px;
-    font-size:clamp(22px,3vw,34px);
-  }
-  .spacer{height:10vh}
 
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto}
@@ -381,7 +283,6 @@
 <div class="navband" role="navigation" aria-label="Primary">
   <div class="nav-surface" aria-hidden="true"></div>
   <div class="nav-inner">
-    <!-- brand goes to Page 2 (Welcome) -->
     <a class="nav-brand" href="#research">Shubham Tiwari</a>
     <div class="nav-links" aria-label="Site sections">
       <a href="#research">Research</a>
@@ -391,7 +292,7 @@
   </div>
 </div>
 
-<!-- PAGE 1: HERO (same as your earlier version) -->
+<!-- PAGE 1: HERO (unchanged) -->
 <header class="hero" id="top" role="banner" aria-label="Intro">
   <div class="film" aria-hidden="true"></div>
 
@@ -404,96 +305,69 @@
   </div>
 </header>
 
-<!-- PAGE 2: WELCOME / ABOUT (redesigned + better color) -->
+<!-- PAGE 2: like screenshot -->
 <section id="research" class="page2" aria-label="Welcome">
   <div class="page2-wrap">
 
-    <h2 class="welcome-title">Welcome</h2>
-    <p class="welcome-sub">
-      I’m a computational geomorphologist and ecohydrologist working at the interface of applied science
-      and environmental management—using networks and models to make connectivity usable for decisions.
-    </p>
+    <h2 class="welcome">Welcome</h2>
 
-    <div class="about-grid">
-      <!-- LEFT: readable “welcome text” -->
-      <article class="card" aria-label="About">
-        <h3>About</h3>
-
-        <p class="prose">
-          My work focuses on quantifying hydrologic connectivity and stability in ecogeomorphic systems,
-          with a particular emphasis on understanding land degradation processes in drylands.
+    <div class="two-col">
+      <!-- Left text -->
+      <div class="prose">
+        <p>
+          Shubham Tiwari is a computational geomorphologist and ecohydrologist working at the interface of
+          applied science and environmental management. He is a <b>Senior Hydrologist</b> at the
+          <a href="https://www.gov.uk/government/organisations/environment-agency" target="_blank" rel="noreferrer">Environment Agency</a>
+          and an early-career researcher at
+          <a href="https://www.durham.ac.uk/" target="_blank" rel="noreferrer">Durham University</a>.
         </p>
 
-        <p class="prose">
-          I combine network analysis, spatial–temporal methods, and numerical modeling to identify
-          key pathways, critical nodes, and early-warning signals—translating complex dynamics into
-          practical guidance for land and water management.
+        <p>
+          His research focuses on applying <b>network analysis</b> and <b>numerical modeling</b> to quantify
+          hydrologic connectivity and stability in ecogeomorphic systems—supporting understanding of land
+          degradation processes in drylands and translating complex dynamics into actionable guidance.
         </p>
 
-        <div class="pills" aria-label="Methods">
-          <span class="pill">Complex networks</span>
-          <span class="pill">Numerical modeling</span>
-          <span class="pill">Spatial–temporal analysis</span>
-          <span class="pill">Hydrologic connectivity</span>
+        <p>
+          He contributes to scientific outreach and stakeholder engagement, including co-chairing the
+          National Hydrology Outreach Group.
+        </p>
+
+        <p>
+          Please find my <a href="CV_shubham_tiwari_290126.pdf">CV</a> (and <a href="resume.pdf">resume</a>).
+        </p>
+      </div>
+
+      <!-- Right image + links -->
+      <aside class="side" aria-label="Profile">
+        <div class="portrait">
+          <!-- Put your image here: img/profile.jpg -->
+          <img src="img/profile.jpg" alt="Portrait of Shubham Tiwari"
+               onerror="this.style.display='none'; this.parentElement.classList.add('fallback'); this.parentElement.textContent='Add img/profile.jpg';">
         </div>
 
-        <div class="mini-grid" aria-label="Highlights">
-          <div class="mini">
-            <b>Applied + academic</b>
-            <span>Senior Hydrologist (Environment Agency) and early-career researcher (Durham).</span>
-          </div>
-          <div class="mini">
-            <b>Dryland focus</b>
-            <span>Connectivity patterns and stability signals for degradation and restoration.</span>
-          </div>
-          <div class="mini">
-            <b>Outreach</b>
-            <span>Invited talks, stakeholder engagement, and hydrology outreach activities.</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- RIGHT: simple profile card -->
-      <aside class="profile" aria-label="Profile">
-        <div class="card">
-          <div class="avatar" aria-label="Portrait (optional: img/profile.jpg)"></div>
-
-          <h3 class="who" style="margin-top:12px;">Shubham Tiwari</h3>
-          <p class="role">
-            Senior Hydrologist, Environment Agency (UK)<br>
-            PhD, Physical Geography — Durham University
-          </p>
-
-          <div class="links" aria-label="Links">
-            <a class="btn primary" href="CV_shubham_tiwari_290126.pdf">CV</a>
-            <a class="btn" href="mailto:shubham.tiwari@environment-agency.gov.uk">Email</a>
-            <a class="btn" href="https://linkedin.com/in/shubhamrt" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a class="btn" href="#" target="_blank" rel="noreferrer">Google Scholar</a>
-            <a class="btn" href="#" target="_blank" rel="noreferrer">ORCID</a>
-          </div>
+        <div class="quick-links" aria-label="Links">
+          <a class="btn primary" href="CV_shubham_tiwari_290126.pdf">CV</a>
+          <a class="btn" href="mailto:shubham.tiwari@environment-agency.gov.uk">Email</a>
+          <a class="btn" href="https://linkedin.com/in/shubhamrt" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="btn" href="#" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a class="btn" href="#" target="_blank" rel="noreferrer">ORCID</a>
         </div>
       </aside>
     </div>
 
-    <div class="spacer"></div>
   </div>
 </section>
 
 <!-- PAGE 3: EMPTY -->
-<section id="key-concepts" class="empty" aria-label="Key concept">
-  <h2>Key concept</h2>
-  <div class="spacer"></div>
-</section>
+<section id="key-concepts" class="empty" aria-label="Key concept"></section>
 
 <!-- PAGE 4: EMPTY -->
-<section id="news" class="empty" aria-label="News">
-  <h2>News</h2>
-  <div class="spacer"></div>
-</section>
+<section id="news" class="empty" aria-label="News"></section>
 
 <script>
 /* Reveal hero + nav band after delay (like your version).
-   Switch nav styling when scrolling onto light sections. */
+   Switch nav styling when scrolling onto white sections. */
 (function(){
   setTimeout(()=>document.body.classList.add('reveal'), 1000);
 
