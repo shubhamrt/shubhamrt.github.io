@@ -7,11 +7,13 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
   :root{
     --text:#fff;
     --muted:#D3EFE6;
     --dark:#0b201b;
+
     --in-delay:.02s;
     --in-dur:.5s;
 
@@ -22,10 +24,18 @@
     --accent:#2e9b7f;            /* teal lines/icons */
     --chip:#ffffff;              /* chip surface */
     --chip-br:18px;
+
+    --nav-h:64px;
+    --max:1100px;
   }
+
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   html,body{height:100%;margin:0;background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
   img{display:block;max-width:100%}
+
+  /* Make anchor jumps land below the fixed nav */
+  section{scroll-margin-top: calc(var(--nav-h) + 16px);}
 
   /* ---------------- HERO (Page 1) ---------------- */
   .hero{
@@ -33,42 +43,155 @@
     text-align:center; overflow:hidden; color:var(--text);
     background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed; isolation:isolate;
   }
-  .film{position:absolute; inset:0; background:rgba(0,0,0,.25); opacity:0; transition:opacity var(--in-dur) ease var(--in-delay); z-index:1}
+  .film{
+    position:absolute; inset:0;
+    background:rgba(0,0,0,.25);
+    opacity:0;
+    transition:opacity var(--in-dur) ease var(--in-delay);
+    z-index:1
+  }
   .reveal .film{opacity:1}
 
-  /* Topbar ONLY on Page 1 (lives inside .hero, not fixed) */
-  .topbar{
-    position:absolute; top:16px; left:16px; display:flex; align-items:center; gap:10px;
-    z-index:3; opacity:0; transition:opacity var(--in-dur) ease var(--in-delay);
-  }
-  .reveal .topbar{opacity:1}
-  .hamburger{display:inline-grid; place-items:center; width:38px; height:38px; border-radius:8px;
-             background:transparent; border:1px solid rgba(255,255,255,.55); color:var(--text); cursor:pointer}
-  .hamburger span, .hamburger span::before, .hamburger span::after{display:block; width:18px; height:2px; background:currentColor; content:""}
-  .hamburger span{position:relative} .hamburger span::before{position:absolute; top:-6px} .hamburger span::after{position:absolute; top:6px}
-  .brand{font-weight:800; letter-spacing:.2px; font-size:clamp(16px,1.4vw,18px); color:var(--text); text-decoration:none; text-shadow:0 2px 8px rgba(0,0,0,.45)}
-  .menu{position:absolute; top:46px; left:16px; padding:6px 0; background:transparent; border:none; z-index:4; opacity:0; pointer-events:none; transition:opacity .2s}
-  .menu.open{opacity:1; pointer-events:auto}
-  .menu a{display:block; padding:8px 2px 8px 4px; color:var(--text); text-decoration:none; font-size:14px; text-shadow:0 2px 8px rgba(0,0,0,.55)}
+  /* ---------------- TOP HORIZONTAL BAND (requested) ---------------- */
+  .navband{
+    position:fixed;
+    top:0; left:0; right:0;
+    height:var(--nav-h);
+    z-index:20;
 
-  .hero-inner{position:relative; z-index:2; padding:24px; top:-1.2cm; opacity:0; transition:opacity var(--in-dur) ease var(--in-delay)}
+    opacity:0;
+    transform:translateY(-10px);
+    transition:
+      opacity var(--in-dur) ease var(--in-delay),
+      transform var(--in-dur) ease var(--in-delay);
+    pointer-events:none;
+  }
+  .reveal .navband{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+
+  .nav-surface{
+    position:absolute; inset:0;
+    background:rgba(0,0,0,.18);
+    border-bottom:1px solid rgba(255,255,255,.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* On light sections (after scrolling), switch nav to a light surface */
+  body.scrolled .nav-surface{
+    background:rgba(234,241,234,.86);
+    border-bottom:1px solid rgba(34,49,44,.12);
+  }
+
+  .nav-inner{
+    position:relative;
+    height:100%;
+    width:min(var(--max), calc(100% - 48px));
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+  }
+
+  .nav-brand{
+    font-weight:800;
+    letter-spacing:.2px;
+    font-size:clamp(16px,1.4vw,18px);
+    color:var(--text);
+    text-decoration:none;
+    text-shadow:0 2px 8px rgba(0,0,0,.45);
+    white-space:nowrap;
+  }
+  body.scrolled .nav-brand{ color:var(--ink); text-shadow:none; }
+
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .nav-links a{
+    color:var(--text);
+    text-decoration:none;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-size:12px;
+    padding:10px 10px;
+    border-radius:999px;
+    transition:background .2s ease, color .2s ease, transform .2s ease;
+    text-shadow:0 2px 8px rgba(0,0,0,.35);
+  }
+  .nav-links a:hover{
+    background:rgba(255,255,255,.10);
+    transform:translateY(-1px);
+  }
+  .nav-links a:focus-visible{
+    outline:3px solid rgba(46,155,127,.45);
+    outline-offset:2px;
+  }
+
+  body.scrolled .nav-links a{
+    color:var(--ink);
+    text-shadow:none;
+  }
+  body.scrolled .nav-links a:hover{
+    background:rgba(46,155,127,.10);
+  }
+
+  /* Stack nav links on very small screens (still horizontal band, no burger) */
+  @media (max-width:520px){
+    :root{ --nav-h:78px; }
+    .nav-inner{align-items:flex-start; padding-top:10px}
+    .nav-links{gap:8px}
+    .nav-links a{padding:8px 10px; font-size:11px; letter-spacing:.12em}
+  }
+
+  /* Hero content */
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    padding:24px;
+    margin-top:var(--nav-h);
+    opacity:0;
+    transition:opacity var(--in-dur) ease var(--in-delay);
+    transform:translateY(-1.2cm); /* keeps your original “lift” */
+  }
   .reveal .hero-inner{opacity:1}
-  .logo{width:min(200px,35vw); height:auto; margin:clamp(-40px,-12vh,-200px) auto 18px; filter:drop-shadow(0 6px 25px rgba(0,0,0,.35))}
-  h1{font-family:Spectral,serif; font-size:clamp(27px,4.64vw,51.2px); line-height:1.06; margin:0; text-shadow:0 2px 10px rgba(0,0,0,.35); font-weight:700}
+
+  .logo{
+    width:min(200px,35vw);
+    height:auto;
+    margin:clamp(-40px,-12vh,-200px) auto 18px;
+    filter:drop-shadow(0 6px 25px rgba(0,0,0,.35))
+  }
+  h1{
+    font-family:Spectral,serif;
+    font-size:clamp(27px,4.64vw,51.2px);
+    line-height:1.06;
+    margin:0;
+    text-shadow:0 2px 10px rgba(0,0,0,.35);
+    font-weight:700
+  }
   .hero-em{white-space:nowrap; font-style:italic; font-weight:600; letter-spacing:.2px}
 
   /* ---------------- PAGE 2 (Minimal) ---------------- */
   .page2{
-    background:
-      linear-gradient(180deg, var(--sage) 0, var(--sand) 100%);
+    background: linear-gradient(180deg, var(--sage) 0, var(--sand) 100%);
     color:var(--ink);
     padding: clamp(56px, 8vh, 96px) 24px clamp(72px, 12vh, 128px);
   }
-  .page2-wrap{max-width:1100px; margin:0 auto}
+  .page2-wrap{max-width:var(--max); margin:0 auto}
 
   .p2-title{
     font-family:Spectral,serif; font-weight:700; letter-spacing:.2px;
-    font-size:clamp(22px,3vw,34px); text-align:center; margin:0 auto clamp(36px,6vh,64px);
+    font-size:clamp(22px,3vw,34px); text-align:center;
+    margin:0 auto clamp(28px,5vh,48px);
     color:var(--ink);
   }
 
@@ -107,29 +230,63 @@
     text-align:center;
   }
 
+  /* Simple light cards for sections */
+  .cards{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:14px;
+    margin-top:18px;
+  }
+  @media (min-width:820px){ .cards{grid-template-columns:repeat(3,1fr); gap:18px;} }
+
+  .card{
+    background:var(--chip);
+    border:1px solid rgba(0,0,0,.06);
+    border-radius:var(--chip-br);
+    padding:18px;
+    box-shadow:0 10px 24px rgba(10,30,20,.06);
+  }
+  .card h3{margin:0 0 8px; font-size:15px; font-weight:800; color:var(--ink)}
+  .card p{margin:0; font-size:13px; color:#3a4e45; opacity:.95; line-height:1.5}
+
+  .news{
+    display:grid;
+    gap:10px;
+    margin-top:18px;
+  }
+  .news-item{
+    background:rgba(255,255,255,.72);
+    border:1px solid rgba(0,0,0,.06);
+    border-radius:16px;
+    padding:14px 16px;
+    box-shadow:0 10px 24px rgba(10,30,20,.05);
+  }
+  .news-item b{display:block; color:var(--ink); font-size:14px}
+  .news-item small{color:rgba(34,49,44,.70); font-weight:600}
+  .news-item p{margin:8px 0 0; color:#3a4e45; font-size:13px; line-height:1.55}
+
   .spacer{height:8vh}
 </style>
 </head>
+
 <body>
 
-<!-- PAGE 1: HERO -->
-<header class="hero" role="banner" aria-label="Intro">
-  <div class="film" aria-hidden="true"></div>
-
-  <!-- Top-left brand lives ONLY inside hero -->
-  <div class="topbar" role="navigation" aria-label="Primary">
-    <button class="hamburger" id="menuBtn" aria-label="Open menu" aria-controls="menu" aria-expanded="false">
-      <span></span>
-    </button>
-    <a class="brand" href="#" id="brand">Shubham Tiwari</a>
-
-    <nav class="menu" id="menu" aria-hidden="true">
+<!-- TOP NAV BAND -->
+<div class="navband" role="navigation" aria-label="Primary">
+  <div class="nav-surface" aria-hidden="true"></div>
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top">Shubham Tiwari</a>
+    <div class="nav-links" aria-label="Site sections">
       <a href="#research">Research</a>
-      <a href="#projects">Projects</a>
-      <a href="#publications">Publications</a>
-      <a href="#contact">Contact</a>
-    </nav>
+      <a href="#key-concepts">Key Concept</a>
+      <a href="#news">News</a>
+    </div>
   </div>
+</div>
+
+<!-- PAGE 1: HERO -->
+<header class="hero" id="top" role="banner" aria-label="Intro">
+  <div class="film" aria-hidden="true"></div>
 
   <div class="hero-inner">
     <img class="logo" src="img/logo.png" alt="Site logo">
@@ -140,10 +297,9 @@
   </div>
 </header>
 
-<!-- PAGE 2: Minimal, aesthetic, dryland-focused -->
-<section id="research" class="page2" aria-label="Dryland Connectivity">
+<!-- PAGE 2 -->
+<section id="research" class="page2" aria-label="Research">
   <div class="page2-wrap">
-
     <h2 class="p2-title">What drives connectivity in drylands</h2>
 
     <div class="chips">
@@ -205,26 +361,64 @@
   </div>
 </section>
 
+<!-- KEY CONCEPTS (placeholder section for your new nav link) -->
+<section id="key-concepts" class="page2" aria-label="Key concepts">
+  <div class="page2-wrap">
+    <h2 class="p2-title">Key concept</h2>
+
+    <div class="cards">
+      <article class="card">
+        <h3>Connectivity</h3>
+        <p>How resources, sediment, and water move through landscapes—and what blocks or amplifies that flow.</p>
+      </article>
+      <article class="card">
+        <h3>Pattern</h3>
+        <p>Vegetation patches and gaps create feedbacks that change capture vs. loss across space.</p>
+      </article>
+      <article class="card">
+        <h3>Resilience</h3>
+        <p>Which configurations persist under stress, and what early signals indicate a shift toward degradation.</p>
+      </article>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+</section>
+
+<!-- NEWS (placeholder section for your new nav link) -->
+<section id="news" class="page2" aria-label="News">
+  <div class="page2-wrap">
+    <h2 class="p2-title">News</h2>
+
+    <div class="news">
+      <div class="news-item">
+        <b>Update title (replace)</b>
+        <small>Month YYYY</small>
+        <p>One or two lines describing the new paper, talk, field campaign, award, or collaboration.</p>
+      </div>
+      <div class="news-item">
+        <b>Another update (replace)</b>
+        <small>Month YYYY</small>
+        <p>Keep it short—this section looks best with brief, frequent items.</p>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+</section>
+
 <script>
-/* Reveal hero after 1s; simple dropdown (only visible on Page 1) */
+/* Reveal hero + nav band after delay (like your version).
+   Also: switch nav styling when scrolling onto light sections. */
 (function(){
   setTimeout(()=>document.body.classList.add('reveal'), 1000);
 
-  const btn = document.getElementById('menuBtn');
-  const menu = document.getElementById('menu');
-  if(btn && menu){
-    const toggle = () => {
-      const open = !menu.classList.contains('open');
-      menu.classList.toggle('open', open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      menu.setAttribute('aria-hidden', open ? 'false' : 'true');
-    };
-    btn.addEventListener('click', toggle);
-    menu.addEventListener('click', e => { if(e.target.tagName === 'A') toggle(); });
-    document.addEventListener('click', e => {
-      if(!menu.contains(e.target) && !btn.contains(e.target) && menu.classList.contains('open')) toggle();
-    });
-  }
+  const onScroll = () => {
+    // toggle when user scrolls a bit (nav becomes light-friendly)
+    document.body.classList.toggle('scrolled', window.scrollY > 40);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
 })();
 </script>
 
