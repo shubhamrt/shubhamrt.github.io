@@ -22,8 +22,12 @@
     --p2-link-hover:#1f6f5b;
     --p2-line:rgba(0,0,0,.10);
 
-    --nav-h:70px;             /* ~10% bigger than 64px */
+    --nav-h:70px;             /* ~10% bigger */
     --max:1100px;
+
+    /* Intro timing */
+    --reveal-delay:1000ms;    /* when film/nav/text show */
+    --logo-dur:1000ms;        /* logo finishes exactly at reveal */
   }
 
   *{box-sizing:border-box}
@@ -95,11 +99,10 @@
     gap:18px;
   }
 
-  /* slightly larger */
   .nav-brand{
     font-weight:800;
     letter-spacing:.2px;
-    font-size:clamp(18px,1.7vw,20px); /* bigger */
+    font-size:clamp(18px,1.7vw,20px);
     text-decoration:none;
     text-shadow:0 2px 8px rgba(0,0,0,.45);
     white-space:nowrap;
@@ -114,12 +117,11 @@
     justify-content:flex-end;
   }
 
-  /* 10–20% bigger text */
   .nav-links a{
     color:var(--text);
     text-decoration:none;
     font-weight:700;
-    font-size:16px;           /* was 14px */
+    font-size:16px;           /* larger */
     padding:11px 14px;
     border-radius:999px;
     transition:background .2s ease, transform .2s ease, color .2s ease;
@@ -138,24 +140,32 @@
     .nav-links a{padding:9px 11px; font-size:15px}
   }
 
-  /* ---------------- HERO CONTENT (unchanged) ---------------- */
+  /* ---------------- HERO CONTENT ---------------- */
+  /* Make page feel active immediately: hero-inner is visible from t=0 */
   .hero-inner{
     position:relative;
     z-index:2;
     padding:24px;
     margin-top:var(--nav-h);
-    opacity:0;
-    transition:opacity var(--in-dur) ease var(--in-delay);
     transform:translateY(-1.2cm);
   }
-  .reveal .hero-inner{opacity:1}
 
+  /* Logo rolls in from left starting at t=0 */
+  @keyframes logoRollIn{
+    0%   { transform:translateX(-40vw) rotate(-180deg); opacity:.92; }
+    70%  { transform:translateX(12px) rotate(6deg);     opacity:1; }
+    100% { transform:translateX(0) rotate(0deg);        opacity:1; }
+  }
   .logo{
     width:min(200px,35vw);
     height:auto;
     margin:clamp(-40px,-12vh,-200px) auto 18px;
     filter:drop-shadow(0 6px 25px rgba(0,0,0,.35));
+    will-change:transform;
+    animation:logoRollIn var(--logo-dur) cubic-bezier(.2,.9,.2,1) 0ms both;
   }
+
+  /* Hide text initially; reveal after the logo finishes (same time as film/nav) */
   h1{
     font-family:Spectral,serif;
     font-size:clamp(27px,4.64vw,51.2px);
@@ -163,10 +173,18 @@
     margin:0;
     text-shadow:0 2px 10px rgba(0,0,0,.35);
     font-weight:700;
+
+    opacity:0;
+    transform:translateY(8px);
+    transition:
+      opacity var(--in-dur) ease var(--in-delay),
+      transform var(--in-dur) ease var(--in-delay);
   }
+  .reveal h1{ opacity:1; transform:translateY(0); }
+
   .hero-em{white-space:nowrap; font-style:italic; font-weight:600; letter-spacing:.2px}
 
-  /* ---------------- PAGE 2 (like screenshot: white + text + portrait) ---------------- */
+  /* ---------------- PAGE 2 (white + text + portrait) ---------------- */
   .page2{
     background:var(--p2-bg);
     color:var(--p2-ink);
@@ -179,7 +197,7 @@
     font-size:clamp(38px,4.5vw,54px);
     line-height:1.05;
     margin:0 0 18px;
-    font-weight:500; /* closer to screenshot feel */
+    font-weight:500;
     letter-spacing:.1px;
   }
 
@@ -212,10 +230,7 @@
     border-bottom-color:rgba(31,111,91,.55);
   }
 
-  .side{
-    display:grid;
-    gap:14px;
-  }
+  .side{display:grid; gap:14px;}
 
   .portrait{
     border:1px solid var(--p2-line);
@@ -223,12 +238,7 @@
     padding:8px;
     background:#fff;
   }
-  .portrait img{
-    width:100%;
-    height:auto;
-    display:block;
-  }
-  /* If img/profile.jpg is missing, you'll see a nice placeholder block */
+  .portrait img{width:100%; height:auto; display:block;}
   .portrait.fallback{
     height:430px;
     display:grid;
@@ -264,14 +274,13 @@
   }
 
   /* ---------------- PAGES 3 & 4 (EMPTY) ---------------- */
-  .empty{
-    background:#fff;
-    min-height:70vh;
-  }
+  .empty{ background:#fff; min-height:70vh; }
 
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto}
-    .film, .navband, .hero-inner{transition:none}
+    .film, .navband{transition:none}
+    .logo{animation:none}
+    h1{transition:none; opacity:1; transform:none;}
     .btn, .nav-links a{transition:none}
   }
 </style>
@@ -292,7 +301,7 @@
   </div>
 </div>
 
-<!-- PAGE 1: HERO (unchanged) -->
+<!-- PAGE 1: HERO -->
 <header class="hero" id="top" role="banner" aria-label="Intro">
   <div class="film" aria-hidden="true"></div>
 
@@ -305,14 +314,13 @@
   </div>
 </header>
 
-<!-- PAGE 2: like screenshot -->
+<!-- PAGE 2 -->
 <section id="research" class="page2" aria-label="Welcome">
   <div class="page2-wrap">
 
     <h2 class="welcome">Welcome</h2>
 
     <div class="two-col">
-      <!-- Left text -->
       <div class="prose">
         <p>
           Shubham Tiwari is a computational geomorphologist and ecohydrologist working at the interface of
@@ -338,10 +346,8 @@
         </p>
       </div>
 
-      <!-- Right image + links -->
       <aside class="side" aria-label="Profile">
         <div class="portrait">
-          <!-- Put your image here: img/profile.jpg -->
           <img src="img/profile.jpg" alt="Portrait of Shubham Tiwari"
                onerror="this.style.display='none'; this.parentElement.classList.add('fallback'); this.parentElement.textContent='Add img/profile.jpg';">
         </div>
@@ -366,10 +372,9 @@
 <section id="news" class="empty" aria-label="News"></section>
 
 <script>
-/* Reveal hero + nav band after delay (like your version).
-   Switch nav styling when scrolling onto white sections. */
+/* Keep your delayed reveal, but page feels active immediately via logo animation */
 (function(){
-  setTimeout(()=>document.body.classList.add('reveal'), 1000);
+  setTimeout(()=>document.body.classList.add('reveal'), parseInt(getComputedStyle(document.documentElement).getPropertyValue('--reveal-delay')) || 1000);
 
   const onScroll = () => {
     document.body.classList.toggle('scrolled', window.scrollY > 40);
