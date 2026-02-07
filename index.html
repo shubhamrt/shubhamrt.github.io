@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Shubham Tiwari | Dryland Connectivity</title>
 
-<!-- Favicon = your logo -->
-<link rel="icon" type="image/png" href="img/logo.png" />
+<!-- Bigger favicon (use your logo, but rendered larger by browsers) -->
+<link rel="icon" type="image/png" sizes="512x512" href="img/logo.png">
+<link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
+<link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -24,9 +27,11 @@
     --p2-bg:#ffffff;
     --p2-ink:#1b2622;
     --p2-muted:#4d6158;
-    --p2-accent:#467750;      /* requested green */
-    --p2-link:#467750;        /* links in same green */
-    --p2-link-hover:#355c3d;  /* darker hover */
+
+    /* Requested accent */
+    --accent:#C1440E;
+    --accent-hover:#a3360b;
+
     --p2-line:rgba(0,0,0,.10);
 
     --nav-h:70px;
@@ -144,10 +149,10 @@
     text-shadow:0 2px 8px rgba(0,0,0,.35);
   }
   .nav-links a:hover{ background:rgba(255,255,255,.10); transform:translateY(-1px); }
-  .nav-links a:focus-visible{ outline:3px solid rgba(70,119,80,.45); outline-offset:2px; }
+  .nav-links a:focus-visible{ outline:3px solid rgba(193,68,14,.45); outline-offset:2px; }
 
   body.scrolled .nav-links a{ color:var(--p2-ink); text-shadow:none; }
-  body.scrolled .nav-links a:hover{ background:rgba(70,119,80,.10); }
+  body.scrolled .nav-links a:hover{ background:rgba(193,68,14,.10); }
 
   @media (max-width:520px){
     :root{ --nav-h:86px; }
@@ -203,7 +208,6 @@
     margin:0 0 16px;
   }
 
-  /* Make the opening question stand out more */
   .lede{
     font-size:1.05em;
     line-height:1.85;
@@ -212,7 +216,7 @@
     max-width:80ch;
   }
   .lede .q{
-    color:var(--p2-accent);
+    color:var(--accent);
     font-weight:850;
   }
 
@@ -223,7 +227,6 @@
     align-items:start;
   }
   @media (min-width: 920px){
-    /* slightly wider than before to accommodate +5% image */
     .two-col{ grid-template-columns: 1fr 252px; gap:40px; }
   }
 
@@ -236,26 +239,22 @@
   .prose p{ margin:0 0 18px; }
   .prose p:last-child{ margin-bottom:0; }
 
+  /* Links in #C1440E */
   .prose a{
-    color:var(--p2-link);
+    color:var(--accent);
     text-decoration:none;
-    border-bottom:1px solid rgba(70,119,80,.35);
+    border-bottom:1px solid rgba(193,68,14,.35);
   }
   .prose a:hover{
-    color:var(--p2-link-hover);
-    border-bottom-color:rgba(53,92,61,.55);
+    color:var(--accent-hover);
+    border-bottom-color:rgba(163,54,11,.55);
   }
 
-  .side{
-    display:grid;
-    gap:12px;
-    justify-items:end;
-  }
+  .side{display:grid; gap:12px; justify-items:end;}
 
-  /* Profile photo +5% */
   .portrait{
     width:100%;
-    max-width:252px; /* was 240 */
+    max-width:252px;
     border:1px solid var(--p2-line);
     padding:6px;
     background:#fff;
@@ -266,7 +265,7 @@
     display:grid;
     place-items:center;
     color:rgba(27,38,34,.55);
-    background:linear-gradient(180deg, rgba(70,119,80,.10), rgba(0,0,0,.02));
+    background:linear-gradient(180deg, rgba(193,68,14,.10), rgba(0,0,0,.02));
   }
 
   .quick-links{
@@ -287,14 +286,14 @@
     background:#fff;
     color:var(--p2-ink);
     text-decoration:none;
-    font-weight:700;
+    font-weight:800;
     font-size:13px;
     transition:transform .16s ease, border-color .16s ease, background .16s ease;
   }
-  .btn:hover{ transform:translateY(-1px); border-color:rgba(70,119,80,.35); }
+  .btn:hover{ transform:translateY(-1px); border-color:rgba(193,68,14,.35); }
   .btn.primary{
-    background:var(--p2-link);
-    border-color:rgba(70,119,80,.35);
+    background:var(--accent);
+    border-color:rgba(193,68,14,.35);
     color:#fff;
   }
 
