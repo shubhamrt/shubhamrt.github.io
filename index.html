@@ -4,7 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Shubham Tiwari | Dryland Connectivity</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+<!-- Favicon = your logo -->
+<link rel="icon" type="image/png" href="img/logo.png" />
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -12,23 +15,24 @@
   :root{
     --text:#fff;
 
-    /* Faster reveal so it doesn't feel slow */
+    /* Faster reveal */
     --in-delay:.02s;
     --in-dur:.28s;
     --reveal-delay:400ms;
 
-    /* Page 2 (simple white like Shreyas) */
+    /* Page 2 */
     --p2-bg:#ffffff;
     --p2-ink:#1b2622;
     --p2-muted:#4d6158;
-    --p2-link:#2e9b7f;
-    --p2-link-hover:#1f6f5b;
+    --p2-accent:#467750;      /* requested green */
+    --p2-link:#467750;        /* links in same green */
+    --p2-link-hover:#355c3d;  /* darker hover */
     --p2-line:rgba(0,0,0,.10);
 
-    --nav-h:70px;        /* a bit larger top bar */
+    --nav-h:70px;
     --max:1100px;
 
-    /* Typography: slightly bigger than Shreyas (~5%) */
+    /* slightly bigger than Shreyas */
     --p2-base:17px;
   }
 
@@ -140,10 +144,10 @@
     text-shadow:0 2px 8px rgba(0,0,0,.35);
   }
   .nav-links a:hover{ background:rgba(255,255,255,.10); transform:translateY(-1px); }
-  .nav-links a:focus-visible{ outline:3px solid rgba(46,155,127,.45); outline-offset:2px; }
+  .nav-links a:focus-visible{ outline:3px solid rgba(70,119,80,.45); outline-offset:2px; }
 
   body.scrolled .nav-links a{ color:var(--p2-ink); text-shadow:none; }
-  body.scrolled .nav-links a:hover{ background:rgba(46,155,127,.10); }
+  body.scrolled .nav-links a:hover{ background:rgba(70,119,80,.10); }
 
   @media (max-width:520px){
     :root{ --nav-h:86px; }
@@ -152,7 +156,7 @@
     .nav-links a{padding:9px 11px; font-size:15px}
   }
 
-  /* ---------------- HERO CONTENT (back to before) ---------------- */
+  /* ---------------- HERO CONTENT ---------------- */
   .hero-inner{
     position:relative;
     z-index:2;
@@ -172,7 +176,7 @@
   }
 
   h1{
-    font-family:Spectral,serif; /* keep hero look */
+    font-family:Spectral,serif;
     font-size:clamp(27px,4.64vw,51.2px);
     line-height:1.06;
     margin:0;
@@ -181,16 +185,15 @@
   }
   .hero-em{white-space:nowrap; font-style:italic; font-weight:600; letter-spacing:.2px}
 
-  /* ---------------- PAGE 2 (Shreyas-like: simple, consistent font, smaller photo) ---------------- */
+  /* ---------------- PAGE 2 ---------------- */
   .page2{
     background:var(--p2-bg);
     color:var(--p2-ink);
     padding: 58px 24px 110px;
-    font-size:var(--p2-base); /* global size for page 2 */
+    font-size:var(--p2-base);
   }
   .page2-wrap{max-width:var(--max); margin:0 auto;}
 
-  /* Keep ONE font throughout page 2 */
   .hello{
     font-family:Inter,system-ui,sans-serif;
     font-weight:800;
@@ -200,12 +203,17 @@
     margin:0 0 16px;
   }
 
+  /* Make the opening question stand out more */
   .lede{
-    font-size:1.05em; /* slightly larger than body, like Shreyas */
-    line-height:1.8;
+    font-size:1.05em;
+    line-height:1.85;
     color:rgba(27,38,34,.86);
     margin:0 0 24px;
     max-width:80ch;
+  }
+  .lede .q{
+    color:var(--p2-accent);
+    font-weight:850;
   }
 
   .two-col{
@@ -214,9 +222,9 @@
     gap:28px;
     align-items:start;
   }
-  /* narrower right column (smaller image) */
   @media (min-width: 920px){
-    .two-col{ grid-template-columns: 1fr 240px; gap:40px; }
+    /* slightly wider than before to accommodate +5% image */
+    .two-col{ grid-template-columns: 1fr 252px; gap:40px; }
   }
 
   .prose{
@@ -231,11 +239,11 @@
   .prose a{
     color:var(--p2-link);
     text-decoration:none;
-    border-bottom:1px solid rgba(46,155,127,.35);
+    border-bottom:1px solid rgba(70,119,80,.35);
   }
   .prose a:hover{
     color:var(--p2-link-hover);
-    border-bottom-color:rgba(31,111,91,.55);
+    border-bottom-color:rgba(53,92,61,.55);
   }
 
   .side{
@@ -244,30 +252,26 @@
     justify-items:end;
   }
 
-  /* Smaller portrait: roughly 80% smaller footprint than before (360px -> 240px column + tighter padding) */
+  /* Profile photo +5% */
   .portrait{
     width:100%;
-    max-width:240px;
+    max-width:252px; /* was 240 */
     border:1px solid var(--p2-line);
     padding:6px;
     background:#fff;
   }
-  .portrait img{
-    width:100%;
-    height:auto;
-    display:block;
-  }
+  .portrait img{ width:100%; height:auto; display:block; }
   .portrait.fallback{
-    height:280px;
+    height:294px;
     display:grid;
     place-items:center;
     color:rgba(27,38,34,.55);
-    background:linear-gradient(180deg, rgba(46,155,127,.10), rgba(0,0,0,.02));
+    background:linear-gradient(180deg, rgba(70,119,80,.10), rgba(0,0,0,.02));
   }
 
   .quick-links{
     width:100%;
-    max-width:240px;
+    max-width:252px;
     display:flex;
     flex-wrap:wrap;
     gap:10px;
@@ -285,12 +289,12 @@
     text-decoration:none;
     font-weight:700;
     font-size:13px;
-    transition:transform .16s ease, border-color .16s ease;
+    transition:transform .16s ease, border-color .16s ease, background .16s ease;
   }
-  .btn:hover{ transform:translateY(-1px); border-color:rgba(46,155,127,.35); }
+  .btn:hover{ transform:translateY(-1px); border-color:rgba(70,119,80,.35); }
   .btn.primary{
     background:var(--p2-link);
-    border-color:rgba(46,155,127,.35);
+    border-color:rgba(70,119,80,.35);
     color:#fff;
   }
 
@@ -339,7 +343,8 @@
 
     <h2 class="hello">Hey there, I'm Shubham.</h2>
     <p class="lede">
-      I'm fascinated by a question that drives most of my research: <b>How do dryland landscapes fall apart and how can we see it coming before it's too late?</b>
+      I'm fascinated by a question that drives most of my research:
+      <span class="q">How do dryland landscapes fall apart and how can we see it coming before it's too late?</span>
     </p>
 
     <div class="two-col">
@@ -378,7 +383,6 @@
 
       <aside class="side" aria-label="Profile">
         <div class="portrait">
-          <!-- Put your image here: img/profile.jpg -->
           <img src="img/profile.jpg" alt="Portrait of Shubham Tiwari"
                onerror="this.style.display='none'; this.parentElement.classList.add('fallback'); this.parentElement.textContent='Add img/profile.jpg';">
         </div>
@@ -401,7 +405,6 @@
 <section id="news" class="empty" aria-label="News"></section>
 
 <script>
-/* Reveal everything quickly so it feels responsive */
 (function(){
   setTimeout(()=>document.body.classList.add('reveal'), 400);
 
