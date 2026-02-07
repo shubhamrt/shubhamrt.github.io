@@ -18,16 +18,16 @@
     --p2-bg:#ffffff;
     --p2-ink:#1b2622;
     --p2-muted:#4d6158;
-    --p2-link:#2e9b7f;        /* your teal */
+    --p2-link:#2e9b7f;
     --p2-link-hover:#1f6f5b;
     --p2-line:rgba(0,0,0,.10);
 
-    --nav-h:70px;             /* ~10% bigger */
+    --nav-h:70px;
     --max:1100px;
 
     /* Intro timing */
-    --reveal-delay:1000ms;    /* when film/nav/text show */
-    --logo-dur:1000ms;        /* logo finishes exactly at reveal */
+    --reveal-delay:1000ms;  /* when film/nav/text appear */
+    --logo-dur:1000ms;      /* logo finishes exactly at reveal */
   }
 
   *{box-sizing:border-box}
@@ -43,7 +43,8 @@
   .hero{
     position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
     text-align:center; overflow:hidden; color:var(--text);
-    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed; isolation:isolate;
+    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
+    isolation:isolate;
   }
   .film{
     position:absolute; inset:0;
@@ -54,25 +55,40 @@
   }
   .reveal .film{opacity:1}
 
-  /* ---------------- TOP HORIZONTAL BAND ---------------- */
-  .navband{
-    position:fixed;
-    top:0; left:0; right:0;
-    height:var(--nav-h);
-    z-index:20;
-
+  /* Circular “film” behind logo (appears at reveal for visibility) */
+  .logo-spot{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:min(440px, 72vw);
+    height:min(440px, 72vw);
+    transform:translate(-50%,-54%);
+    border-radius:999px;
+    background:radial-gradient(circle at 50% 50%,
+      rgba(0,0,0,.62) 0%,
+      rgba(0,0,0,.44) 38%,
+      rgba(0,0,0,.18) 62%,
+      rgba(0,0,0,0) 78%);
+    filter: blur(.2px);
     opacity:0;
-    transform:translateY(-10px);
-    transition:
-      opacity var(--in-dur) ease var(--in-delay),
-      transform var(--in-dur) ease var(--in-delay);
+    transition:opacity var(--in-dur) ease var(--in-delay);
+    z-index:1; /* behind logo, above background */
     pointer-events:none;
   }
-  .reveal .navband{
-    opacity:1;
-    transform:translateY(0);
-    pointer-events:auto;
+  .reveal .logo-spot{opacity:1}
+
+  /* ---------------- TOP NAV BAND ---------------- */
+  .navband{
+    position:fixed; top:0; left:0; right:0;
+    height:var(--nav-h);
+    z-index:20;
+    opacity:0;
+    transform:translateY(-10px);
+    transition:opacity var(--in-dur) ease var(--in-delay),
+              transform var(--in-dur) ease var(--in-delay);
+    pointer-events:none;
   }
+  .reveal .navband{opacity:1; transform:translateY(0); pointer-events:auto;}
 
   .nav-surface{
     position:absolute; inset:0;
@@ -81,8 +97,6 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
-
-  /* When scrolling onto white sections */
   body.scrolled .nav-surface{
     background:rgba(255,255,255,.94);
     border-bottom:1px solid rgba(0,0,0,.10);
@@ -110,18 +124,13 @@
   body.scrolled .nav-brand{ color:var(--p2-ink); text-shadow:none; }
 
   .nav-links{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    flex-wrap:wrap;
-    justify-content:flex-end;
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end;
   }
-
   .nav-links a{
     color:var(--text);
     text-decoration:none;
     font-weight:700;
-    font-size:16px;           /* larger */
+    font-size:16px;
     padding:11px 14px;
     border-radius:999px;
     transition:background .2s ease, transform .2s ease, color .2s ease;
@@ -129,7 +138,6 @@
   }
   .nav-links a:hover{ background:rgba(255,255,255,.10); transform:translateY(-1px); }
   .nav-links a:focus-visible{ outline:3px solid rgba(46,155,127,.45); outline-offset:2px; }
-
   body.scrolled .nav-links a{ color:var(--p2-ink); text-shadow:none; }
   body.scrolled .nav-links a:hover{ background:rgba(46,155,127,.10); }
 
@@ -141,18 +149,16 @@
   }
 
   /* ---------------- HERO CONTENT ---------------- */
-  /* Make page feel active immediately: hero-inner is visible from t=0 */
   .hero-inner{
     position:relative;
-    z-index:2;
+    z-index:2; /* above logo-spot */
     padding:24px;
     margin-top:var(--nav-h);
     transform:translateY(-1.2cm);
   }
 
-  /* Logo rolls in from left starting at t=0 */
   @keyframes logoRollIn{
-    0%   { transform:translateX(-40vw) rotate(-180deg); opacity:.92; }
+    0%   { transform:translateX(-40vw) rotate(-180deg); opacity:.95; }
     70%  { transform:translateX(12px) rotate(6deg);     opacity:1; }
     100% { transform:translateX(0) rotate(0deg);        opacity:1; }
   }
@@ -160,12 +166,11 @@
     width:min(200px,35vw);
     height:auto;
     margin:clamp(-40px,-12vh,-200px) auto 18px;
-    filter:drop-shadow(0 6px 25px rgba(0,0,0,.35));
+    filter:drop-shadow(0 10px 28px rgba(0,0,0,.45));
     will-change:transform;
     animation:logoRollIn var(--logo-dur) cubic-bezier(.2,.9,.2,1) 0ms both;
   }
 
-  /* Hide text initially; reveal after the logo finishes (same time as film/nav) */
   h1{
     font-family:Spectral,serif;
     font-size:clamp(27px,4.64vw,51.2px);
@@ -176,15 +181,13 @@
 
     opacity:0;
     transform:translateY(8px);
-    transition:
-      opacity var(--in-dur) ease var(--in-delay),
-      transform var(--in-dur) ease var(--in-delay);
+    transition:opacity var(--in-dur) ease var(--in-delay),
+              transform var(--in-dur) ease var(--in-delay);
   }
-  .reveal h1{ opacity:1; transform:translateY(0); }
-
+  .reveal h1{opacity:1; transform:translateY(0);}
   .hero-em{white-space:nowrap; font-style:italic; font-weight:600; letter-spacing:.2px}
 
-  /* ---------------- PAGE 2 (white + text + portrait) ---------------- */
+  /* ---------------- PAGE 2 ---------------- */
   .page2{
     background:var(--p2-bg);
     color:var(--p2-ink);
@@ -194,10 +197,10 @@
 
   .welcome{
     font-family:Inter,system-ui,sans-serif;
-    font-size:clamp(38px,4.5vw,54px);
+    font-size:clamp(36px,4.2vw,52px);
     line-height:1.05;
     margin:0 0 18px;
-    font-weight:500;
+    font-weight:600;
     letter-spacing:.1px;
   }
 
@@ -220,16 +223,6 @@
   .prose p{ margin:0 0 16px; }
   .prose p:last-child{ margin-bottom:0; }
 
-  .prose a{
-    color:var(--p2-link);
-    text-decoration:none;
-    border-bottom:1px solid rgba(46,155,127,.35);
-  }
-  .prose a:hover{
-    color:var(--p2-link-hover);
-    border-bottom-color:rgba(31,111,91,.55);
-  }
-
   .side{display:grid; gap:14px;}
 
   .portrait{
@@ -247,15 +240,9 @@
     background:linear-gradient(180deg, rgba(46,155,127,.10), rgba(0,0,0,.02));
   }
 
-  .quick-links{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-  }
+  .quick-links{display:flex; flex-wrap:wrap; gap:10px;}
   .btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
+    display:inline-flex; align-items:center; justify-content:center;
     padding:10px 12px;
     border-radius:10px;
     border:1px solid rgba(0,0,0,.12);
@@ -278,10 +265,10 @@
 
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto}
-    .film, .navband{transition:none}
+    .film,.logo-spot,.navband{transition:none}
     .logo{animation:none}
     h1{transition:none; opacity:1; transform:none;}
-    .btn, .nav-links a{transition:none}
+    .btn,.nav-links a{transition:none}
   }
 </style>
 </head>
@@ -305,6 +292,9 @@
 <header class="hero" id="top" role="banner" aria-label="Intro">
   <div class="film" aria-hidden="true"></div>
 
+  <!-- circular dark film behind the logo (appears at reveal) -->
+  <div class="logo-spot" aria-hidden="true"></div>
+
   <div class="hero-inner">
     <img class="logo" src="img/logo.png" alt="Site logo">
     <h1>
@@ -315,37 +305,60 @@
 </header>
 
 <!-- PAGE 2 -->
-<section id="research" class="page2" aria-label="Welcome">
+<section id="research" class="page2" aria-label="About">
   <div class="page2-wrap">
 
-    <h2 class="welcome">Welcome</h2>
+    <h2 class="welcome">Hey there, I'm Shubham.</h2>
 
     <div class="two-col">
+      <!-- Left text -->
       <div class="prose">
         <p>
-          Shubham Tiwari is a computational geomorphologist and ecohydrologist working at the interface of
-          applied science and environmental management. He is a <b>Senior Hydrologist</b> at the
-          <a href="https://www.gov.uk/government/organisations/environment-agency" target="_blank" rel="noreferrer">Environment Agency</a>
-          and an early-career researcher at
-          <a href="https://www.durham.ac.uk/" target="_blank" rel="noreferrer">Durham University</a>.
+          I'm fascinated by a question that drives most of my research:
+          <b>How do dryland landscapes fall apart and how can we see it coming before it's too late?</b>
         </p>
 
         <p>
-          His research focuses on applying <b>network analysis</b> and <b>numerical modeling</b> to quantify
-          hydrologic connectivity and stability in ecogeomorphic systems—supporting understanding of land
-          degradation processes in drylands and translating complex dynamics into actionable guidance.
+          Right now, I'm a postdoctoral researcher at <b>New Mexico State University</b>, working to understand
+          <b>dust source dynamics</b> across the western United States. Before this, I spent my PhD at
+          <b>Durham University</b> developing a network-based approach to dryland degradation—teaching myself
+          to see landscapes as living systems of connections rather than just collections of soil and plants.
         </p>
 
         <p>
-          He contributes to scientific outreach and stakeholder engagement, including co-chairing the
-          National Hydrology Outreach Group.
+          Drylands cover about <b>40% of Earth's land surface</b> and support billions of people. When they degrade,
+          the consequences ripple outward: dust storms, lost livelihoods, entire ecosystems shifting into new states.
+          But degradation doesn't happen uniformly. It flows through the landscape along pathways of <b>water, wind,
+          and vegetation</b>. If we can map these pathways, we can identify where systems are vulnerable and intervene
+          before collapse.
         </p>
 
         <p>
-          Please find my <a href="CV_shubham_tiwari_290126.pdf">CV</a> (and <a href="resume.pdf">resume</a>).
+          My journey has taken me from grasslands in the southwestern USA to floodplains in Austria, from analyzing
+          rainfall networks in Australia's Murray-Darling Basin to flying drones over semi-arid hillslopes in Arizona.
+          Along the way, I've earned a <b>Marie Skłodowska-Curie fellowship</b> and worked as one of the youngest
+          <b>Senior Hydrologists</b> in the UK's Environment Agency.
+        </p>
+
+        <p>
+          What excites me most is bridging fundamental science and real-world action. During my PhD, I focused on
+          <b>water-driven erosion</b> and how vegetation patterns control landscape stability. Now I'm extending that
+          thinking to <b>wind-driven processes</b> and dust emission. Different erosive forces, same underlying question:
+          <b>What makes a landscape resilient and what tips it over the edge?</b>
+        </p>
+
+        <p>
+          I use <b>complex network theory</b> alongside traditional geomorphic modeling—identifying critical thresholds
+          before they're crossed, and translating research into tools that land managers can actually use.
+        </p>
+
+        <p>
+          Thanks for stopping by. Feel free to explore my research or reach out if you want to chat about drylands,
+          networks, or anything in between.
         </p>
       </div>
 
+      <!-- Right image + links -->
       <aside class="side" aria-label="Profile">
         <div class="portrait">
           <img src="img/profile.jpg" alt="Portrait of Shubham Tiwari"
@@ -372,13 +385,13 @@
 <section id="news" class="empty" aria-label="News"></section>
 
 <script>
-/* Keep your delayed reveal, but page feels active immediately via logo animation */
+/* Delayed reveal remains, but logo animates immediately (t=0). */
 (function(){
-  setTimeout(()=>document.body.classList.add('reveal'), parseInt(getComputedStyle(document.documentElement).getPropertyValue('--reveal-delay')) || 1000);
+  const root = document.documentElement;
+  const revealDelay = parseInt(getComputedStyle(root).getPropertyValue('--reveal-delay')) || 1000;
+  setTimeout(()=>document.body.classList.add('reveal'), revealDelay);
 
-  const onScroll = () => {
-    document.body.classList.toggle('scrolled', window.scrollY > 40);
-  };
+  const onScroll = () => document.body.classList.toggle('scrolled', window.scrollY > 40);
   onScroll();
   window.addEventListener('scroll', onScroll, {passive:true});
 })();
