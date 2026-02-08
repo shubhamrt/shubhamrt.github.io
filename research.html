@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Research | Shubham Tiwari</title>
+
+<!-- same favicon approach -->
+<link rel="icon" type="image/svg+xml"
+  href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ccircle%20cx='50'%20cy='50'%20r='50'%20fill='black'/%3E%3Cimage%20href='img/logo.png'%20x='16'%20y='16'%20width='68'%20height='68'%20preserveAspectRatio='xMidYMid%20meet'%20style='filter:invert(1)%20brightness(2);'%20/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="img/logo.png">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#1b2622;
+    --muted:#4d6158;
+    --line:rgba(0,0,0,.10);
+
+    --accent:#2C7873;
+    --accent-hover:#1f5f5b;
+
+    --nav-h:70px;
+    --max:1100px;
+
+    --base:16px;
+    --lh:1.72;
+    --radius:16px;
+    --shadow:0 18px 40px rgba(0,0,0,.08);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    font-size:var(--base);
+    line-height:var(--lh);
+  }
+  a{color:var(--accent); text-decoration:underline; text-underline-offset:3px;}
+  a:hover{color:var(--accent-hover);}
+  .wrap{max-width:var(--max); margin:0 auto; padding: 0 24px;}
+
+  /* NAV (light) with burger on mobile */
+  .navband{
+    position:fixed; top:0; left:0; right:0;
+    height:var(--nav-h);
+    z-index:20;
+    border-bottom:1px solid rgba(0,0,0,.10);
+    background:rgba(255,255,255,.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .nav-inner{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+  }
+  .nav-brand{
+    font-weight:800;
+    letter-spacing:.2px;
+    font-size:clamp(18px,1.7vw,20px);
+    text-decoration:none;
+    color:var(--ink);
+    white-space:nowrap;
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .nav-links a{
+    color:var(--ink);
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    padding:11px 14px;
+    border-radius:999px;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .nav-links a:hover{ background:rgba(44,120,115,.10); transform:translateY(-1px); }
+
+  .nav-toggle{
+    display:none;
+    width:44px; height:44px;
+    border-radius:12px;
+    border:1px solid rgba(0,0,0,.18);
+    background:transparent;
+    color:var(--ink);
+    cursor:pointer;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-toggle span{
+    position:relative;
+    display:block;
+    width:18px; height:2px;
+    background:currentColor;
+  }
+  .nav-toggle span::before,
+  .nav-toggle span::after{
+    content:"";
+    position:absolute; left:0;
+    width:18px; height:2px;
+    background:currentColor;
+  }
+  .nav-toggle span::before{ top:-6px; }
+  .nav-toggle span::after{ top:6px; }
+
+  .nav-menu{
+    display:none;
+    position:absolute;
+    right:24px;
+    top:calc(var(--nav-h) + 10px);
+    background:rgba(255,255,255,.98);
+    border:1px solid rgba(0,0,0,.12);
+    border-radius:14px;
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+    padding:8px;
+    min-width:220px;
+  }
+  .nav-menu a{
+    display:block;
+    padding:10px 12px;
+    border-radius:10px;
+    text-decoration:none;
+    color:var(--ink);
+    font-weight:700;
+  }
+  .nav-menu a:hover{ background:rgba(44,120,115,.10); }
+  .nav-open .nav-menu{ display:block; }
+
+  @media (max-width: 760px){
+    :root{ --nav-h:74px; }
+    .nav-links{ display:none; }
+    .nav-toggle{ display:flex; }
+  }
+
+  main{ padding-top: calc(var(--nav-h) + 34px); padding-bottom: 64px; }
+
+  h1{
+    font-family:Spectral,serif;
+    font-size:clamp(34px,4vw,46px);
+    margin:0 0 12px;
+    letter-spacing:-.01em;
+  }
+  .sub{
+    margin:0 0 28px;
+    color:rgba(27,38,34,.80);
+    max-width:85ch;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:16px;
+  }
+  @media (min-width: 920px){
+    .grid{ grid-template-columns: repeat(2, 1fr); gap:18px; }
+  }
+
+  .card{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+    box-shadow:var(--shadow);
+    background:#fff;
+  }
+  .card h2{
+    margin:0 0 10px;
+    font-size:16px;
+    letter-spacing:.1px;
+  }
+  .card p{ margin:0 0 10px; color:rgba(27,38,34,.86); }
+  .card ul{ margin:10px 0 0 18px; color:rgba(27,38,34,.86); }
+  .card li{ margin:6px 0; }
+
+  .section{ margin-top:22px; }
+  .section h2{
+    font-family:Spectral,serif;
+    font-size:22px;
+    margin:0 0 12px;
+  }
+
+  .pubs{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    background:#fff;
+  }
+  .pubs ol{ margin:0; padding-left:18px; }
+  .pubs li{ margin:10px 0; }
+
+  .tools{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+  }
+  .pill{
+    border:1px solid rgba(44,120,115,.22);
+    background:rgba(44,120,115,.08);
+    color:rgba(27,38,34,.90);
+    border-radius:999px;
+    padding:7px 10px;
+    font-weight:700;
+    font-size:13px;
+  }
+
+  .cta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:14px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px 12px;
+    border-radius:12px;
+    border:1px solid rgba(0,0,0,.12);
+    background:#fff;
+    color:var(--ink);
+    text-decoration:none;
+    font-weight:800;
+  }
+  .btn.primary{
+    background:var(--accent);
+    color:#fff;
+    border-color:rgba(44,120,115,.35);
+    text-decoration:none;
+  }
+  .btn.primary:hover{ background:var(--accent-hover); }
+</style>
+</head>
+
+<body>
+<!-- NAV -->
+<div class="navband" id="nav" role="navigation" aria-label="Primary">
+  <div class="wrap nav-inner">
+    <a class="nav-brand" href="index.html#about">Shubham Tiwari</a>
+
+    <div class="nav-links" aria-label="Site pages">
+      <a href="research.html" aria-current="page">Research</a>
+      <a href="key-concept.html">Key Concept</a>
+      <a href="news.html">News</a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+      <span></span>
+    </button>
+  </div>
+
+  <div class="nav-menu" id="navMenu" role="menu" aria-label="Mobile menu">
+    <a role="menuitem" href="research.html" aria-current="page">Research</a>
+    <a role="menuitem" href="key-concept.html">Key Concept</a>
+    <a role="menuitem" href="news.html">News</a>
+    <a role="menuitem" href="index.html#about">About</a>
+  </div>
+</div>
+
+<main class="wrap">
+  <h1>Research</h1>
+  <p class="sub">
+    I work on connectivity, thresholds, and stability in environmental systems using complex network theory,
+    spatiotemporal analysis, and process-based modeling—across dryland degradation, dust emission risk,
+    and hydroclimate networks.
+  </p>
+
+  <!-- THEMES -->
+  <div class="grid">
+    <article class="card">
+      <h2>Dryland degradation & connectivity</h2>
+      <p>
+        Network-based representations of water, sediment, vegetation, and wind interactions to identify
+        pathways, critical nodes, and early-warning signals of instability.
+      </p>
+      <ul>
+        <li>Hydrological & sediment connectivity on dryland hillslopes</li>
+        <li>Connectivity
