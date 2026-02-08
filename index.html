@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Shubham Tiwari | Dryland Connectivity</title>
 
-<!-- FAVICON (fallback). Will be replaced on load with: white circle + black logo -->
+<!-- FAVICON (fallback). JS below replaces it with: white circle + black logo -->
 <link rel="icon" type="image/png" sizes="512x512" href="img/logo.png">
 <link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
 <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
@@ -315,7 +315,7 @@
 
   .portrait{
     width:100%;
-    max-width:400px; /* ~5% smaller than your last desktop look */
+    max-width:400px;
     border:1px solid var(--p2-line);
     padding:6px;
     background:#fff;
@@ -360,8 +360,8 @@
   /* Art strip using your img/banner.png repeated x3 */
   .art-strip{
     width:100%;
-    margin-top:8px;   /* reduce white space before */
-    margin-bottom:0;  /* reduce after */
+    margin-top:8px;
+    margin-bottom:0;
     padding:0;
     line-height:0;
     display:flex;
@@ -534,51 +534,101 @@
     window.addEventListener('resize', close);
   }
 
-  // Favicon: WHITE circle + BLACK logo on top (reliable across browsers)
+  // Favicon: WHITE circle + BLACK logo on top (forces logo to black)
   (async function setFaviconWhiteCircleBlackLogo(){
     try{
-      const size = 512;
+      const SIZE = 512;
+
+      // final favicon canvas
       const canvas = document.createElement('canvas');
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext('2d');
+      canvas.width = SIZE; canvas.height = SIZE;
+      const ctx = canvas.getContext('2d', { willReadFrequently:true });
       if(!ctx) return;
 
-      // White circle background
-      ctx.clearRect(0,0,size,size);
+      // white circle bg
+      ctx.clearRect(0,0,SIZE,SIZE);
       ctx.fillStyle = '#fff';
       ctx.beginPath();
-      ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
+      ctx.arc(SIZE/2, SIZE/2, SIZE/2, 0, Math.PI*2);
       ctx.fill();
 
-      // Load logo
+      // load logo
       const img = new Image();
       img.decoding = 'async';
       img.src = 'img/logo.png';
       await new Promise((res, rej) => { img.onload = res; img.onerror = rej; });
 
-      // Mask logo alpha -> fill black (works best if logo has transparent background)
+      // offscreen for recolor/mask
       const off = document.createElement('canvas');
-      off.width = size;
-      off.height = size;
-      const octx = off.getContext('2d');
+      off.width = SIZE; off.height = SIZE;
+      const octx = off.getContext('2d', { willReadFrequently:true });
       if(!octx) return;
 
-      const pad = Math.round(size * 0.18);
-      const w = size - pad*2;
-      const h = size - pad*2;
+      const pad = Math.round(SIZE * 0.16);
+      const w = SIZE - pad*2;
+      const h = SIZE - pad*2;
 
-      octx.clearRect(0,0,size,size);
+      octx.clearRect(0,0,SIZE,SIZE);
       octx.drawImage(img, pad, pad, w, h);
-      octx.globalCompositeOperation = 'source-in';
-      octx.fillStyle = '#000';
-      octx.fillRect(0,0,size,size);
 
+      const id = octx.getImageData(0,0,SIZE,SIZE);
+      const data = id.data;
+
+      // detect meaningful transparency
+      let transparentCount = 0;
+      for(let i=3; i<data.length; i+=4){
+        if(data[i] < 8) transparentCount++;
+      }
+      const hasAlpha = transparentCount > (data.length/4) * 0.01;
+
+      // if no alpha, estimate background color from corners
+      let bgR=255, bgG=255, bgB=255;
+      if(!hasAlpha){
+        const samples = [
+          (pad + 2) + (pad + 2) * SIZE,
+          (SIZE - pad - 3) + (pad + 2) * SIZE,
+          (pad + 2) + (SIZE - pad - 3) * SIZE,
+          (SIZE - pad - 3) + (SIZE - pad - 3) * SIZE
+        ];
+        let r=0,g=0,b=0;
+        for(const s of samples){
+          const k = s*4;
+          r += data[k]; g += data[k+1]; b += data[k+2];
+        }
+        bgR = r/4; bgG = g/4; bgB = b/4;
+      }
+
+      // convert to black logo mask
+      for(let i=0; i<data.length; i+=4){
+        const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+
+        let alpha = 0;
+        if(hasAlpha){
+          alpha = a;
+        }else{
+          const dr = r - bgR, dg = g - bgG, db = b - bgB;
+          const dist = Math.sqrt(dr*dr + dg*dg + db*db);
+
+          // soft threshold
+          const t0 = 12;
+          const t1 = 55;
+          const t = (dist - t0) / (t1 - t0);
+          alpha = Math.max(0, Math.min(255, Math.round(t * 255)));
+        }
+
+        data[i] = 0;
+        data[i+1] = 0;
+        data[i+2] = 0;
+        data[i+3] = alpha;
+      }
+      octx.putImageData(id, 0, 0);
+
+      // draw black logo on white circle
       ctx.drawImage(off, 0, 0);
 
       const url = canvas.toDataURL('image/png');
 
-      // Set favicon (override any previous icons)
+      // set favicon
       let link = document.querySelector('link[rel="icon"][data-dynamic="true"]');
       if(!link){
         link = document.createElement('link');
@@ -590,7 +640,7 @@
       link.href = url;
       link.sizes = '512x512';
     }catch(e){
-      // Keep fallback favicons if anything fails
+      // fallback favicons remain
     }
   })();
 })();
