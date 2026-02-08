@@ -14,24 +14,28 @@
   :root{
     --text:#fff;
 
+    /* Faster reveal */
     --in-delay:.02s;
     --in-dur:.28s;
+    --reveal-delay:400ms;
 
+    /* Page 2 */
     --p2-bg:#ffffff;
     --p2-ink:#1b2622;
     --p2-line:rgba(0,0,0,.10);
 
-    /* accent */
+    /* Accent */
     --accent:#2C7873;
     --accent-hover:#215f5b;
 
+    /* Layout */
     --nav-h:70px;
     --max:1100px;
 
-    /* Slightly compact but clear */
+    /* Compact but clear */
     --p2-base:15px;
 
-    /* Wider side column so signature stays on one line */
+    /* Side column width (helps signature stay on one line) */
     --side-w:360px;
 
     /* Art strip */
@@ -48,25 +52,50 @@
 
   /* ---------------- HERO ---------------- */
   .hero{
-    position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
-    text-align:center; overflow:hidden; color:var(--text);
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    color:var(--text);
     background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
     isolation:isolate;
   }
   /* Fix iOS/Safari "fixed background" issues */
-  @media (max-width: 900px){ .hero{ background-attachment: scroll; } }
+  @media (max-width: 900px){
+    .hero{ background-attachment: scroll; }
+  }
 
-  .film{position:absolute; inset:0; background:rgba(0,0,0,.25); opacity:0; transition:opacity var(--in-dur) ease var(--in-delay); z-index:1;}
+  .film{
+    position:absolute; inset:0;
+    background:rgba(0,0,0,.25);
+    opacity:0;
+    transition:opacity var(--in-dur) ease var(--in-delay);
+    z-index:1;
+  }
   .reveal .film{opacity:1}
 
-  /* ---------------- NAV ---------------- */
+  /* ---------------- NAV (desktop + mobile burger) ---------------- */
   .navband{
-    position:fixed; top:0; left:0; right:0; height:var(--nav-h); z-index:20;
-    opacity:0; transform:translateY(-8px);
-    transition:opacity var(--in-dur) ease var(--in-delay), transform var(--in-dur) ease var(--in-delay);
+    position:fixed;
+    top:0; left:0; right:0;
+    height:var(--nav-h);
+    z-index:20;
+
+    opacity:0;
+    transform:translateY(-8px);
+    transition:
+      opacity var(--in-dur) ease var(--in-delay),
+      transform var(--in-dur) ease var(--in-delay);
     pointer-events:none;
   }
-  .reveal .navband{opacity:1; transform:translateY(0); pointer-events:auto;}
+  .reveal .navband{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
 
   .nav-surface{
     position:absolute; inset:0;
@@ -75,48 +104,79 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
-  body.scrolled .nav-surface{background:rgba(255,255,255,.94); border-bottom:1px solid rgba(0,0,0,.10);}
+  body.scrolled .nav-surface{
+    background:rgba(255,255,255,.94);
+    border-bottom:1px solid rgba(0,0,0,.10);
+  }
 
   .nav-inner{
-    position:relative; height:100%;
+    position:relative;
+    height:100%;
     width:min(var(--max), calc(100% - 48px));
     margin:0 auto;
-    display:flex; align-items:center; justify-content:space-between; gap:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
   }
+
   .nav-brand{
-    font-weight:800; letter-spacing:.2px;
+    font-weight:800;
+    letter-spacing:.2px;
     font-size:clamp(18px,1.7vw,20px);
-    text-decoration:none; text-shadow:0 2px 8px rgba(0,0,0,.45); white-space:nowrap;
+    text-decoration:none;
+    text-shadow:0 2px 8px rgba(0,0,0,.45);
+    white-space:nowrap;
   }
   body.scrolled .nav-brand{ color:var(--p2-ink); text-shadow:none; }
 
-  /* Desktop links -> NEW PAGES */
-  .nav-links{display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end;}
+  /* Desktop links -> separate pages */
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
   .nav-links a{
-    color:var(--text); text-decoration:none; font-weight:700; font-size:16px;
-    padding:11px 14px; border-radius:999px;
+    color:var(--text);
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    padding:11px 14px;
+    border-radius:999px;
     transition:background .2s ease, transform .2s ease, color .2s ease;
     text-shadow:0 2px 8px rgba(0,0,0,.35);
   }
-  .nav-links a:hover{background:rgba(255,255,255,.10); transform:translateY(-1px);}
-  .nav-links a:focus-visible{outline:3px solid rgba(44,120,115,.45); outline-offset:2px;}
+  .nav-links a:hover{ background:rgba(255,255,255,.10); transform:translateY(-1px); }
+  .nav-links a:focus-visible{ outline:3px solid rgba(44,120,115,.45); outline-offset:2px; }
   body.scrolled .nav-links a{ color:var(--p2-ink); text-shadow:none; }
   body.scrolled .nav-links a:hover{ background:rgba(44,120,115,.10); }
 
   /* Mobile burger */
   .nav-toggle{
-    display:none; width:44px; height:44px; border-radius:12px;
+    display:none;
+    width:44px; height:44px;
+    border-radius:12px;
     border:1px solid rgba(255,255,255,.22);
     background:rgba(0,0,0,.12);
-    color:#fff; cursor:pointer;
-    align-items:center; justify-content:center;
+    color:#fff;
+    cursor:pointer;
+    align-items:center;
+    justify-content:center;
   }
   .nav-toggle span,.nav-toggle span::before,.nav-toggle span::after{
-    content:""; display:block; width:18px; height:2px; background:currentColor; border-radius:2px;
+    content:"";
+    display:block;
+    width:18px;
+    height:2px;
+    background:currentColor;
+    border-radius:2px;
   }
   .nav-toggle span{position:relative;}
   .nav-toggle span::before{position:absolute; top:-6px; left:0;}
   .nav-toggle span::after{position:absolute; top:6px; left:0;}
+
   body.scrolled .nav-toggle{
     color:var(--p2-ink);
     border-color:rgba(0,0,0,.14);
@@ -124,23 +184,43 @@
   }
 
   .nav-drawer{
-    position:absolute; right:0; top:calc(var(--nav-h) - 6px);
+    position:absolute;
+    right:0;
+    top:calc(var(--nav-h) - 6px);
     width:min(260px, calc(100vw - 24px));
-    padding:10px; border-radius:16px;
+    padding:10px;
+    border-radius:16px;
     border:1px solid rgba(255,255,255,.18);
     background:rgba(0,0,0,.30);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow:0 18px 40px rgba(0,0,0,.25);
-    opacity:0; transform:translateY(-6px); pointer-events:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
     transition:opacity .18s ease, transform .18s ease;
   }
-  .nav-drawer.open{opacity:1; transform:translateY(0); pointer-events:auto;}
-  .nav-drawer a{display:block; padding:12px 12px; border-radius:12px; text-decoration:none; font-weight:750; color:#fff;}
-  .nav-drawer a:hover{background:rgba(255,255,255,.10);}
-  body.scrolled .nav-drawer{background:rgba(255,255,255,.96); border-color:rgba(0,0,0,.10);}
-  body.scrolled .nav-drawer a{color:var(--p2-ink);}
-  body.scrolled .nav-drawer a:hover{background:rgba(44,120,115,.10);}
+  .nav-drawer.open{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .nav-drawer a{
+    display:block;
+    padding:12px 12px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:750;
+    color:#fff;
+  }
+  .nav-drawer a:hover{ background:rgba(255,255,255,.10); }
+
+  body.scrolled .nav-drawer{
+    background:rgba(255,255,255,.96);
+    border-color:rgba(0,0,0,.10);
+  }
+  body.scrolled .nav-drawer a{ color:var(--p2-ink); }
+  body.scrolled .nav-drawer a:hover{ background:rgba(44,120,115,.10); }
 
   @media (max-width:640px){
     :root{ --nav-h:78px; }
@@ -151,34 +231,42 @@
 
   /* ---------------- HERO CONTENT ---------------- */
   .hero-inner{
-    position:relative; z-index:2; padding:24px; margin-top:var(--nav-h);
-    opacity:0; transition:opacity var(--in-dur) ease var(--in-delay);
+    position:relative;
+    z-index:2;
+    padding:24px;
+    margin-top:var(--nav-h);
+    opacity:0;
+    transition:opacity var(--in-dur) ease var(--in-delay);
     transform:translateY(-1.2cm);
   }
   .reveal .hero-inner{opacity:1}
-  @media (max-width:520px){
-    .hero-inner{ transform:translateY(-0.5cm); padding:18px; }
-    .logo{ margin:clamp(-26px,-8vh,-120px) auto 14px; }
-  }
+
   .logo{
-    width:min(200px,35vw); height:auto;
+    width:min(200px,35vw);
+    height:auto;
     margin:clamp(-40px,-12vh,-200px) auto 18px;
     filter:drop-shadow(0 6px 25px rgba(0,0,0,.35));
   }
   h1{
     font-family:Spectral,serif;
     font-size:clamp(27px,4.64vw,51.2px);
-    line-height:1.06; margin:0;
+    line-height:1.06;
+    margin:0;
     text-shadow:0 2px 10px rgba(0,0,0,.35);
     font-weight:700;
   }
   .hero-em{white-space:nowrap; font-style:italic; font-weight:600; letter-spacing:.2px}
 
+  @media (max-width:520px){
+    .hero-inner{ transform:translateY(-0.5cm); padding:18px; }
+    .logo{ margin:clamp(-26px,-8vh,-120px) auto 14px; }
+  }
+
   /* ---------------- PAGE 2 ---------------- */
   .page2{
     background:var(--p2-bg);
     color:var(--p2-ink);
-    padding: 56px 24px 26px; /* minimal bottom padding: page ends after art strip */
+    padding: 56px 24px 26px; /* minimal bottom padding */
     font-size:var(--p2-base);
   }
   .page2-wrap{max-width:var(--max); margin:0 auto;}
@@ -224,6 +312,7 @@
   }
   .prose p{ margin:0 0 12px; }
   .prose p:last-child{ margin-bottom:0; }
+
   .prose a{
     color:var(--accent);
     text-decoration: underline;
@@ -232,7 +321,12 @@
   }
   .prose a:hover{ color:var(--accent-hover); }
 
-  .side{display:grid; gap:10px; justify-items:end;}
+  .side{
+    display:grid;
+    gap:10px;
+    justify-items:end;
+  }
+
   .portrait{
     width:100%;
     max-width:var(--side-w);
@@ -243,7 +337,8 @@
   .portrait img{ width:100%; height:auto; display:block; }
   .portrait.fallback{
     height:420px;
-    display:grid; place-items:center;
+    display:grid;
+    place-items:center;
     color:rgba(27,38,34,.55);
     background:linear-gradient(180deg, rgba(44,120,115,.10), rgba(0,0,0,.02));
   }
@@ -273,7 +368,7 @@
   }
   .profile-meta a:hover{ color:var(--accent-hover); }
 
-  /* Horizontal links */
+  /* Horizontal links like signature */
   .signature{
     width:100%;
     max-width:var(--side-w);
@@ -296,7 +391,7 @@
   }
   .signature a:hover{ color:var(--accent-hover); }
 
-  /* Mobile: center the photo only; keep text/links LEFT-aligned */
+  /* Mobile: center image; keep signature/links left-aligned */
   @media (max-width: 919px){
     :root{ --side-w: 420px; } /* bigger image on mobile */
     .side{ justify-items:center; }
@@ -332,13 +427,14 @@
 
 <body>
 
+<!-- TOP NAV BAND -->
 <div class="navband" role="navigation" aria-label="Primary">
   <div class="nav-surface" aria-hidden="true"></div>
 
   <div class="nav-inner">
     <a class="nav-brand" href="#about">Shubham Tiwari</a>
 
-    <!-- Desktop links: separate pages -->
+    <!-- Desktop links open new pages -->
     <div class="nav-links" aria-label="Site sections">
       <a href="research.html">Research</a>
       <a href="key-concepts.html">Key Concept</a>
@@ -358,6 +454,7 @@
   </div>
 </div>
 
+<!-- PAGE 1: HERO -->
 <header class="hero" id="top" role="banner" aria-label="Intro">
   <div class="film" aria-hidden="true"></div>
 
@@ -370,6 +467,7 @@
   </div>
 </header>
 
+<!-- PAGE 2: ABOUT -->
 <section id="about" class="page2" aria-label="About">
   <div class="page2-wrap">
 
@@ -443,102 +541,168 @@
 
   </div>
 
-  <!-- Decorative strip: dryland + folk pattern inspired -->
+  <!-- Decorative strip: more realistic dryland / ranch scene -->
   <div class="art-strip" aria-hidden="true">
-    <svg viewBox="0 0 1600 160" preserveAspectRatio="none">
+    <svg viewBox="0 0 1600 180" preserveAspectRatio="none">
       <!-- base -->
-      <rect x="0" y="0" width="1600" height="160" fill="var(--sand)"/>
-      <!-- horizon line -->
-      <path d="M0 78H1600" stroke="rgba(27,38,34,.10)" stroke-width="2"/>
+      <rect x="0" y="0" width="1600" height="180" fill="var(--sand)"/>
 
-      <!-- repeating “papel picado” triangles -->
-      <g opacity=".55" fill="var(--accent)">
-        <path d="M40 22l22 0l-11 16z"/>
-        <path d="M90 22l22 0l-11 16z"/>
-        <path d="M140 22l22 0l-11 16z"/>
-        <path d="M190 22l22 0l-11 16z"/>
-        <path d="M240 22l22 0l-11 16z"/>
-        <path d="M290 22l22 0l-11 16z"/>
-        <path d="M340 22l22 0l-11 16z"/>
-        <path d="M390 22l22 0l-11 16z"/>
-        <path d="M440 22l22 0l-11 16z"/>
-        <path d="M490 22l22 0l-11 16z"/>
-        <path d="M540 22l22 0l-11 16z"/>
-        <path d="M590 22l22 0l-11 16z"/>
-        <path d="M640 22l22 0l-11 16z"/>
-        <path d="M690 22l22 0l-11 16z"/>
-        <path d="M740 22l22 0l-11 16z"/>
-        <path d="M790 22l22 0l-11 16z"/>
-        <path d="M840 22l22 0l-11 16z"/>
-        <path d="M890 22l22 0l-11 16z"/>
-        <path d="M940 22l22 0l-11 16z"/>
-        <path d="M990 22l22 0l-11 16z"/>
-        <path d="M1040 22l22 0l-11 16z"/>
-        <path d="M1090 22l22 0l-11 16z"/>
-        <path d="M1140 22l22 0l-11 16z"/>
-        <path d="M1190 22l22 0l-11 16z"/>
-        <path d="M1240 22l22 0l-11 16z"/>
-        <path d="M1290 22l22 0l-11 16z"/>
-        <path d="M1340 22l22 0l-11 16z"/>
-        <path d="M1390 22l22 0l-11 16z"/>
-        <path d="M1440 22l22 0l-11 16z"/>
-        <path d="M1490 22l22 0l-11 16z"/>
-        <path d="M1540 22l22 0l-11 16z"/>
+      <!-- bunting string -->
+      <path d="M0 24H1600" stroke="rgba(27,38,34,.14)" stroke-width="2"/>
+
+      <!-- bunting flags -->
+      <g fill="var(--accent)" opacity=".60">
+        <path d="M20 26h26l-13 18z"/><path d="M70 26h26l-13 18z"/><path d="M120 26h26l-13 18z"/>
+        <path d="M170 26h26l-13 18z"/><path d="M220 26h26l-13 18z"/><path d="M270 26h26l-13 18z"/>
+        <path d="M320 26h26l-13 18z"/><path d="M370 26h26l-13 18z"/><path d="M420 26h26l-13 18z"/>
+        <path d="M470 26h26l-13 18z"/><path d="M520 26h26l-13 18z"/><path d="M570 26h26l-13 18z"/>
+        <path d="M620 26h26l-13 18z"/><path d="M670 26h26l-13 18z"/><path d="M720 26h26l-13 18z"/>
+        <path d="M770 26h26l-13 18z"/><path d="M820 26h26l-13 18z"/><path d="M870 26h26l-13 18z"/>
+        <path d="M920 26h26l-13 18z"/><path d="M970 26h26l-13 18z"/><path d="M1020 26h26l-13 18z"/>
+        <path d="M1070 26h26l-13 18z"/><path d="M1120 26h26l-13 18z"/><path d="M1170 26h26l-13 18z"/>
+        <path d="M1220 26h26l-13 18z"/><path d="M1270 26h26l-13 18z"/><path d="M1320 26h26l-13 18z"/>
+        <path d="M1370 26h26l-13 18z"/><path d="M1420 26h26l-13 18z"/><path d="M1470 26h26l-13 18z"/>
+        <path d="M1520 26h26l-13 18z"/>
       </g>
 
-      <!-- stylized dunes -->
-      <path d="M0 125 C 180 95, 340 150, 520 120 C 700 90, 860 152, 1040 120 C 1220 88, 1380 148, 1600 118 L1600 160 L0 160 Z"
-            fill="rgba(44,120,115,.12)"/>
-
-      <!-- simple desert plants (cacti) -->
-      <g fill="none" stroke="var(--accent)" stroke-width="4" opacity=".7" stroke-linecap="round">
-        <path d="M220 120 v-30"/>
-        <path d="M220 104 c-10 0-10-14 0-14"/>
-        <path d="M220 104 c10 0 10-14 0-14"/>
-
-        <path d="M860 122 v-36"/>
-        <path d="M860 104 c-12 0-12-18 0-18"/>
-        <path d="M860 104 c12 0 12-18 0-18"/>
-
-        <path d="M1340 123 v-28"/>
-        <path d="M1340 110 c-10 0-10-14 0-14"/>
-        <path d="M1340 110 c10 0 10-14 0-14"/>
-      </g>
-
-      <!-- mountains -->
+      <!-- distant mesas -->
       <g fill="rgba(27,38,34,.06)">
-        <path d="M560 78 L680 38 L800 78 Z"/>
-        <path d="M980 78 L1090 44 L1200 78 Z"/>
+        <path d="M120 76 L260 40 L420 76 Z"/>
+        <path d="M520 76 L690 36 L860 76 Z"/>
+        <path d="M980 76 L1125 42 L1280 76 Z"/>
+        <path d="M1320 76 L1460 44 L1600 76 Z"/>
       </g>
+
+      <!-- sun (soft) -->
+      <circle cx="1320" cy="52" r="22" fill="rgba(44,120,115,.10)"/>
+
+      <!-- birds -->
+      <g fill="none" stroke="rgba(27,38,34,.18)" stroke-width="2" stroke-linecap="round">
+        <path d="M1080 54 q10 -8 20 0"/>
+        <path d="M1100 54 q10 -8 20 0"/>
+        <path d="M280 52 q10 -8 20 0"/>
+        <path d="M300 52 q10 -8 20 0"/>
+      </g>
+
+      <!-- midground hills -->
+      <path
+        d="M0 110 C 220 88, 380 128, 560 108
+           C 740 88, 900 132, 1080 110
+           C 1260 88, 1420 126, 1600 108
+           L1600 180 L0 180 Z"
+        fill="rgba(44,120,115,.10)"/>
+
+      <!-- foreground dunes -->
+      <path
+        d="M0 140 C 260 122, 420 156, 620 140
+           C 820 124, 1040 164, 1220 144
+           C 1400 124, 1520 150, 1600 142
+           L1600 180 L0 180 Z"
+        fill="rgba(44,120,115,.14)"/>
+
+      <!-- fence line -->
+      <g stroke="rgba(27,38,34,.18)" stroke-width="2" fill="none" opacity=".9">
+        <path d="M0 128H1600"/>
+        <path d="M100 128v20"/><path d="M200 128v20"/><path d="M300 128v20"/><path d="M400 128v20"/>
+        <path d="M500 128v20"/><path d="M600 128v20"/><path d="M700 128v20"/><path d="M800 128v20"/>
+        <path d="M900 128v20"/><path d="M1000 128v20"/><path d="M1100 128v20"/><path d="M1200 128v20"/>
+        <path d="M1300 128v20"/><path d="M1400 128v20"/><path d="M1500 128v20"/>
+      </g>
+
+      <!-- saguaros -->
+      <g fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".85">
+        <path d="M250 148 V98"/>
+        <path d="M250 110 C250 100 230 100 230 112 V126"/>
+        <path d="M250 114 C250 104 270 104 270 116 V130"/>
+
+        <path d="M820 152 V88"/>
+        <path d="M820 106 C820 92 792 92 792 110 V134"/>
+        <path d="M820 112 C820 96 852 96 852 116 V138"/>
+
+        <path d="M1370 150 V96"/>
+        <path d="M1370 114 C1370 100 1346 100 1346 116 V134"/>
+      </g>
+
+      <!-- shrubs -->
+      <g fill="rgba(27,38,34,.10)" opacity=".9">
+        <ellipse cx="560" cy="152" rx="18" ry="6"/>
+        <ellipse cx="590" cy="154" rx="14" ry="5"/>
+        <ellipse cx="1010" cy="154" rx="16" ry="5"/>
+        <ellipse cx="1035" cy="156" rx="12" ry="4"/>
+      </g>
+
+      <!-- ranch: barn + windmill -->
+      <g opacity=".28" fill="rgba(27,38,34,.55)">
+        <path d="M108 146 L150 118 L192 146 V168 H108 Z"/>
+        <rect x="144" y="146" width="12" height="22" fill="rgba(27,38,34,.50)"/>
+        <rect x="320" y="120" width="6" height="48"/>
+        <path d="M323 118 l-16 10 l16 10 l16-10z"/>
+      </g>
+
+      <!-- cattle -->
+      <g fill="rgba(27,38,34,.18)" opacity=".95">
+        <path d="M1180 156
+                 c10-10 30-10 40 0
+                 l18 0 c6 0 10 4 10 10
+                 c0 6-4 10-10 10
+                 l-6 0 l-2 10 h-10 l-2-10
+                 h-22 l-2 10 h-10 l-2-10
+                 c-10 0-18-8-18-18 c0-6 3-10 6-12z"/>
+
+        <path d="M520 158
+                 c8-8 24-8 32 0
+                 l14 0 c5 0 9 4 9 9
+                 c0 6-4 10-10 10
+                 l-5 0 l-2 9 h-8 l-2-9
+                 h-18 l-2 9 h-8 l-2-9
+                 c-8 0-14-7-14-15 c0-5 2-8 4-10z"/>
+      </g>
+
+      <path d="M0 168H1600" stroke="rgba(27,38,34,.10)" stroke-width="2"/>
     </svg>
+
     <div class="art-caption">Dryland-inspired strip (decorative).</div>
   </div>
 </section>
 
 <script>
 (function(){
+  // Reveal quickly
   setTimeout(()=>document.body.classList.add('reveal'), 400);
 
+  // nav style on scroll
   const onScroll = () => document.body.classList.toggle('scrolled', window.scrollY > 40);
   onScroll();
   window.addEventListener('scroll', onScroll, {passive:true});
 
+  // mobile drawer
   const btn = document.getElementById('navToggle');
   const drawer = document.getElementById('navDrawer');
   const openDrawer = (open) => {
+    if(!btn || !drawer) return;
     drawer.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
   };
+
   if(btn && drawer){
-    btn.addEventListener('click', (e) => { e.stopPropagation(); openDrawer(!drawer.classList.contains('open')); });
-    document.addEventListener('click', (e) => {
-      if(drawer.classList.contains('open') && !drawer.contains(e.target) && !btn.contains(e.target)) openDrawer(false);
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDrawer(!drawer.classList.contains('open'));
     });
-    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') openDrawer(false); });
+
+    document.addEventListener('click', (e) => {
+      if(drawer.classList.contains('open') && !drawer.contains(e.target) && !btn.contains(e.target)){
+        openDrawer(false);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') openDrawer(false);
+    });
   }
 
-  // Favicon: black circle + white logo
+  // Favicon: black circle + white logo (so it doesn't look like a black dot)
   const faviconLink = document.getElementById('site-favicon');
   const logoImg = new Image();
   logoImg.src = 'img/logo.png';
@@ -549,17 +713,19 @@
       canvas.width = size; canvas.height = size;
       const ctx = canvas.getContext('2d');
 
+      // black circle background
       ctx.fillStyle = '#000';
       ctx.beginPath();
       ctx.arc(size/2, size/2, size/2 - 6, 0, Math.PI*2);
       ctx.closePath();
       ctx.fill();
 
+      // draw logo, then mask to white
       const off = document.createElement('canvas');
       off.width = size; off.height = size;
       const o = off.getContext('2d');
 
-      const target = size * 0.76;
+      const target = size * 0.78; // bigger so it's clearly visible
       const s = Math.min(target / logoImg.width, target / logoImg.height);
       const w = logoImg.width * s;
       const h = logoImg.height * s;
@@ -576,7 +742,9 @@
 
       faviconLink.type = 'image/png';
       faviconLink.href = canvas.toDataURL('image/png');
-    }catch(err){}
+    }catch(err){
+      // fallback stays as img/logo.png
+    }
   };
 })();
 </script>
