@@ -11,189 +11,447 @@
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --text:#fff;
-  --in-delay:.02s;
-  --in-dur:.28s;
+  :root{
+    --text:#fff;
 
-  --p2-bg:#ffffff;
-  --p2-ink:#1b2622;
-  --p2-line:rgba(0,0,0,.10);
+    /* Faster reveal */
+    --in-delay:.02s;
+    --in-dur:.28s;
+    --reveal-delay:400ms;
 
-  --accent:#2C7873;
-  --accent-hover:#215f5b;
+    /* Page 2 */
+    --p2-bg:#ffffff;
+    --p2-ink:#1b2622;
+    --p2-line:rgba(0,0,0,.10);
 
-  --nav-h:70px;
-  --max:1100px;
-  --p2-base:15px;
-  --side-w:360px;
+    /* Accent */
+    --accent:#2C7873;
+    --accent-hover:#215f5b;
 
-  --sand:#f3efe6;
-}
+    /* Layout */
+    --nav-h:70px;
+    --max:1100px;
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-html,body{height:100%;margin:0}
-body{background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
-img{display:block;max-width:100%}
-a{color:inherit}
-section{scroll-margin-top: calc(var(--nav-h) + 16px);}
+    /* Compact but clear */
+    --p2-base:15px;
 
-/* ---------------- HERO ---------------- */
-.hero{
-  position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
-  text-align:center; overflow:hidden; color:var(--text);
-  background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
-  isolation:isolate;
-}
-@media (max-width: 900px){ .hero{ background-attachment: scroll; } }
+    /* Side column width (helps signature stay on one line) */
+    --side-w:360px;
 
-.film{position:absolute; inset:0; background:rgba(0,0,0,.25); opacity:0; transition:opacity var(--in-dur) ease var(--in-delay); z-index:1;}
-.reveal .film{opacity:1}
+    /* Banner strip */
+    --strip-border:rgba(0,0,0,.08);
+  }
 
-/* ---------------- NAV ---------------- */
-.navband{
-  position:fixed; top:0; left:0; right:0; height:var(--nav-h); z-index:20;
-  opacity:0; transform:translateY(-8px);
-  transition:opacity var(--in-dur) ease var(--in-delay), transform var(--in-dur) ease var(--in-delay);
-  pointer-events:none;
-}
-.reveal .navband{opacity:1; transform:translateY(0); pointer-events:auto;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{height:100%;margin:0}
+  body{background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  section{scroll-margin-top: calc(var(--nav-h) + 16px);}
 
-.nav-surface{
-  position:absolute; inset:0;
-  background:rgba(0,0,0,.18);
-  border-bottom:1px solid rgba(255,255,255,.18);
-  backdrop-filter: blur(12px);
-}
+  /* ---------------- HERO ---------------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    color:var(--text);
+    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
+    isolation:isolate;
+  }
+  /* Fix iOS/Safari "fixed background" issues */
+  @media (max-width: 900px){
+    .hero{ background-attachment: scroll; }
+  }
 
-body.scrolled .nav-surface{
-  background:rgba(255,255,255,.94);
-  border-bottom:1px solid rgba(0,0,0,.10);
-}
+  .film{
+    position:absolute; inset:0;
+    background:rgba(0,0,0,.25);
+    opacity:0;
+    transition:opacity var(--in-dur) ease var(--in-delay);
+    z-index:1;
+  }
+  .reveal .film{opacity:1}
 
-.nav-inner{
-  position:relative; height:100%;
-  width:min(var(--max), calc(100% - 48px));
-  margin:0 auto;
-  display:flex; align-items:center; justify-content:space-between; gap:18px;
-}
+  /* ---------------- NAV (desktop + mobile burger) ---------------- */
+  .navband{
+    position:fixed;
+    top:0; left:0; right:0;
+    height:var(--nav-h);
+    z-index:20;
 
-.nav-brand{
-  font-weight:800;
-  font-size:clamp(18px,1.7vw,20px);
-  text-decoration:none;
-  text-shadow:0 2px 8px rgba(0,0,0,.45);
-}
+    opacity:0;
+    transform:translateY(-8px);
+    transition:
+      opacity var(--in-dur) ease var(--in-delay),
+      transform var(--in-dur) ease var(--in-delay);
+    pointer-events:none;
+  }
+  .reveal .navband{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
 
-body.scrolled .nav-brand{ color:var(--p2-ink); text-shadow:none; }
+  .nav-surface{
+    position:absolute; inset:0;
+    background:rgba(0,0,0,.18);
+    border-bottom:1px solid rgba(255,255,255,.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  body.scrolled .nav-surface{
+    background:rgba(255,255,255,.94);
+    border-bottom:1px solid rgba(0,0,0,.10);
+  }
 
-.nav-links{display:flex; gap:12px;}
-.nav-links a{
-  text-decoration:none; font-weight:700; padding:11px 14px;
-  border-radius:999px;
-}
-.nav-links a:hover{background:rgba(255,255,255,.10);}
-body.scrolled .nav-links a{color:var(--p2-ink);}
+  .nav-inner{
+    position:relative;
+    height:100%;
+    width:min(var(--max), calc(100% - 48px));
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+  }
 
-/* ---------------- HERO CONTENT ---------------- */
-.hero-inner{
-  position:relative; z-index:2; padding:24px; margin-top:var(--nav-h);
-  opacity:0; transform:translateY(-1.2cm);
-  transition:opacity var(--in-dur) ease var(--in-delay);
-}
-.reveal .hero-inner{opacity:1}
+  .nav-brand{
+    font-weight:800;
+    letter-spacing:.2px;
+    font-size:clamp(18px,1.7vw,20px);
+    text-decoration:none;
+    text-shadow:0 2px 8px rgba(0,0,0,.45);
+    white-space:nowrap;
+  }
+  body.scrolled .nav-brand{ color:var(--p2-ink); text-shadow:none; }
 
-.logo{
-  width:min(200px,35vw);
-  margin:clamp(-40px,-12vh,-200px) auto 18px;
-  filter:drop-shadow(0 6px 25px rgba(0,0,0,.35));
-}
+  /* Desktop links -> separate pages */
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .nav-links a{
+    color:var(--text);
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    padding:11px 14px;
+    border-radius:999px;
+    transition:background .2s ease, transform .2s ease, color .2s ease;
+    text-shadow:0 2px 8px rgba(0,0,0,.35);
+  }
+  .nav-links a:hover{ background:rgba(255,255,255,.10); transform:translateY(-1px); }
+  .nav-links a:focus-visible{ outline:3px solid rgba(44,120,115,.45); outline-offset:2px; }
+  body.scrolled .nav-links a{ color:var(--p2-ink); text-shadow:none; }
+  body.scrolled .nav-links a:hover{ background:rgba(44,120,115,.10); }
 
-h1{
-  font-family:Spectral,serif;
-  font-size:clamp(27px,4.6vw,51px);
-  line-height:1.06;
-}
+  /* Mobile burger */
+  .nav-toggle{
+    display:none;
+    width:44px; height:44px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.22);
+    background:rgba(0,0,0,.12);
+    color:#fff;
+    cursor:pointer;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-toggle span,.nav-toggle span::before,.nav-toggle span::after{
+    content:"";
+    display:block;
+    width:18px;
+    height:2px;
+    background:currentColor;
+    border-radius:2px;
+  }
+  .nav-toggle span{position:relative;}
+  .nav-toggle span::before{position:absolute; top:-6px; left:0;}
+  .nav-toggle span::after{position:absolute; top:6px; left:0;}
 
-.hero-em{font-style:italic}
+  body.scrolled .nav-toggle{
+    color:var(--p2-ink);
+    border-color:rgba(0,0,0,.14);
+    background:rgba(255,255,255,.75);
+  }
 
-/* ---------------- PAGE 2 ---------------- */
-.page2{
-  background:var(--p2-bg);
-  color:var(--p2-ink);
-  padding:56px 24px 26px;
-}
+  .nav-drawer{
+    position:absolute;
+    right:0;
+    top:calc(var(--nav-h) - 6px);
+    width:min(260px, calc(100vw - 24px));
+    padding:10px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(0,0,0,.30);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow:0 18px 40px rgba(0,0,0,.25);
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .nav-drawer.open{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .nav-drawer a{
+    display:block;
+    padding:12px 12px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:750;
+    color:#fff;
+  }
+  .nav-drawer a:hover{ background:rgba(255,255,255,.10); }
 
-.page2-wrap{max-width:var(--max); margin:0 auto;}
+  body.scrolled .nav-drawer{
+    background:rgba(255,255,255,.96);
+    border-color:rgba(0,0,0,.10);
+  }
+  body.scrolled .nav-drawer a{ color:var(--p2-ink); }
+  body.scrolled .nav-drawer a:hover{ background:rgba(44,120,115,.10); }
 
-.hello{
-  font-size:clamp(34px,3.2vw,44px);
-  margin:0 0 14px;
-}
+  @media (max-width:640px){
+    :root{ --nav-h:78px; }
+    .nav-inner{ width:calc(100% - 24px); }
+    .nav-links{ display:none; }
+    .nav-toggle{ display:inline-flex; }
+  }
 
-.lede{max-width:80ch; line-height:1.66}
+  /* ---------------- HERO CONTENT ---------------- */
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    padding:24px;
+    margin-top:var(--nav-h);
+    opacity:0;
+    transition:opacity var(--in-dur) ease var(--in-delay);
+    transform:translateY(-1.2cm);
+  }
+  .reveal .hero-inner{opacity:1}
 
-.two-col{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:20px;
-}
+  .logo{
+    width:min(200px,35vw);
+    height:auto;
+    margin:clamp(-40px,-12vh,-200px) auto 18px;
+    filter:drop-shadow(0 6px 25px rgba(0,0,0,.35));
+  }
+  h1{
+    font-family:Spectral,serif;
+    font-size:clamp(27px,4.64vw,51.2px);
+    line-height:1.06;
+    margin:0;
+    text-shadow:0 2px 10px rgba(0,0,0,.35);
+    font-weight:700;
+  }
+  .hero-em{white-space:nowrap; font-style:italic; font-weight:600; letter-spacing:.2px}
 
-@media (min-width:920px){
-  .two-col{grid-template-columns:1fr var(--side-w); gap:32px;}
-}
+  @media (max-width:520px){
+    .hero-inner{ transform:translateY(-0.5cm); padding:18px; }
+    .logo{ margin:clamp(-26px,-8vh,-120px) auto 14px; }
+  }
 
-.prose{line-height:1.72}
-.prose p{margin:0 0 12px}
+  /* ---------------- PAGE 2 ---------------- */
+  .page2{
+    background:var(--p2-bg);
+    color:var(--p2-ink);
+    padding: 56px 24px 0; /* no white space after banner */
+    font-size:var(--p2-base);
+  }
+  .page2-wrap{max-width:var(--max); margin:0 auto;}
 
-.side{display:grid; gap:10px}
+  .hello{
+    font-family:Inter,system-ui,sans-serif;
+    font-weight:800;
+    letter-spacing:-.02em;
+    font-size:clamp(34px,3.2vw,44px);
+    line-height:1.08;
+    margin:0 0 14px;
+  }
+  .lede{
+    font-size:1.02em;
+    line-height:1.66;
+    color:rgba(27,38,34,.86);
+    margin:0 0 18px;
+    max-width:80ch;
+  }
+  .lede .q{
+    color:var(--accent);
+    font-weight:850;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
 
-.portrait{
-  border:1px solid var(--p2-line);
-  padding:6px;
-  background:#fff;
-}
+  .two-col{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:20px;
+    align-items:start;
+    padding-bottom:22px; /* small breathing room before banner */
+  }
+  @media (min-width: 920px){
+    .two-col{ grid-template-columns: 1fr var(--side-w); gap:32px; }
+  }
 
-.signature{display:flex; gap:16px; flex-wrap:wrap}
+  .prose{
+    font-size:1em;
+    line-height:1.72;
+    color:rgba(27,38,34,.88);
+    max-width:84ch;
+  }
+  .prose p{ margin:0 0 12px; }
+  .prose p:last-child{ margin-bottom:0; }
 
-/* ---------------- BANNER STRIP (YOUR ART) ---------------- */
-.banner-strip{
-  margin-top:22px;
-  width:100vw;
-  margin-left:calc(50% - 50vw);
-  overflow:hidden;
-  border-top:1px solid rgba(0,0,0,.08);
-  background:var(--sand);
-}
+  .prose a{
+    color:var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+  }
+  .prose a:hover{ color:var(--accent-hover); }
 
-.banner-row{
-  display:flex;
-  width:100%;
-}
+  .side{
+    display:grid;
+    gap:10px;
+    justify-items:end;
+  }
 
-.banner-row img{
-  width:50vw;
-  height:160px;       /* adjust height if needed */
-  object-fit:cover;
-  flex:0 0 50vw;
-}
+  .portrait{
+    width:100%;
+    max-width:var(--side-w);
+    border:1px solid var(--p2-line);
+    padding:6px;
+    background:#fff;
+  }
+  .portrait img{ width:100%; height:auto; display:block; }
+  .portrait.fallback{
+    height:420px;
+    display:grid;
+    place-items:center;
+    color:rgba(27,38,34,.55);
+    background:linear-gradient(180deg, rgba(44,120,115,.10), rgba(0,0,0,.02));
+  }
 
-/* ---------------- MOTION REDUCTION ---------------- */
-@media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto}
-  .film,.navband,.hero-inner{transition:none; opacity:1; transform:none;}
-}
+  .profile-meta{
+    width:100%;
+    max-width:var(--side-w);
+    color:rgba(27,38,34,.82);
+    font-size:13.2px;
+    line-height:1.45;
+    padding-top:2px;
+  }
+  .profile-meta .name{
+    font-weight:800;
+    color:rgba(27,38,34,.92);
+    margin-bottom:6px;
+    font-size:14.4px;
+  }
+  .profile-meta .line{ margin:0 0 6px; }
+  .profile-meta .gap{ margin-top:10px; }
+  .profile-meta a{
+    color:var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    font-weight:650;
+  }
+  .profile-meta a:hover{ color:var(--accent-hover); }
+
+  /* Horizontal links like signature */
+  .signature{
+    width:100%;
+    max-width:var(--side-w);
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    align-items:center;
+    color:rgba(27,38,34,.78);
+    font-size:13.2px;
+    line-height:1.4;
+    padding-top:2px;
+    padding-bottom:0;
+  }
+  .signature a{
+    color:var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .signature a:hover{ color:var(--accent-hover); }
+
+  /* Mobile: center image; keep signature/links left-aligned */
+  @media (max-width: 919px){
+    :root{ --side-w: 420px; } /* bigger image on mobile */
+    .side{ justify-items:center; }
+    .portrait{ justify-self:center; }
+    .profile-meta, .signature{ justify-self:start; text-align:left; }
+  }
+
+  /* ---------------- ART BANNER (your banner.png duplicated) ---------------- */
+  .art-strip{
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+    border-top:1px solid var(--strip-border);
+    overflow:hidden;
+    background:#fff;
+  }
+  .art-row{
+    display:flex;
+    width:100%;
+  }
+  .art-row img{
+    width:50vw;          /* exactly two fit across the viewport */
+    height:auto;
+    display:block;
+  }
+  /* If you prefer a fixed strip height (more “banner-like”), uncomment:
+  .art-row img{ width:50vw; height:160px; object-fit:cover; }
+  */
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .film, .navband, .hero-inner{transition:none; opacity:1; transform:none;}
+    .nav-drawer{transition:none}
+  }
 </style>
 </head>
 
 <body>
 
-<div class="navband">
-  <div class="nav-surface"></div>
+<!-- TOP NAV BAND -->
+<div class="navband" role="navigation" aria-label="Primary">
+  <div class="nav-surface" aria-hidden="true"></div>
+
   <div class="nav-inner">
     <a class="nav-brand" href="#about">Shubham Tiwari</a>
-    <div class="nav-links">
+
+    <!-- Desktop links open new pages -->
+    <div class="nav-links" aria-label="Site sections">
+      <a href="research.html">Research</a>
+      <a href="key-concepts.html">Key Concept</a>
+      <a href="news.html">News</a>
+    </div>
+
+    <!-- Mobile burger -->
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="navDrawer" aria-expanded="false">
+      <span></span>
+    </button>
+
+    <div class="nav-drawer" id="navDrawer" aria-hidden="true">
       <a href="research.html">Research</a>
       <a href="key-concepts.html">Key Concept</a>
       <a href="news.html">News</a>
@@ -201,8 +459,10 @@ h1{
   </div>
 </div>
 
-<header class="hero">
-  <div class="film"></div>
+<!-- PAGE 1: HERO -->
+<header class="hero" id="top" role="banner" aria-label="Intro">
+  <div class="film" aria-hidden="true"></div>
+
   <div class="hero-inner">
     <img class="logo" src="img/logo.png" alt="Site logo">
     <h1>
@@ -212,49 +472,171 @@ h1{
   </div>
 </header>
 
-<section id="about" class="page2">
+<!-- PAGE 2: ABOUT -->
+<section id="about" class="page2" aria-label="About">
   <div class="page2-wrap">
 
     <h2 class="hello">Hey there, I'm Shubham.</h2>
     <p class="lede">
-      How do dryland landscapes fall apart — and how can we see it coming before it's too late?
+      I'm fascinated by a question that drives most of my research:
+      <span class="q">How do dryland landscapes fall apart and how can we see it coming before it's too late?</span>
     </p>
 
     <div class="two-col">
       <div class="prose">
-        <p>Postdoctoral researcher working on dryland connectivity, dust, and degradation.</p>
+        <p>
+          Right now, I'm a postdoctoral researcher at
+          <a href="https://nmsu.edu/" target="_blank" rel="noreferrer">New Mexico State University</a>,
+          working to understand dust source dynamics across the western United States. Before this, I spent my PhD at
+          <a href="https://www.durham.ac.uk/" target="_blank" rel="noreferrer">Durham University</a>
+          developing a network-based approach to dryland degradation. Essentially, I taught myself to see landscapes as living systems of connections rather than just collections of soil and plants.
+        </p>
+
+        <p>
+          Drylands cover about 40% of Earth's land surface and support billions of people. When they degrade, the consequences ripple outward: dust storms, lost livelihoods, entire ecosystems shifting into new states. But degradation doesn't happen uniformly. It flows through the landscape along pathways of water, wind and vegetation. If we can map these pathways, we can identify where systems are vulnerable and intervene before collapse.
+        </p>
+
+        <p>
+          My journey has taken me from grasslands in the southwestern USA to floodplains in Austria, from analyzing rainfall networks in Australia's Murray-Darling Basin to flying drones over semi-arid hillslopes in Arizona. Along the way, I've earned a
+          <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/" target="_blank" rel="noreferrer">Marie Skłodowska-Curie</a>
+          fellowship and worked as one of the youngest Senior Hydrologists in the UK's
+          <a href="https://www.gov.uk/government/organisations/environment-agency" target="_blank" rel="noreferrer">Environment Agency</a>.
+        </p>
+
+        <p>
+          What excites me most is bridging fundamental science and real-world action. During my PhD, I focused on water-driven erosion and how vegetation patterns control landscape stability. Now I'm extending that thinking to wind-driven processes and dust emission. Different erosive forces, same underlying question: What makes a landscape resilient and what tips it over the edge?
+        </p>
+
+        <p>
+          I use complex network theory alongside traditional geomorphic modeling. It's a way of seeing patterns that conventional approaches might miss, of identifying critical thresholds before they're crossed. And ultimately, I want to translate this research into tools that land managers can actually use.
+        </p>
+
+        <p>
+          Thanks for stopping by. Feel free to explore my research or reach out if you want to chat about drylands, networks or anything in between.
+        </p>
       </div>
 
-      <aside class="side">
+      <aside class="side" aria-label="Profile">
         <div class="portrait">
-          <img src="img/profile.jpg" alt="Portrait">
+          <img src="img/profile.jpg" alt="Portrait of Shubham Tiwari"
+               onerror="this.style.display='none'; this.parentElement.classList.add('fallback'); this.parentElement.textContent='Add img/profile.jpg';">
         </div>
 
-        <div class="signature">
+        <div class="profile-meta" aria-label="Profile details">
+          <div class="name">Dr Shubham Tiwari</div>
+
+          <div class="line">Senior Hydrologist, Environment Agency, DEFRA UK</div>
+          <div class="line">Marie Curie Early-Stage Researcher, i-CONN project</div>
+          <div class="line">Incoming postdoctoral researcher, New Mexico State University</div>
+
+          <div class="gap"></div>
+
+          <div class="line">Tel: +44 7586782408</div>
+          <div class="line">Email: <a href="mailto:shubham.tiwari@environment-agency.gov.uk">shubham.tiwari@environment-agency.gov.uk</a></div>
+        </div>
+
+        <div class="signature" aria-label="Links">
           <a href="CV_shubham_tiwari_290126.pdf">CV</a>
-          <a href="https://linkedin.com/in/shubhamrt">LinkedIn</a>
-          <a href="https://scholar.google.com/">Google Scholar</a>
+          <a href="https://linkedin.com/in/shubhamrt" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://scholar.google.com/citations?user=xdspNSQAAAAJ&hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+          <a href="https://x.com/EcoGeoNetwork" target="_blank" rel="noreferrer">X</a>
         </div>
       </aside>
     </div>
 
   </div>
 
-  <!-- FINAL BANNER -->
-  <div class="banner-strip" aria-hidden="true">
-    <div class="banner-row">
+  <!-- Your banner.png duplicated side-by-side -->
+  <div class="art-strip" aria-hidden="true">
+    <div class="art-row">
       <img src="img/banner.png" alt="">
       <img src="img/banner.png" alt="">
     </div>
   </div>
-
 </section>
 
 <script>
-setTimeout(()=>document.body.classList.add('reveal'),400);
-window.addEventListener('scroll',()=> {
-  document.body.classList.toggle('scrolled',window.scrollY>40);
-});
+(function(){
+  // Reveal quickly
+  setTimeout(()=>document.body.classList.add('reveal'), 400);
+
+  // nav style on scroll
+  const onScroll = () => document.body.classList.toggle('scrolled', window.scrollY > 40);
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  // mobile drawer
+  const btn = document.getElementById('navToggle');
+  const drawer = document.getElementById('navDrawer');
+  const openDrawer = (open) => {
+    if(!btn || !drawer) return;
+    drawer.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+  };
+
+  if(btn && drawer){
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDrawer(!drawer.classList.contains('open'));
+    });
+
+    document.addEventListener('click', (e) => {
+      if(drawer.classList.contains('open') && !drawer.contains(e.target) && !btn.contains(e.target)){
+        openDrawer(false);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') openDrawer(false);
+    });
+  }
+
+  // Favicon: black circle + white logo (so it doesn't look like a black dot)
+  const faviconLink = document.getElementById('site-favicon');
+  const logoImg = new Image();
+  logoImg.src = 'img/logo.png';
+  logoImg.onload = () => {
+    try{
+      const size = 256;
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // black circle background
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2 - 6, 0, Math.PI*2);
+      ctx.closePath();
+      ctx.fill();
+
+      // draw logo, then mask to white
+      const off = document.createElement('canvas');
+      off.width = size; off.height = size;
+      const o = off.getContext('2d');
+
+      const target = size * 0.78; // larger logo inside circle
+      const s = Math.min(target / logoImg.width, target / logoImg.height);
+      const w = logoImg.width * s;
+      const h = logoImg.height * s;
+      const x = (size - w) / 2;
+      const y = (size - h) / 2;
+
+      o.drawImage(logoImg, x, y, w, h);
+      o.globalCompositeOperation = 'source-in';
+      o.fillStyle = '#fff';
+      o.fillRect(0,0,size,size);
+      o.globalCompositeOperation = 'source-over';
+
+      ctx.drawImage(off, 0, 0);
+
+      faviconLink.type = 'image/png';
+      faviconLink.href = canvas.toDataURL('image/png');
+    }catch(err){
+      // fallback stays as img/logo.png
+    }
+  };
+})();
 </script>
 
 </body>
