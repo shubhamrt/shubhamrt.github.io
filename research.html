@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Research | Shubham Tiwari</title>
 
-<!-- same favicon approach -->
-<link rel="icon" type="image/svg+xml"
-  href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ccircle%20cx='50'%20cy='50'%20r='50'%20fill='black'/%3E%3Cimage%20href='img/logo.png'%20x='16'%20y='16'%20width='68'%20height='68'%20preserveAspectRatio='xMidYMid%20meet'%20style='filter:invert(1)%20brightness(2);'%20/%3E%3C/svg%3E" />
-<link rel="apple-touch-icon" href="img/logo.png">
+<!-- Favicon fallback (will be replaced by dynamic canvas favicon on load) -->
+<link rel="icon" type="image/png" sizes="512x512" href="img/logo.png">
+<link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
+<link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,7 +28,7 @@
     --max:1100px;
 
     --base:16px;
-    --lh:1.72;
+    --lh:1.68;       /* slightly more compact */
     --radius:16px;
     --shadow:0 18px 40px rgba(0,0,0,.08);
   }
@@ -42,7 +43,7 @@
     font-size:var(--base);
     line-height:var(--lh);
   }
-  a{color:var(--accent); text-decoration:underline; text-underline-offset:3px;}
+  a{color:var(--accent); text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px;}
   a:hover{color:var(--accent-hover);}
   .wrap{max-width:var(--max); margin:0 auto; padding: 0 24px;}
 
@@ -154,18 +155,20 @@
     letter-spacing:-.01em;
   }
   .sub{
-    margin:0 0 28px;
+    margin:0 0 20px;
     color:rgba(27,38,34,.80);
-    max-width:85ch;
+    max-width:86ch;
   }
 
+  /* Minimal layout */
   .grid{
     display:grid;
     grid-template-columns: 1fr;
-    gap:16px;
+    gap:14px;
+    margin-top: 14px;
   }
   @media (min-width: 920px){
-    .grid{ grid-template-columns: repeat(2, 1fr); gap:18px; }
+    .grid{ grid-template-columns: repeat(3, 1fr); gap:16px; }
   }
 
   .card{
@@ -176,35 +179,30 @@
     background:#fff;
   }
   .card h2{
-    margin:0 0 10px;
+    margin:0 0 8px;
     font-size:16px;
     letter-spacing:.1px;
+    font-weight:900;
   }
-  .card p{ margin:0 0 10px; color:rgba(27,38,34,.86); }
-  .card ul{ margin:10px 0 0 18px; color:rgba(27,38,34,.86); }
+  .card p{
+    margin:0 0 10px;
+    color:rgba(27,38,34,.86);
+    font-size:15px;
+    line-height:1.55;
+  }
+  .card ul{
+    margin:8px 0 0 18px;
+    color:rgba(27,38,34,.86);
+    font-size:14.7px;
+  }
   .card li{ margin:6px 0; }
 
-  .section{ margin-top:22px; }
-  .section h2{
-    font-family:Spectral,serif;
-    font-size:22px;
-    margin:0 0 12px;
-  }
-
-  .pubs{
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:14px 16px;
-    background:#fff;
-  }
-  .pubs ol{ margin:0; padding-left:18px; }
-  .pubs li{ margin:10px 0; }
-
+  /* Compact extras */
   .tools{
     display:flex;
     flex-wrap:wrap;
     gap:10px;
-    margin-top:10px;
+    margin-top:18px;
   }
   .pill{
     border:1px solid rgba(44,120,115,.22);
@@ -212,7 +210,7 @@
     color:rgba(27,38,34,.90);
     border-radius:999px;
     padding:7px 10px;
-    font-weight:700;
+    font-weight:750;
     font-size:13px;
   }
 
@@ -220,7 +218,7 @@
     display:flex;
     flex-wrap:wrap;
     gap:12px;
-    margin-top:14px;
+    margin-top:18px;
   }
   .btn{
     display:inline-flex;
@@ -232,7 +230,7 @@
     background:#fff;
     color:var(--ink);
     text-decoration:none;
-    font-weight:800;
+    font-weight:850;
   }
   .btn.primary{
     background:var(--accent);
@@ -273,18 +271,144 @@
   <h1>Research</h1>
   <p class="sub">
     I work on connectivity, thresholds, and stability in environmental systems using complex network theory,
-    spatiotemporal analysis, and process-based modeling—across dryland degradation, dust emission risk,
-    and hydroclimate networks.
+    spatiotemporal analysis, and process-based modeling.
+    Much of my work sits at the intersection of dryland degradation, dust source dynamics, and hydroclimate networks.
   </p>
 
-  <!-- THEMES -->
+  <!-- THEMES (minimal) -->
   <div class="grid">
     <article class="card">
-      <h2>Dryland degradation & connectivity</h2>
+      <h2>Dryland connectivity</h2>
       <p>
-        Network-based representations of water, sediment, vegetation, and wind interactions to identify
-        pathways, critical nodes, and early-warning signals of instability.
+        Using networks to map pathways and bottlenecks that shape degradation and recovery.
       </p>
       <ul>
-        <li>Hydrological & sediment connectivity on dryland hillslopes</li>
-        <li>Connectivity
+        <li>Water–sediment–vegetation connectivity</li>
+        <li>Early-warning signals from structure</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2>Dust source dynamics</h2>
+      <p>
+        Extending connectivity ideas to wind-driven processes and dust emission risk.
+      </p>
+      <ul>
+        <li>Erodibility patterns & hotspots</li>
+        <li>Linking models to observations</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2>Rainfall networks</h2>
+      <p>
+        Spatiotemporal structure in rainfall and what it implies for hydrology and monitoring.
+      </p>
+      <ul>
+        <li>Network-based rainfall reconstruction</li>
+        <li>Sensor placement & node importance</li>
+      </ul>
+    </article>
+  </div>
+
+  <!-- Methods (kept clean) -->
+  <div class="tools" aria-label="Methods">
+    <span class="pill">Complex networks</span>
+    <span class="pill">Spatiotemporal analysis</span>
+    <span class="pill">Process-based modeling</span>
+    <span class="pill">Geospatial workflows</span>
+  </div>
+
+  <!-- Simple CTA -->
+  <div class="cta" aria-label="Links">
+    <a class="btn primary" href="CV_Shubham_tiwari_280126.pdf">CV</a>
+    <a class="btn" href="https://scholar.google.com/citations?user=xdspNSQAAAAJ&hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+    <a class="btn" href="index.html#about">Contact</a>
+  </div>
+</main>
+
+<script>
+(function(){
+  // Mobile burger
+  const toggle = document.getElementById('navToggle');
+  const menu = document.getElementById('navMenu');
+
+  const closeMenu = () => {
+    document.body.classList.remove('nav-open');
+    toggle?.setAttribute('aria-expanded','false');
+  };
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = document.body.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  document.addEventListener('click', (e) => {
+    if(!document.body.classList.contains('nav-open')) return;
+    const nav = document.querySelector('.nav-inner');
+    const panel = document.getElementById('navMenu');
+    if(nav && !nav.contains(e.target) && panel && !panel.contains(e.target)) closeMenu();
+  });
+
+  // Dynamic favicon: black circle + your logo on top (whitened by alpha)
+  const setDynamicFavicon = async () => {
+    try{
+      const size = 512;
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      if(!ctx) return;
+
+      // black circle background
+      ctx.clearRect(0,0,size,size);
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
+      ctx.fill();
+
+      // load logo
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = 'img/logo.png';
+
+      await new Promise((res, rej) => {
+        img.onload = () => res();
+        img.onerror = () => rej();
+      });
+
+      // draw logo centered inset
+      const pad = Math.round(size * 0.18);
+      const w = size - pad*2;
+      const h = size - pad*2;
+
+      ctx.save();
+      ctx.drawImage(img, pad, pad, w, h);
+      ctx.globalCompositeOperation = 'source-in';
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0,0,size,size);
+      ctx.restore();
+
+      const url = canvas.toDataURL('image/png');
+
+      let link = document.querySelector('link[rel="icon"][data-dynamic="true"]');
+      if(!link){
+        link = document.createElement('link');
+        link.rel = 'icon';
+        link.type = 'image/png';
+        link.setAttribute('data-dynamic','true');
+        document.head.appendChild(link);
+      }
+      link.href = url;
+      link.sizes = '512x512';
+    }catch(e){
+      // fallback stays
+    }
+  };
+  setDynamicFavicon();
+})();
+</script>
+
+</body>
+</html>
