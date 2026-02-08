@@ -14,7 +14,7 @@
   :root{
     --text:#fff;
 
-    /* Faster reveal */
+    /* Reveal timing */
     --in-delay:.02s;
     --in-dur:.28s;
     --reveal-delay:400ms;
@@ -35,17 +35,22 @@
     /* Compact but clear */
     --p2-base:15px;
 
-    /* Side column width (helps signature stay on one line) */
+    /* Side column width */
     --side-w:360px;
 
-    /* Banner strip */
-    --strip-border:rgba(0,0,0,.08);
+    /* Banner strip height */
+    --strip-h:150px;
   }
 
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   html,body{height:100%;margin:0}
-  body{background:#000;color:var(--text);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
+  body{
+    background:#000;
+    color:var(--text);
+    font-family:Inter,system-ui,Arial,Helvetica,sans-serif;
+    overflow-x:hidden; /* prevent horizontal scroll from full-bleed banner */
+  }
   img{display:block;max-width:100%}
   a{color:inherit}
   section{scroll-margin-top: calc(var(--nav-h) + 16px);}
@@ -63,7 +68,7 @@
     background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
     isolation:isolate;
   }
-  /* Fix iOS/Safari "fixed background" issues */
+  /* Fix mobile Safari "fixed background" issues */
   @media (max-width: 900px){
     .hero{ background-attachment: scroll; }
   }
@@ -77,7 +82,7 @@
   }
   .reveal .film{opacity:1}
 
-  /* ---------------- NAV (desktop + mobile burger) ---------------- */
+  /* ---------------- NAV ---------------- */
   .navband{
     position:fixed;
     top:0; left:0; right:0;
@@ -130,7 +135,6 @@
   }
   body.scrolled .nav-brand{ color:var(--p2-ink); text-shadow:none; }
 
-  /* Desktop links -> separate pages */
   .nav-links{
     display:flex;
     align-items:center;
@@ -223,7 +227,7 @@
   body.scrolled .nav-drawer a:hover{ background:rgba(44,120,115,.10); }
 
   @media (max-width:640px){
-    :root{ --nav-h:78px; }
+    :root{ --nav-h:78px; --strip-h:120px; }
     .nav-inner{ width:calc(100% - 24px); }
     .nav-links{ display:none; }
     .nav-toggle{ display:inline-flex; }
@@ -266,7 +270,7 @@
   .page2{
     background:var(--p2-bg);
     color:var(--p2-ink);
-    padding: 56px 24px 0; /* no white space after banner */
+    padding: 52px 24px 0; /* reduced top spacing a bit */
     font-size:var(--p2-base);
   }
   .page2-wrap{max-width:var(--max); margin:0 auto;}
@@ -283,7 +287,7 @@
     font-size:1.02em;
     line-height:1.66;
     color:rgba(27,38,34,.86);
-    margin:0 0 18px;
+    margin:0 0 14px; /* a bit tighter */
     max-width:80ch;
   }
   .lede .q{
@@ -297,12 +301,12 @@
   .two-col{
     display:grid;
     grid-template-columns: 1fr;
-    gap:20px;
+    gap:18px;               /* tighter */
     align-items:start;
-    padding-bottom:22px; /* small breathing room before banner */
+    padding-bottom:8px;     /* less white space before banner */
   }
   @media (min-width: 920px){
-    .two-col{ grid-template-columns: 1fr var(--side-w); gap:32px; }
+    .two-col{ grid-template-columns: 1fr var(--side-w); gap:28px; }
   }
 
   .prose{
@@ -311,7 +315,7 @@
     color:rgba(27,38,34,.88);
     max-width:84ch;
   }
-  .prose p{ margin:0 0 12px; }
+  .prose p{ margin:0 0 10px; }
   .prose p:last-child{ margin-bottom:0; }
 
   .prose a{
@@ -348,15 +352,15 @@
     width:100%;
     max-width:var(--side-w);
     color:rgba(27,38,34,.82);
-    font-size:13.2px;
-    line-height:1.45;
+    font-size:13px;         /* slightly smaller */
+    line-height:1.42;
     padding-top:2px;
   }
   .profile-meta .name{
     font-weight:800;
     color:rgba(27,38,34,.92);
     margin-bottom:6px;
-    font-size:14.4px;
+    font-size:14.2px;
   }
   .profile-meta .line{ margin:0 0 6px; }
   .profile-meta .gap{ margin-top:10px; }
@@ -369,7 +373,6 @@
   }
   .profile-meta a:hover{ color:var(--accent-hover); }
 
-  /* Horizontal links like signature */
   .signature{
     width:100%;
     max-width:var(--side-w);
@@ -378,10 +381,9 @@
     flex-wrap:wrap;
     align-items:center;
     color:rgba(27,38,34,.78);
-    font-size:13.2px;
+    font-size:13px;         /* slightly smaller */
     line-height:1.4;
     padding-top:2px;
-    padding-bottom:0;
   }
   .signature a{
     color:var(--accent);
@@ -395,32 +397,36 @@
 
   /* Mobile: center image; keep signature/links left-aligned */
   @media (max-width: 919px){
-    :root{ --side-w: 420px; } /* bigger image on mobile */
+    :root{ --side-w: 430px; } /* larger image on mobile */
     .side{ justify-items:center; }
     .portrait{ justify-self:center; }
     .profile-meta, .signature{ justify-self:start; text-align:left; }
   }
 
-  /* ---------------- ART BANNER (your banner.png duplicated) ---------------- */
+  /* ---------------- FULL-BLEED ART BANNER (two tiles, no cropping) ---------------- */
   .art-strip{
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
     width:100vw;
-    margin-left:calc(50% - 50vw);
-    border-top:1px solid var(--strip-border);
-    overflow:hidden;
+    margin:0;               /* no extra white space before/after */
+    line-height:0;          /* removes tiny gaps */
+    border-top:1px solid rgba(0,0,0,.08);
     background:#fff;
+    overflow:hidden;
   }
   .art-row{
     display:flex;
     width:100%;
   }
   .art-row img{
-    width:50vw;          /* exactly two fit across the viewport */
-    height:auto;
-    display:block;
+    flex:0 0 50%;
+    width:50%;
+    height:var(--strip-h);  /* makes it less tall + avoids vertical cropping */
+    object-fit:contain;     /* IMPORTANT: no cropping */
+    object-position:center;
+    background:#fff;
   }
-  /* If you prefer a fixed strip height (more “banner-like”), uncomment:
-  .art-row img{ width:50vw; height:160px; object-fit:cover; }
-  */
 
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto}
@@ -546,7 +552,7 @@
 
   </div>
 
-  <!-- Your banner.png duplicated side-by-side -->
+  <!-- Your banner.png duplicated side-by-side (full width, no crop, tighter spacing) -->
   <div class="art-strip" aria-hidden="true">
     <div class="art-row">
       <img src="img/banner.png" alt="">
@@ -592,7 +598,7 @@
     });
   }
 
-  // Favicon: black circle + white logo (so it doesn't look like a black dot)
+  // Favicon: black circle + white logo
   const faviconLink = document.getElementById('site-favicon');
   const logoImg = new Image();
   logoImg.src = 'img/logo.png';
@@ -603,19 +609,17 @@
       canvas.width = size; canvas.height = size;
       const ctx = canvas.getContext('2d');
 
-      // black circle background
       ctx.fillStyle = '#000';
       ctx.beginPath();
       ctx.arc(size/2, size/2, size/2 - 6, 0, Math.PI*2);
       ctx.closePath();
       ctx.fill();
 
-      // draw logo, then mask to white
       const off = document.createElement('canvas');
       off.width = size; off.height = size;
       const o = off.getContext('2d');
 
-      const target = size * 0.78; // larger logo inside circle
+      const target = size * 0.78;
       const s = Math.min(target / logoImg.width, target / logoImg.height);
       const w = logoImg.width * s;
       const h = logoImg.height * s;
@@ -626,7 +630,6 @@
       o.globalCompositeOperation = 'source-in';
       o.fillStyle = '#fff';
       o.fillRect(0,0,size,size);
-      o.globalCompositeOperation = 'source-over';
 
       ctx.drawImage(off, 0, 0);
 
