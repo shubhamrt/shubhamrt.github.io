@@ -305,7 +305,6 @@
     align-items:start;
   }
   @media (min-width: 920px){
-    /* +10% image width */
     .two-col{ grid-template-columns: 1fr 306px; gap:36px; }
   }
 
@@ -334,7 +333,7 @@
 
   .portrait{
     width:100%;
-    max-width:306px; /* was 278 */
+    max-width:306px;
     border:1px solid var(--p2-line);
     padding:6px;
     background:#fff;
@@ -348,7 +347,32 @@
     background:linear-gradient(180deg, rgba(44,120,115,.10), rgba(0,0,0,.02));
   }
 
-  /* Signature block under image (no icons) */
+  /* Profile text block */
+  .profile-meta{
+    width:100%;
+    max-width:306px;
+    color:rgba(27,38,34,.82);
+    font-size:14px;
+    line-height:1.55;
+    padding-top:4px;
+  }
+  .profile-meta .name{
+    font-weight:800;
+    color:rgba(27,38,34,.92);
+    margin-bottom:6px;
+  }
+  .profile-meta .line{ margin:0 0 6px; }
+  .profile-meta .smallgap{ margin-top:10px; }
+  .profile-meta a{
+    color:var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    font-weight:650;
+  }
+  .profile-meta a:hover{ color:var(--accent-hover); }
+
+  /* Links list (kept like “signature”) */
   .signature{
     width:100%;
     max-width:306px;
@@ -366,10 +390,11 @@
   }
   .signature a:hover{ color:var(--accent-hover); }
 
-  /* Mobile: center the whole right column */
+  /* Mobile: center the photo only; keep text/links LEFT-aligned */
   @media (max-width: 919px){
     .side{ justify-items:center; }
-    .signature{ text-align:center; }
+    .profile-meta, .signature{ text-align:left; justify-self:start; }
+    .portrait{ justify-self:center; }
   }
 
   /* ---------------- PAGES 3 & 4 (EMPTY) ---------------- */
@@ -475,13 +500,26 @@
                onerror="this.style.display='none'; this.parentElement.classList.add('fallback'); this.parentElement.textContent='Add img/profile.jpg';">
         </div>
 
-        <!-- Signature-style links (no icons) -->
+        <!-- Requested text block -->
+        <div class="profile-meta" aria-label="Profile details">
+          <div class="name">Shubham Tiwari</div>
+
+          <div class="line">Senior Hydrologist, Environment Agency, DEFRA UK</div>
+          <div class="line">Marie Curie Early-Stage Researcher, i-CONN project</div>
+          <div class="line">Incoming postdoctoral researcher, New Mexico State University</div>
+
+          <div class="smallgap"></div>
+
+          <div class="line">Tel: +44 7586782408</div>
+          <div class="line">email: <a href="mailto:shubham.tiwari@environment-agency.gov.uk">shubham.tiwari@environment-agency.gov.uk</a></div>
+        </div>
+
+        <!-- Links (kept as signature-style list) -->
         <div class="signature" aria-label="Links">
           <div><a href="CV_shubham_tiwari_290126.pdf">CV</a></div>
-          <div><a href="mailto:shubham.tiwari@environment-agency.gov.uk">Email</a></div>
           <div><a href="https://linkedin.com/in/shubhamrt" target="_blank" rel="noreferrer">LinkedIn</a></div>
-          <div><a href="#" target="_blank" rel="noreferrer">Google Scholar</a></div>
-          <div><a href="#" target="_blank" rel="noreferrer">Twitter</a></div>
+          <div><a href="https://scholar.google.com/citations?user=xdspNSQAAAAJ&hl=en" target="_blank" rel="noreferrer">Google Scholar</a></div>
+          <div><a href="https://x.com/EcoGeoNetwork" target="_blank" rel="noreferrer">X</a></div>
         </div>
       </aside>
     </div>
@@ -554,7 +592,7 @@
       off.width = size; off.height = size;
       const o = off.getContext('2d');
 
-      const target = size * 0.74; // slightly larger inside the circle
+      const target = size * 0.74;
       const s = Math.min(target / logoImg.width, target / logoImg.height);
       const w = logoImg.width * s;
       const h = logoImg.height * s;
