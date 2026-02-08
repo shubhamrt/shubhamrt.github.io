@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Research | Shubham Tiwari</title>
 
-<!-- Favicon fallback (will be replaced by dynamic canvas favicon on load) -->
-<link rel="icon" type="image/png" sizes="512x512" href="img/logo.png">
-<link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
+<!-- Favicon (simple + reliable). If you later create a custom circular favicon file,
+     swap href to img/favicon.png or img/favicon.svg. -->
 <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
-<link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
+<link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
+<link rel="apple-touch-icon" href="img/logo.png">
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
   :root{
     --bg:#ffffff;
     --ink:#1b2622;
-    --muted:#4d6158;
+    --muted:rgba(27,38,34,.78);
     --line:rgba(0,0,0,.10);
 
     --accent:#2C7873;
@@ -28,7 +28,7 @@
     --max:1100px;
 
     --base:16px;
-    --lh:1.68;       /* slightly more compact */
+    --lh:1.72;
     --radius:16px;
     --shadow:0 18px 40px rgba(0,0,0,.08);
   }
@@ -43,9 +43,10 @@
     font-size:var(--base);
     line-height:var(--lh);
   }
-  a{color:var(--accent); text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px;}
-  a:hover{color:var(--accent-hover);}
   .wrap{max-width:var(--max); margin:0 auto; padding: 0 24px;}
+  img{max-width:100%; display:block;}
+  a{color:var(--accent); text-decoration:underline; text-underline-offset:3px;}
+  a:hover{color:var(--accent-hover);}
 
   /* NAV (light) with burger on mobile */
   .navband{
@@ -63,6 +64,7 @@
     align-items:center;
     justify-content:space-between;
     gap:18px;
+    position:relative;
   }
   .nav-brand{
     font-weight:800;
@@ -89,6 +91,7 @@
     transition:background .2s ease, transform .2s ease;
   }
   .nav-links a:hover{ background:rgba(44,120,115,.10); transform:translateY(-1px); }
+  .nav-links a[aria-current="page"]{ background:rgba(44,120,115,.12); }
 
   .nav-toggle{
     display:none;
@@ -146,79 +149,26 @@
     .nav-toggle{ display:flex; }
   }
 
-  main{ padding-top: calc(var(--nav-h) + 34px); padding-bottom: 64px; }
+  main{ padding-top: calc(var(--nav-h) + 34px); padding-bottom: 24px; }
 
   h1{
     font-family:Spectral,serif;
     font-size:clamp(34px,4vw,46px);
-    margin:0 0 12px;
+    margin:0 0 10px;
     letter-spacing:-.01em;
   }
   .sub{
-    margin:0 0 20px;
-    color:rgba(27,38,34,.80);
-    max-width:86ch;
+    margin:0 0 22px;
+    color:var(--muted);
+    max-width:88ch;
   }
 
-  /* Minimal layout */
-  .grid{
-    display:grid;
-    grid-template-columns: 1fr;
-    gap:14px;
-    margin-top: 14px;
-  }
-  @media (min-width: 920px){
-    .grid{ grid-template-columns: repeat(3, 1fr); gap:16px; }
-  }
-
-  .card{
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:16px;
-    box-shadow:var(--shadow);
-    background:#fff;
-  }
-  .card h2{
-    margin:0 0 8px;
-    font-size:16px;
-    letter-spacing:.1px;
-    font-weight:900;
-  }
-  .card p{
-    margin:0 0 10px;
-    color:rgba(27,38,34,.86);
-    font-size:15px;
-    line-height:1.55;
-  }
-  .card ul{
-    margin:8px 0 0 18px;
-    color:rgba(27,38,34,.86);
-    font-size:14.7px;
-  }
-  .card li{ margin:6px 0; }
-
-  /* Compact extras */
-  .tools{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:18px;
-  }
-  .pill{
-    border:1px solid rgba(44,120,115,.22);
-    background:rgba(44,120,115,.08);
-    color:rgba(27,38,34,.90);
-    border-radius:999px;
-    padding:7px 10px;
-    font-weight:750;
-    font-size:13px;
-  }
-
-  .cta{
+  .row{
     display:flex;
     flex-wrap:wrap;
     gap:12px;
-    margin-top:18px;
+    align-items:center;
+    margin: 10px 0 24px;
   }
   .btn{
     display:inline-flex;
@@ -230,7 +180,7 @@
     background:#fff;
     color:var(--ink);
     text-decoration:none;
-    font-weight:850;
+    font-weight:800;
   }
   .btn.primary{
     background:var(--accent);
@@ -239,6 +189,84 @@
     text-decoration:none;
   }
   .btn.primary:hover{ background:var(--accent-hover); }
+
+  .section{ margin-top:18px; }
+  .section h2{
+    font-family:Spectral,serif;
+    font-size:22px;
+    margin:0 0 12px;
+  }
+
+  /* Themes */
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:14px;
+  }
+  @media (min-width: 920px){
+    .grid{ grid-template-columns: repeat(2, 1fr); gap:16px; }
+  }
+  .card{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+    box-shadow:var(--shadow);
+    background:#fff;
+  }
+  .card h3{
+    margin:0 0 10px;
+    font-size:16px;
+    letter-spacing:.1px;
+  }
+  .card ul{ margin:0; padding-left:18px; color:rgba(27,38,34,.88); }
+  .card li{ margin:6px 0; }
+
+  /* Methods pills */
+  .pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+  }
+  .pill{
+    border:1px solid rgba(44,120,115,.22);
+    background:rgba(44,120,115,.08);
+    color:rgba(27,38,34,.90);
+    border-radius:999px;
+    padding:7px 10px;
+    font-weight:700;
+    font-size:13px;
+  }
+
+  /* Publications */
+  .pubs{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    background:#fff;
+  }
+  .pubs ol{ margin:0; padding-left:18px; }
+  .pubs li{ margin:12px 0; }
+  .pub-title{ font-weight:900; }
+  .pub-meta{
+    display:block;
+    margin-top:4px;
+    color:rgba(27,38,34,.78);
+    font-size:0.95em;
+  }
+
+  /* Decorative banner */
+  .art-strip{
+    width:100%;
+    margin-top:16px;
+    line-height:0;
+    display:flex;
+  }
+  .art-strip img{ width:calc(100% / 3); height:auto; display:block; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+  }
 </style>
 </head>
 
@@ -257,156 +285,171 @@
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
       <span></span>
     </button>
-  </div>
 
-  <div class="nav-menu" id="navMenu" role="menu" aria-label="Mobile menu">
-    <a role="menuitem" href="research.html" aria-current="page">Research</a>
-    <a role="menuitem" href="key-concept.html">Key Concept</a>
-    <a role="menuitem" href="news.html">News</a>
-    <a role="menuitem" href="index.html#about">About</a>
+    <div class="nav-menu" id="navMenu" role="menu" aria-label="Mobile menu">
+      <a role="menuitem" href="research.html" aria-current="page">Research</a>
+      <a role="menuitem" href="key-concept.html">Key Concept</a>
+      <a role="menuitem" href="news.html">News</a>
+      <a role="menuitem" href="index.html#about">About</a>
+    </div>
   </div>
 </div>
 
 <main class="wrap">
   <h1>Research</h1>
   <p class="sub">
-        I use connectivity thinking (often via complex networks) to understand how dryland systems organize, how they destabilize,
-        and how we can detect vulnerability early. My work spans dryland degradation, dust emission risk, spatiotemporal rainfall
-        networks and broader “connectivity science” across environmental systems.
+    I use connectivity thinking—especially <strong>complex networks</strong> and <strong>spatiotemporal analysis</strong>—to understand where environmental systems become vulnerable,
+    and how we can detect change early enough to act.
   </p>
 
-  <!-- THEMES (minimal) -->
-  <div class="grid">
-    <article class="card">
-      <h2>Dryland connectivity</h2>
-      <p>
-        Using networks to map pathways and bottlenecks that shape degradation and recovery.
-      </p>
-      <ul>
-        <li>Water–sediment–vegetation connectivity</li>
-        <li>Early-warning signals from structure</li>
-      </ul>
-    </article>
-
-    <article class="card">
-      <h2>Dust source dynamics</h2>
-      <p>
-        Extending connectivity ideas to wind-driven processes and dust emission risk.
-      </p>
-      <ul>
-        <li>Erodibility patterns & hotspots</li>
-        <li>Linking models to observations</li>
-      </ul>
-    </article>
-
-    <article class="card">
-      <h2>Rainfall networks</h2>
-      <p>
-        Spatiotemporal structure in rainfall and what it implies for hydrology and monitoring.
-      </p>
-      <ul>
-        <li>Network-based rainfall reconstruction</li>
-        <li>Sensor placement & node importance</li>
-      </ul>
-    </article>
-  </div>
-
-  <!-- Methods (kept clean) -->
-  <div class="tools" aria-label="Methods">
-    <span class="pill">Complex networks</span>
-    <span class="pill">Spatiotemporal analysis</span>
-    <span class="pill">Process-based modeling</span>
-    <span class="pill">Geospatial workflows</span>
-  </div>
-
-  <!-- Simple CTA -->
-  <div class="cta" aria-label="Links">
-    <a class="btn primary" href="CV_Shubham_tiwari_280126.pdf">CV</a>
+  <div class="row" aria-label="Quick actions">
+    <a class="btn primary" href="CV_shubham_tiwari_290126.pdf">Download CV</a>
     <a class="btn" href="https://scholar.google.com/citations?user=xdspNSQAAAAJ&hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
-    <a class="btn" href="index.html#about">Contact</a>
   </div>
+
+  <section class="section" aria-label="Research themes">
+    <h2>Themes</h2>
+
+    <div class="grid">
+      <article class="card">
+        <h3>Dryland degradation & ecogeomorphic connectivity</h3>
+        <ul>
+          <li>Mapping how water–sediment–vegetation interactions connect (or disconnect) across landscapes.</li>
+          <li>Using network metrics to flag critical pathways and early-warning signals of instability.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Dust source dynamics & wind-driven processes</h3>
+        <ul>
+          <li>Linking land condition, thresholds, and erodibility to anticipate dust emission risk.</li>
+          <li>Connecting process models with “critical node” ideas to target monitoring and action.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Spatiotemporal rainfall & hydroclimate networks</h3>
+        <ul>
+          <li>Network-based rainfall reconstruction, gauge-network design, and forecast evaluation.</li>
+          <li>Detecting changes in rainfall patterns across decades and translating them into risk signals.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Interdisciplinary connectivity science</h3>
+        <ul>
+          <li>Multilayer networks for connectivity in ecology, geomorphology, and coupled human–natural systems.</li>
+          <li>Transferable tools for identifying structure, influence, and thresholds in complex systems.</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="pills" aria-label="Methods">
+      <span class="pill">Complex network theory</span>
+      <span class="pill">Spatiotemporal analysis</span>
+      <span class="pill">Numerical & process-based modeling</span>
+      <span class="pill">Geospatial analysis (GIS / GEE)</span>
+      <span class="pill">Statistical modeling & ML</span>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Publications">
+    <h2>Publications</h2>
+
+    <div class="pubs">
+      <ol>
+        <li>
+          <a class="pub-title" href="https://doi.org/10.1016/j.jhydrol.2025.132896" target="_blank" rel="noreferrer">
+            Local- and global-scale hydrological and sediment connectivity over grassland and shrubland hillslopes
+          </a>
+          <span class="pub-meta">Tiwari, S., Turnbull, L., &amp; Wainwright, J. (2025). <em>Journal of Hydrology</em>, 655, 132896.</span>
+        </li>
+
+        <li>
+          <a class="pub-title" href="https://doi.org/10.1002/eco.2690" target="_blank" rel="noreferrer">
+            Water-controlled ecosystems as complex networks: Evaluation of network-based approaches to quantify patterns of connectivity
+          </a>
+          <span class="pub-meta">Tiwari, S., Turnbull, L., &amp; Wainwright, J. (2024). <em>Ecohydrology</em>, 17(7), e2690.</span>
+        </li>
+
+        <li>
+          <a class="pub-title" href="https://doi.org/10.3389/fnsys.2023.1305022" target="_blank" rel="noreferrer">
+            First activity and interactions in thalamus and cortex using raw single-trial EEG and MEG elicited by somatosensory stimulation
+          </a>
+          <span class="pub-meta">Karittevlis, C., Papadopoulos, M., Lima, V., Orphanides, G. A., Tiwari, S., Antonakakis, M., Papadopoulou Lesta, V., &amp; Ioannides, A. A. (2024). <em>Frontiers in Systems Neuroscience</em>, 17, 1305022.</span>
+        </li>
+
+        <li>
+          <a class="pub-title" href="https://doi.org/10.1007/s10980-024-01975-0" target="_blank" rel="noreferrer">
+            Multilayer networks in landscape ecology: A case study to assess changes in aquatic habitat connectivity for flying and non-flying benthic macroinvertebrates in a Danube floodplain
+          </a>
+          <span class="pub-meta">Recinos Brizuela, S. S., Funk, A., Tiwari, S., Baldan, D., &amp; Hein, T. (2024). <em>Landscape Ecology</em>, 39, 186.</span>
+        </li>
+
+        <li>
+          <a class="pub-title" href="https://doi.org/10.1080/02626667.2021.1982138" target="_blank" rel="noreferrer">
+            Evaluation of quantitative precipitation forecast in five Indian river basins
+          </a>
+          <span class="pub-meta">Singh, A., Tiwari, S., &amp; Jha, S. K. (2021). <em>Hydrological Sciences Journal</em>, 66(15), 2216–2231.</span>
+        </li>
+
+        <li>
+          <a class="pub-title" href="https://doi.org/10.1098/rsif.2021.0486" target="_blank" rel="noreferrer">
+            Two classes of functional connectivity in dynamical processes in networks
+          </a>
+          <span class="pub-meta">Vousta, V. et&nbsp;al. (2021). <em>Journal of the Royal Society Interface</em>, 18(183), 20210486.</span>
+        </li>
+
+        <li>
+          <a class="pub-title" href="https://doi.org/10.1038/s41598-020-66363-5" target="_blank" rel="noreferrer">
+            Quantification of node importance in rain gauge network: influence of temporal resolution and rain gauge density
+          </a>
+          <span class="pub-meta">Tiwari, S., Jha, S. K., &amp; Singh, A. (2020). <em>Scientific Reports</em>, 10(1), 9761.</span>
+        </li>
+
+        <li>
+          <a class="pub-title" href="https://doi.org/10.1016/j.jhydrol.2019.124185" target="_blank" rel="noreferrer">
+            Reconstruction of daily rainfall data using the concepts of networks: accounting for spatial connections in neighborhood selection
+          </a>
+          <span class="pub-meta">Tiwari, S., Jha, S. K., &amp; Sivakumar, B. (2019). <em>Journal of Hydrology</em>, 579, 124185.</span>
+        </li>
+      </ol>
+    </div>
+  </section>
 </main>
+
+<!-- Optional decorative strip (matches your index aesthetic) -->
+<div class="art-strip" aria-hidden="true">
+  <img src="img/banner.png" alt="">
+  <img src="img/banner.png" alt="">
+  <img src="img/banner.png" alt="">
+</div>
 
 <script>
 (function(){
-  // Mobile burger
-  const toggle = document.getElementById('navToggle');
+  // Mobile burger toggle
+  const nav = document.getElementById('nav');
+  const btn = document.getElementById('navToggle');
   const menu = document.getElementById('navMenu');
 
-  const closeMenu = () => {
-    document.body.classList.remove('nav-open');
-    toggle?.setAttribute('aria-expanded','false');
-  };
+  if(btn && nav && menu){
+    const close = () => {
+      document.body.classList.remove('nav-open');
+      btn.setAttribute('aria-expanded','false');
+      menu.style.display = 'none';
+    };
+    const open = () => {
+      document.body.classList.add('nav-open');
+      btn.setAttribute('aria-expanded','true');
+      menu.style.display = 'block';
+    };
+    const toggle = () => (document.body.classList.contains('nav-open') ? close() : open());
 
-  toggle?.addEventListener('click', () => {
-    const isOpen = document.body.classList.toggle('nav-open');
-    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
-
-  menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-  document.addEventListener('click', (e) => {
-    if(!document.body.classList.contains('nav-open')) return;
-    const nav = document.querySelector('.nav-inner');
-    const panel = document.getElementById('navMenu');
-    if(nav && !nav.contains(e.target) && panel && !panel.contains(e.target)) closeMenu();
-  });
-
-  // Dynamic favicon: black circle + your logo on top (whitened by alpha)
-  const setDynamicFavicon = async () => {
-    try{
-      const size = 512;
-      const canvas = document.createElement('canvas');
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext('2d');
-      if(!ctx) return;
-
-      // black circle background
-      ctx.clearRect(0,0,size,size);
-      ctx.fillStyle = '#000';
-      ctx.beginPath();
-      ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
-      ctx.fill();
-
-      // load logo
-      const img = new Image();
-      img.decoding = 'async';
-      img.src = 'img/logo.png';
-
-      await new Promise((res, rej) => {
-        img.onload = () => res();
-        img.onerror = () => rej();
-      });
-
-      // draw logo centered inset
-      const pad = Math.round(size * 0.18);
-      const w = size - pad*2;
-      const h = size - pad*2;
-
-      ctx.save();
-      ctx.drawImage(img, pad, pad, w, h);
-      ctx.globalCompositeOperation = 'source-in';
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0,0,size,size);
-      ctx.restore();
-
-      const url = canvas.toDataURL('image/png');
-
-      let link = document.querySelector('link[rel="icon"][data-dynamic="true"]');
-      if(!link){
-        link = document.createElement('link');
-        link.rel = 'icon';
-        link.type = 'image/png';
-        link.setAttribute('data-dynamic','true');
-        document.head.appendChild(link);
-      }
-      link.href = url;
-      link.sizes = '512x512';
-    }catch(e){
-      // fallback stays
-    }
-  };
-  setDynamicFavicon();
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggle(); });
+    menu.addEventListener('click', (e)=>{ if(e.target.tagName === 'A') close(); });
+    document.addEventListener('click', (e)=>{ if(!nav.contains(e.target)) close(); });
+    window.addEventListener('resize', close);
+  }
 })();
 </script>
 
