@@ -16,23 +16,26 @@
 
     --in-delay:.02s;
     --in-dur:.28s;
-    --reveal-delay:400ms;
 
     --p2-bg:#ffffff;
     --p2-ink:#1b2622;
     --p2-line:rgba(0,0,0,.10);
 
+    /* accent */
     --accent:#2C7873;
     --accent-hover:#215f5b;
 
     --nav-h:70px;
     --max:1100px;
 
-    /* Slightly smaller overall text */
+    /* Slightly compact but clear */
     --p2-base:15px;
 
     /* Wider side column so signature stays on one line */
     --side-w:360px;
+
+    /* Art strip */
+    --sand:#f3efe6;
   }
 
   *{box-sizing:border-box}
@@ -47,8 +50,10 @@
   .hero{
     position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
     text-align:center; overflow:hidden; color:var(--text);
-    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed; isolation:isolate;
+    background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
+    isolation:isolate;
   }
+  /* Fix iOS/Safari "fixed background" issues */
   @media (max-width: 900px){ .hero{ background-attachment: scroll; } }
 
   .film{position:absolute; inset:0; background:rgba(0,0,0,.25); opacity:0; transition:opacity var(--in-dur) ease var(--in-delay); z-index:1;}
@@ -85,6 +90,7 @@
   }
   body.scrolled .nav-brand{ color:var(--p2-ink); text-shadow:none; }
 
+  /* Desktop links -> NEW PAGES */
   .nav-links{display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end;}
   .nav-links a{
     color:var(--text); text-decoration:none; font-weight:700; font-size:16px;
@@ -111,7 +117,6 @@
   .nav-toggle span{position:relative;}
   .nav-toggle span::before{position:absolute; top:-6px; left:0;}
   .nav-toggle span::after{position:absolute; top:6px; left:0;}
-
   body.scrolled .nav-toggle{
     color:var(--p2-ink);
     border-color:rgba(0,0,0,.14);
@@ -173,7 +178,7 @@
   .page2{
     background:var(--p2-bg);
     color:var(--p2-ink);
-    padding: 56px 24px 104px;
+    padding: 56px 24px 26px; /* minimal bottom padding: page ends after art strip */
     font-size:var(--p2-base);
   }
   .page2-wrap{max-width:var(--max); margin:0 auto;}
@@ -219,7 +224,6 @@
   }
   .prose p{ margin:0 0 12px; }
   .prose p:last-child{ margin-bottom:0; }
-
   .prose a{
     color:var(--accent);
     text-decoration: underline;
@@ -248,7 +252,7 @@
     width:100%;
     max-width:var(--side-w);
     color:rgba(27,38,34,.82);
-    font-size:13.5px; /* slightly smaller */
+    font-size:13.2px;
     line-height:1.45;
     padding-top:2px;
   }
@@ -256,7 +260,7 @@
     font-weight:800;
     color:rgba(27,38,34,.92);
     margin-bottom:6px;
-    font-size:14.5px;
+    font-size:14.4px;
   }
   .profile-meta .line{ margin:0 0 6px; }
   .profile-meta .gap{ margin-top:10px; }
@@ -278,7 +282,7 @@
     flex-wrap:wrap;
     align-items:center;
     color:rgba(27,38,34,.78);
-    font-size:13.5px;
+    font-size:13.2px;
     line-height:1.4;
     padding-top:2px;
   }
@@ -294,12 +298,29 @@
 
   /* Mobile: center the photo only; keep text/links LEFT-aligned */
   @media (max-width: 919px){
+    :root{ --side-w: 420px; } /* bigger image on mobile */
     .side{ justify-items:center; }
     .portrait{ justify-self:center; }
     .profile-meta, .signature{ justify-self:start; text-align:left; }
   }
 
-  .empty{ background:#fff; min-height:70vh; }
+  /* ---------------- Art strip (footer) ---------------- */
+  .art-strip{
+    margin-top:22px;
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+    background:var(--sand);
+    border-top:1px solid rgba(0,0,0,.08);
+    overflow:hidden;
+  }
+  .art-strip svg{ display:block; width:100%; height:auto; }
+  .art-caption{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:10px 24px 14px;
+    color:rgba(27,38,34,.62);
+    font-size:12.5px;
+  }
 
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto}
@@ -315,22 +336,24 @@
   <div class="nav-surface" aria-hidden="true"></div>
 
   <div class="nav-inner">
-    <a class="nav-brand" href="#research">Shubham Tiwari</a>
+    <a class="nav-brand" href="#about">Shubham Tiwari</a>
 
+    <!-- Desktop links: separate pages -->
     <div class="nav-links" aria-label="Site sections">
-      <a href="#research">Research</a>
-      <a href="#key-concepts">Key Concept</a>
-      <a href="#news">News</a>
+      <a href="research.html">Research</a>
+      <a href="key-concepts.html">Key Concept</a>
+      <a href="news.html">News</a>
     </div>
 
+    <!-- Mobile burger -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="navDrawer" aria-expanded="false">
       <span></span>
     </button>
 
     <div class="nav-drawer" id="navDrawer" aria-hidden="true">
-      <a href="#research">Research</a>
-      <a href="#key-concepts">Key Concept</a>
-      <a href="#news">News</a>
+      <a href="research.html">Research</a>
+      <a href="key-concepts.html">Key Concept</a>
+      <a href="news.html">News</a>
     </div>
   </div>
 </div>
@@ -347,7 +370,7 @@
   </div>
 </header>
 
-<section id="research" class="page2" aria-label="About">
+<section id="about" class="page2" aria-label="About">
   <div class="page2-wrap">
 
     <h2 class="hello">Hey there, I'm Shubham.</h2>
@@ -397,7 +420,7 @@
         </div>
 
         <div class="profile-meta" aria-label="Profile details">
-          <div class="name">Shubham Tiwari</div>
+          <div class="name">Dr Shubham Tiwari</div>
 
           <div class="line">Senior Hydrologist, Environment Agency, DEFRA UK</div>
           <div class="line">Marie Curie Early-Stage Researcher, i-CONN project</div>
@@ -419,10 +442,78 @@
     </div>
 
   </div>
-</section>
 
-<section id="key-concepts" class="empty" aria-label="Key concept"></section>
-<section id="news" class="empty" aria-label="News"></section>
+  <!-- Decorative strip: dryland + folk pattern inspired -->
+  <div class="art-strip" aria-hidden="true">
+    <svg viewBox="0 0 1600 160" preserveAspectRatio="none">
+      <!-- base -->
+      <rect x="0" y="0" width="1600" height="160" fill="var(--sand)"/>
+      <!-- horizon line -->
+      <path d="M0 78H1600" stroke="rgba(27,38,34,.10)" stroke-width="2"/>
+
+      <!-- repeating “papel picado” triangles -->
+      <g opacity=".55" fill="var(--accent)">
+        <path d="M40 22l22 0l-11 16z"/>
+        <path d="M90 22l22 0l-11 16z"/>
+        <path d="M140 22l22 0l-11 16z"/>
+        <path d="M190 22l22 0l-11 16z"/>
+        <path d="M240 22l22 0l-11 16z"/>
+        <path d="M290 22l22 0l-11 16z"/>
+        <path d="M340 22l22 0l-11 16z"/>
+        <path d="M390 22l22 0l-11 16z"/>
+        <path d="M440 22l22 0l-11 16z"/>
+        <path d="M490 22l22 0l-11 16z"/>
+        <path d="M540 22l22 0l-11 16z"/>
+        <path d="M590 22l22 0l-11 16z"/>
+        <path d="M640 22l22 0l-11 16z"/>
+        <path d="M690 22l22 0l-11 16z"/>
+        <path d="M740 22l22 0l-11 16z"/>
+        <path d="M790 22l22 0l-11 16z"/>
+        <path d="M840 22l22 0l-11 16z"/>
+        <path d="M890 22l22 0l-11 16z"/>
+        <path d="M940 22l22 0l-11 16z"/>
+        <path d="M990 22l22 0l-11 16z"/>
+        <path d="M1040 22l22 0l-11 16z"/>
+        <path d="M1090 22l22 0l-11 16z"/>
+        <path d="M1140 22l22 0l-11 16z"/>
+        <path d="M1190 22l22 0l-11 16z"/>
+        <path d="M1240 22l22 0l-11 16z"/>
+        <path d="M1290 22l22 0l-11 16z"/>
+        <path d="M1340 22l22 0l-11 16z"/>
+        <path d="M1390 22l22 0l-11 16z"/>
+        <path d="M1440 22l22 0l-11 16z"/>
+        <path d="M1490 22l22 0l-11 16z"/>
+        <path d="M1540 22l22 0l-11 16z"/>
+      </g>
+
+      <!-- stylized dunes -->
+      <path d="M0 125 C 180 95, 340 150, 520 120 C 700 90, 860 152, 1040 120 C 1220 88, 1380 148, 1600 118 L1600 160 L0 160 Z"
+            fill="rgba(44,120,115,.12)"/>
+
+      <!-- simple desert plants (cacti) -->
+      <g fill="none" stroke="var(--accent)" stroke-width="4" opacity=".7" stroke-linecap="round">
+        <path d="M220 120 v-30"/>
+        <path d="M220 104 c-10 0-10-14 0-14"/>
+        <path d="M220 104 c10 0 10-14 0-14"/>
+
+        <path d="M860 122 v-36"/>
+        <path d="M860 104 c-12 0-12-18 0-18"/>
+        <path d="M860 104 c12 0 12-18 0-18"/>
+
+        <path d="M1340 123 v-28"/>
+        <path d="M1340 110 c-10 0-10-14 0-14"/>
+        <path d="M1340 110 c10 0 10-14 0-14"/>
+      </g>
+
+      <!-- mountains -->
+      <g fill="rgba(27,38,34,.06)">
+        <path d="M560 78 L680 38 L800 78 Z"/>
+        <path d="M980 78 L1090 44 L1200 78 Z"/>
+      </g>
+    </svg>
+    <div class="art-caption">Dryland-inspired strip (decorative).</div>
+  </div>
+</section>
 
 <script>
 (function(){
@@ -441,7 +532,6 @@
   };
   if(btn && drawer){
     btn.addEventListener('click', (e) => { e.stopPropagation(); openDrawer(!drawer.classList.contains('open')); });
-    drawer.addEventListener('click', (e) => { if(e.target.tagName === 'A') openDrawer(false); });
     document.addEventListener('click', (e) => {
       if(drawer.classList.contains('open') && !drawer.contains(e.target) && !btn.contains(e.target)) openDrawer(false);
     });
