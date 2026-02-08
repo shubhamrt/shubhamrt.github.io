@@ -5,12 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Shubham Tiwari | Dryland Connectivity</title>
 
-<!-- Favicon: black circle + (auto) white-looking logo via SVG filter -->
-<link rel="icon" type="image/svg+xml"
-  href='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20128%20128%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22c%22%3E%3Ccircle%20cx%3D%2264%22%20cy%3D%2264%22%20r%3D%2262%22/%3E%3C/clipPath%3E%3C/defs%3E%3Cg%20clip-path%3D%22url(%23c)%22%3E%3Crect%20width%3D%22128%22%20height%3D%22128%22%20fill%3D%22%23000%22/%3E%3Cimage%20href%3D%22img/logo.png%22%20x%3D%2222%22%20y%3D%2222%22%20width%3D%2284%22%20height%3D%2284%22%20preserveAspectRatio%3D%22xMidYMid%20meet%22%20style%3D%22filter%3A%20invert(1)%20brightness(2.4)%20contrast(1.1)%3B%22/%3E%3C/g%3E%3C/svg%3E' />
-
-<!-- Optional larger fallbacks (won't get the black circle unless you create a matching PNG) -->
-<link rel="apple-touch-icon" sizes="180x180" href="img/logo.png" />
+<!-- Favicon fallback (JS below will replace this with a black-circle + white-logo favicon) -->
+<link id="site-favicon" rel="icon" type="image/png" href="img/logo.png">
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -19,7 +15,7 @@
   :root{
     --text:#fff;
 
-    /* Faster reveal */
+    /* Reveal timing */
     --in-delay:.02s;
     --in-dur:.28s;
     --reveal-delay:400ms;
@@ -28,17 +24,16 @@
     --p2-bg:#ffffff;
     --p2-ink:#1b2622;
     --p2-muted:#4d6158;
+    --p2-line:rgba(0,0,0,.10);
 
-    /* Requested accent */
+    /* Accent */
     --accent:#2C7873;
     --accent-hover:#215f5b;
-
-    --p2-line:rgba(0,0,0,.10);
 
     --nav-h:70px;
     --max:1100px;
 
-    /* Slightly smaller + more compact (between Shreyas and your current) */
+    /* Slightly smaller + more compact */
     --p2-base:16px;
   }
 
@@ -66,6 +61,11 @@
     color:var(--text);
     background:#122d27 url('img/banner_contours.jpg') center/cover no-repeat fixed;
     isolation:isolate;
+  }
+
+  /* Mobile browsers can struggle with background-attachment: fixed */
+  @media (max-width: 900px){
+    .hero{ background-attachment: scroll; }
   }
 
   .film{
@@ -104,7 +104,6 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
-
   body.scrolled .nav-surface{
     background:rgba(255,255,255,.94);
     border-bottom:1px solid rgba(0,0,0,.10);
@@ -131,6 +130,7 @@
   }
   body.scrolled .nav-brand{ color:var(--p2-ink); text-shadow:none; }
 
+  /* Desktop links */
   .nav-links{
     display:flex;
     align-items:center;
@@ -138,7 +138,6 @@
     flex-wrap:wrap;
     justify-content:flex-end;
   }
-
   .nav-links a{
     color:var(--text);
     text-decoration:none;
@@ -155,11 +154,83 @@
   body.scrolled .nav-links a{ color:var(--p2-ink); text-shadow:none; }
   body.scrolled .nav-links a:hover{ background:rgba(44,120,115,.10); }
 
-  @media (max-width:520px){
-    :root{ --nav-h:86px; }
-    .nav-inner{align-items:flex-start; padding-top:10px}
-    .nav-links{gap:8px}
-    .nav-links a{padding:9px 11px; font-size:15px}
+  /* Mobile burger */
+  .nav-toggle{
+    display:none;
+    width:44px; height:44px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.22);
+    background:rgba(0,0,0,.12);
+    color:#fff;
+    cursor:pointer;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-toggle span,
+  .nav-toggle span::before,
+  .nav-toggle span::after{
+    content:"";
+    display:block;
+    width:18px;
+    height:2px;
+    background:currentColor;
+    border-radius:2px;
+  }
+  .nav-toggle span{ position:relative; }
+  .nav-toggle span::before{ position:absolute; top:-6px; left:0; }
+  .nav-toggle span::after{ position:absolute; top:6px; left:0; }
+
+  body.scrolled .nav-toggle{
+    color:var(--p2-ink);
+    border-color:rgba(0,0,0,.14);
+    background:rgba(255,255,255,.75);
+  }
+
+  .nav-drawer{
+    position:absolute;
+    right:0;
+    top:calc(var(--nav-h) - 6px);
+    width:min(260px, calc(100vw - 24px));
+    padding:10px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(0,0,0,.30);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow:0 18px 40px rgba(0,0,0,.25);
+
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .nav-drawer.open{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .nav-drawer a{
+    display:block;
+    padding:12px 12px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:750;
+    color:#fff;
+  }
+  .nav-drawer a:hover{ background:rgba(255,255,255,.10); }
+
+  body.scrolled .nav-drawer{
+    background:rgba(255,255,255,.96);
+    border-color:rgba(0,0,0,.10);
+  }
+  body.scrolled .nav-drawer a{ color:var(--p2-ink); }
+  body.scrolled .nav-drawer a:hover{ background:rgba(44,120,115,.10); }
+
+  @media (max-width:640px){
+    :root{ --nav-h:78px; }
+    .nav-inner{ width:calc(100% - 24px); }
+    .nav-links{ display:none; }
+    .nav-toggle{ display:inline-flex; }
   }
 
   /* ---------------- HERO CONTENT ---------------- */
@@ -173,6 +244,11 @@
     transform:translateY(-1.2cm);
   }
   .reveal .hero-inner{opacity:1}
+
+  @media (max-width:520px){
+    .hero-inner{ transform:translateY(-0.5cm); padding:18px; }
+    .logo{ margin:clamp(-26px,-8vh,-120px) auto 14px; }
+  }
 
   .logo{
     width:min(200px,35vw);
@@ -216,8 +292,6 @@
     margin:0 0 18px;
     max-width:80ch;
   }
-
-  /* Key question: accent + underline + a little weight */
   .lede .q{
     color:var(--accent);
     font-weight:850;
@@ -229,24 +303,22 @@
   .two-col{
     display:grid;
     grid-template-columns: 1fr;
-    gap:24px;
+    gap:22px;
     align-items:start;
   }
   @media (min-width: 920px){
-    /* +5% image size */
     .two-col{ grid-template-columns: 1fr 278px; gap:36px; }
   }
 
   .prose{
     font-size:1em;
-    line-height:1.78; /* more compact but still clear */
+    line-height:1.78;
     color:rgba(27,38,34,.88);
     max-width:84ch;
   }
   .prose p{ margin:0 0 14px; }
   .prose p:last-child{ margin-bottom:0; }
 
-  /* Links: accent + underline */
   .prose a{
     color:var(--accent);
     text-decoration: underline;
@@ -259,7 +331,7 @@
 
   .portrait{
     width:100%;
-    max-width:278px; /* was 252 */
+    max-width:278px; /* +5% */
     border:1px solid var(--p2-line);
     padding:6px;
     background:#fff;
@@ -293,7 +365,7 @@
     text-decoration:none;
     font-weight:800;
     font-size:13px;
-    transition:transform .16s ease, border-color .16s ease, background .16s ease;
+    transition:transform .16s ease, border-color .16s ease;
   }
   .btn:hover{ transform:translateY(-1px); border-color:rgba(44,120,115,.35); }
   .btn.primary{
@@ -309,6 +381,7 @@
     html{scroll-behavior:auto}
     .film, .navband, .hero-inner{transition:none; opacity:1; transform:none;}
     .btn, .nav-links a{transition:none}
+    .nav-drawer{transition:none}
   }
 </style>
 </head>
@@ -318,9 +391,23 @@
 <!-- TOP NAV BAND -->
 <div class="navband" role="navigation" aria-label="Primary">
   <div class="nav-surface" aria-hidden="true"></div>
+
   <div class="nav-inner">
     <a class="nav-brand" href="#research">Shubham Tiwari</a>
+
+    <!-- Desktop links -->
     <div class="nav-links" aria-label="Site sections">
+      <a href="#research">Research</a>
+      <a href="#key-concepts">Key Concept</a>
+      <a href="#news">News</a>
+    </div>
+
+    <!-- Mobile burger -->
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="navDrawer" aria-expanded="false">
+      <span></span>
+    </button>
+
+    <div class="nav-drawer" id="navDrawer" aria-hidden="true">
       <a href="#research">Research</a>
       <a href="#key-concepts">Key Concept</a>
       <a href="#news">News</a>
@@ -410,13 +497,91 @@
 
 <script>
 (function(){
+  // Reveal timing
   setTimeout(()=>document.body.classList.add('reveal'), 400);
 
+  // Nav style on scroll (light surface over page 2)
   const onScroll = () => {
     document.body.classList.toggle('scrolled', window.scrollY > 40);
   };
   onScroll();
   window.addEventListener('scroll', onScroll, {passive:true});
+
+  // Mobile burger menu
+  const btn = document.getElementById('navToggle');
+  const drawer = document.getElementById('navDrawer');
+  const openDrawer = (open) => {
+    drawer.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+  };
+  if(btn && drawer){
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDrawer(!drawer.classList.contains('open'));
+    });
+    drawer.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A') openDrawer(false);
+    });
+    document.addEventListener('click', (e) => {
+      if(drawer.classList.contains('open') && !drawer.contains(e.target) && !btn.contains(e.target)){
+        openDrawer(false);
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') openDrawer(false);
+    });
+  }
+
+  // Build favicon in-browser: black circle + white logo (guaranteed visible)
+  // (Fixes the "black dot" issue caused by SVG favicons not loading external images.)
+  const faviconLink = document.getElementById('site-favicon');
+  const logoImg = new Image();
+  logoImg.src = 'img/logo.png';
+  logoImg.onload = () => {
+    try{
+      const size = 256;
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // black circle
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2 - 6, 0, Math.PI*2);
+      ctx.closePath();
+      ctx.fill();
+
+      // make a white version of the logo on an offscreen canvas
+      const off = document.createElement('canvas');
+      off.width = size; off.height = size;
+      const o = off.getContext('2d');
+
+      // Fit logo to ~70% of canvas (looks like "bigger favicon")
+      const target = size * 0.72;
+      const s = Math.min(target / logoImg.width, target / logoImg.height);
+      const w = logoImg.width * s;
+      const h = logoImg.height * s;
+      const x = (size - w) / 2;
+      const y = (size - h) / 2;
+
+      o.clearRect(0,0,size,size);
+      o.drawImage(logoImg, x, y, w, h);
+      o.globalCompositeOperation = 'source-in';
+      o.fillStyle = '#fff';
+      o.fillRect(0,0,size,size);
+      o.globalCompositeOperation = 'source-over';
+
+      // draw onto main
+      ctx.drawImage(off, 0, 0);
+
+      // set favicon
+      faviconLink.type = 'image/png';
+      faviconLink.href = canvas.toDataURL('image/png');
+    }catch(err){
+      // fallback stays as img/logo.png
+    }
+  };
 })();
 </script>
 
