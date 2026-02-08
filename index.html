@@ -280,7 +280,7 @@
     margin:0 0 14px;
   }
 
-  /* Make the question block align to the body text baseline (not above photo) */
+  /* Make question baseline align with body/portrait */
   .lede{
     font-size:1.02em;
     line-height:1.66;
@@ -312,7 +312,7 @@
     line-height:1.72;
     color:rgba(27,38,34,.88);
     max-width:84ch;
-    padding-top:6px; /* aligns first paragraph with the top of the photo */
+    padding-top:0; /* align question with paragraphs + photo */
   }
   .prose p{ margin:0 0 10px; }
   .prose p:last-child{ margin-bottom:0; }
@@ -331,13 +331,14 @@
     justify-items:end;
   }
 
+  /* reduce photo by ~5% and move it up to start at question line */
   .portrait{
     width:100%;
-    max-width:var(--side-w);
+    max-width:calc(var(--side-w) * 0.95);
     border:1px solid var(--p2-line);
     padding:6px;
     background:#fff;
-    margin-top:-10px; /* move photo a little bit up */
+    margin-top:-44px; /* pulls photo up to align with the question line */
   }
   .portrait img{ width:100%; height:auto; display:block; }
   .portrait.fallback{
@@ -350,7 +351,7 @@
 
   .profile-meta{
     width:100%;
-    max-width:var(--side-w);
+    max-width:calc(var(--side-w) * 0.95);
     color:rgba(27,38,34,.82);
     font-size:13px;
     line-height:1.42;
@@ -375,7 +376,7 @@
 
   .signature{
     width:100%;
-    max-width:var(--side-w);
+    max-width:calc(var(--side-w) * 0.95);
     display:flex;
     gap:16px;
     flex-wrap:wrap;
@@ -401,7 +402,6 @@
     .side{ justify-items:center; }
     .portrait{ justify-self:center; margin-top:0; }
     .profile-meta, .signature{ justify-self:start; text-align:left; }
-    .prose{ padding-top:0; }
   }
 
   /* ---------------- FULL-BLEED ART BANNER ---------------- */
@@ -416,10 +416,7 @@
     background:#fff;
     overflow:hidden;
   }
-  .art-row{
-    display:flex;
-    width:100%;
-  }
+  .art-row{ display:flex; width:100%; }
   .art-row img{
     flex:0 0 33.3333%;
     width:33.3333%;
@@ -489,7 +486,11 @@
     <div class="two-col">
       <div class="prose">
         <p>
-          I'm joining <a href="https://nmsu.edu/" target="_blank" rel="noreferrer">New Mexico State University</a> as a postdoctoral researcher to study dust source dynamics across the western United States. Currently, I'm a Senior Hydrologist at the UK's
+          Right now, I'm a postdoctoral researcher at
+          <a href="https://nmsu.edu/" target="_blank" rel="noreferrer">New Mexico State University</a>
+          and
+          <a href="https://jornada.nmsu.edu/" target="_blank" rel="noreferrer">Jornada Experimental Range</a>,
+          studying dust source dynamics across the western United States. Currently, I'm a Senior Hydrologist at the UK's
           <a href="https://www.gov.uk/government/organisations/environment-agency" target="_blank" rel="noreferrer">Environment Agency</a>.
           I completed my PhD at <a href="https://www.durham.ac.uk/" target="_blank" rel="noreferrer">Durham University</a> as an Early Stage Researcher in the
           <a href="https://iconn.network/" target="_blank" rel="noreferrer">Marie Skłodowska-Curie i-CONN network</a>,
