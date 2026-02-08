@@ -46,7 +46,7 @@
     background:#000;
     color:var(--text);
     font-family:Inter,system-ui,Arial,Helvetica,sans-serif;
-    overflow-x:hidden; /* prevent horizontal scroll from full-bleed banner */
+    overflow-x:hidden;
   }
   img{display:block;max-width:100%}
   a{color:inherit}
@@ -266,7 +266,7 @@
   .page2{
     background:var(--p2-bg);
     color:var(--p2-ink);
-    padding: 52px 24px 0; /* tight bottom: banner sits right after */
+    padding: 52px 24px 0;
     font-size:var(--p2-base);
   }
   .page2-wrap{max-width:var(--max); margin:0 auto;}
@@ -279,11 +279,13 @@
     line-height:1.08;
     margin:0 0 14px;
   }
+
+  /* Make the question block align to the body text baseline (not above photo) */
   .lede{
     font-size:1.02em;
     line-height:1.66;
     color:rgba(27,38,34,.86);
-    margin:0 0 14px;
+    margin:0 0 10px;
     max-width:80ch;
   }
   .lede .q{
@@ -299,7 +301,7 @@
     grid-template-columns: 1fr;
     gap:18px;
     align-items:start;
-    padding-bottom:6px; /* smaller white gap before banner */
+    padding-bottom:6px;
   }
   @media (min-width: 920px){
     .two-col{ grid-template-columns: 1fr var(--side-w); gap:28px; }
@@ -310,6 +312,7 @@
     line-height:1.72;
     color:rgba(27,38,34,.88);
     max-width:84ch;
+    padding-top:6px; /* aligns first paragraph with the top of the photo */
   }
   .prose p{ margin:0 0 10px; }
   .prose p:last-child{ margin-bottom:0; }
@@ -334,6 +337,7 @@
     border:1px solid var(--p2-line);
     padding:6px;
     background:#fff;
+    margin-top:-10px; /* move photo a little bit up */
   }
   .portrait img{ width:100%; height:auto; display:block; }
   .portrait.fallback{
@@ -393,19 +397,20 @@
 
   /* Mobile: center image; keep signature/links left-aligned */
   @media (max-width: 919px){
-    :root{ --side-w: 430px; } /* larger image on mobile */
+    :root{ --side-w: 430px; }
     .side{ justify-items:center; }
-    .portrait{ justify-self:center; }
+    .portrait{ justify-self:center; margin-top:0; }
     .profile-meta, .signature{ justify-self:start; text-align:left; }
+    .prose{ padding-top:0; }
   }
 
-  /* ---------------- FULL-BLEED ART BANNER (three tiles, full width, no crop) ---------------- */
+  /* ---------------- FULL-BLEED ART BANNER ---------------- */
   .art-strip{
     position:relative;
     left:50%;
     transform:translateX(-50%);
     width:100vw;
-    margin:0;                 /* no extra whitespace */
+    margin:0;
     line-height:0;
     border-top:1px solid rgba(0,0,0,.08);
     background:#fff;
@@ -415,11 +420,10 @@
     display:flex;
     width:100%;
   }
-  /* Key change: scale by width (1/3 each), height auto => no cropping, no “tiny” look */
   .art-row img{
     flex:0 0 33.3333%;
     width:33.3333%;
-    height:auto;             /* IMPORTANT: prevents cropping */
+    height:auto;
     display:block;
     background:#fff;
   }
@@ -441,14 +445,12 @@
   <div class="nav-inner">
     <a class="nav-brand" href="#about">Shubham Tiwari</a>
 
-    <!-- Desktop links open new pages -->
     <div class="nav-links" aria-label="Site sections">
       <a href="research.html">Research</a>
       <a href="key-concepts.html">Key Concept</a>
       <a href="news.html">News</a>
     </div>
 
-    <!-- Mobile burger -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="navDrawer" aria-expanded="false">
       <span></span>
     </button>
@@ -487,11 +489,11 @@
     <div class="two-col">
       <div class="prose">
         <p>
-          Right now, I'm a postdoctoral researcher at
-          <a href="https://nmsu.edu/" target="_blank" rel="noreferrer">New Mexico State University</a>,
-          working to understand dust source dynamics across the western United States. Before this, I spent my PhD at
-          <a href="https://www.durham.ac.uk/" target="_blank" rel="noreferrer">Durham University</a>
-          developing a network-based approach to dryland degradation. Essentially, I taught myself to see landscapes as living systems of connections rather than just collections of soil and plants.
+          I'm joining <a href="https://nmsu.edu/" target="_blank" rel="noreferrer">New Mexico State University</a> as a postdoctoral researcher to study dust source dynamics across the western United States. Currently, I'm a Senior Hydrologist at the UK's
+          <a href="https://www.gov.uk/government/organisations/environment-agency" target="_blank" rel="noreferrer">Environment Agency</a>.
+          I completed my PhD at <a href="https://www.durham.ac.uk/" target="_blank" rel="noreferrer">Durham University</a> as an Early Stage Researcher in the
+          <a href="https://iconn.network/" target="_blank" rel="noreferrer">Marie Skłodowska-Curie i-CONN network</a>,
+          developing a network-based approach to dryland degradation. I learned to see landscapes as living systems of connections rather than isolated components.
         </p>
 
         <p>
@@ -499,18 +501,11 @@
         </p>
 
         <p>
-          My journey has taken me from grasslands in the southwestern USA to floodplains in Austria, from analyzing rainfall networks in Australia's Murray-Darling Basin to flying drones over semi-arid hillslopes in Arizona. Along the way, I've earned a
-          <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/" target="_blank" rel="noreferrer">Marie Skłodowska-Curie</a>
-          fellowship and worked as one of the youngest Senior Hydrologists in the UK's
-          <a href="https://www.gov.uk/government/organisations/environment-agency" target="_blank" rel="noreferrer">Environment Agency</a>.
+          My journey has taken me from grasslands in the southwestern USA to floodplains in Austria, from analyzing rainfall networks in Australia's Murray-Darling Basin to flying drones over semi-arid hillslopes in Arizona. Along the way, I became one of the youngest Senior Hydrologists in the Environment Agency.
         </p>
 
         <p>
-          What excites me most is bridging fundamental science and real-world action. During my PhD, I focused on water-driven erosion and how vegetation patterns control landscape stability. Now I'm extending that thinking to wind-driven processes and dust emission. Different erosive forces, same underlying question: What makes a landscape resilient and what tips it over the edge?
-        </p>
-
-        <p>
-          I use complex network theory alongside traditional geomorphic modeling. It's a way of seeing patterns that conventional approaches might miss, of identifying critical thresholds before they're crossed. And ultimately, I want to translate this research into tools that land managers can actually use.
+          What excites me most is bridging science and real-world action. During my PhD, I focused on water-driven erosion and how vegetation patterns control landscape stability. Now I'm extending that thinking to wind-driven processes and dust emission. Different erosive forces, same underlying question: What makes a landscape resilient and what tips it over the edge?
         </p>
 
         <p>
@@ -548,7 +543,7 @@
 
   </div>
 
-  <!-- Your banner.png duplicated three times (full width, no crop) -->
+  <!-- banner.png repeated 3 times -->
   <div class="art-strip" aria-hidden="true">
     <div class="art-row">
       <img src="img/banner.png" alt="">
@@ -560,10 +555,8 @@
 
 <script>
 (function(){
-  // Reveal quickly
   setTimeout(()=>document.body.classList.add('reveal'), 400);
 
-  // nav style on scroll
   const onScroll = () => document.body.classList.toggle('scrolled', window.scrollY > 40);
   onScroll();
   window.addEventListener('scroll', onScroll, {passive:true});
