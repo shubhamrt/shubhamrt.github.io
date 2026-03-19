@@ -1,457 +1,1033 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Research | Shubham Tiwari</title>
-
-<!-- Favicon (simple + reliable). If you later create a custom circular favicon file,
-     swap href to img/favicon.png or img/favicon.svg. -->
-<link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
-<link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
-<link rel="apple-touch-icon" href="img/logo.png">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubham Tiwari — Dryland Connectivity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-  :root{
-    --bg:#ffffff;
-    --ink:#1b2622;
-    --muted:rgba(27,38,34,.78);
-    --line:rgba(0,0,0,.10);
-
-    --accent:#2C7873;
-    --accent-hover:#1f5f5b;
-
-    --nav-h:70px;
-    --max:1100px;
-
-    --base:16px;
-    --lh:1.72;
-    --radius:16px;
-    --shadow:0 18px 40px rgba(0,0,0,.08);
+  :root {
+    --sand: #F2EAD8;
+    --sand-dark: #E4D9C3;
+    --earth: #1E120A;
+    --earth-mid: #3D2415;
+    --rust: #B84F1A;
+    --rust-light: #D96535;
+    --taupe: #8A7260;
+    --taupe-light: #C4B39E;
+    --cream: #FBF6EE;
+    --sage: #6B7C5A;
   }
 
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    font-family:Inter,system-ui,Arial,Helvetica,sans-serif;
-    background:var(--bg);
-    color:var(--ink);
-    font-size:var(--base);
-    line-height:var(--lh);
-  }
-  .wrap{max-width:var(--max); margin:0 auto; padding: 0 24px;}
-  img{max-width:100%; display:block;}
-  a{color:var(--accent); text-decoration:underline; text-underline-offset:3px;}
-  a:hover{color:var(--accent-hover);}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* NAV (light) with burger on mobile */
-  .navband{
-    position:fixed; top:0; left:0; right:0;
-    height:var(--nav-h);
-    z-index:20;
-    border-bottom:1px solid rgba(0,0,0,.10);
-    background:rgba(255,255,255,.94);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  .nav-inner{
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:18px;
-    position:relative;
-  }
-  .nav-brand{
-    font-weight:800;
-    letter-spacing:.2px;
-    font-size:clamp(18px,1.7vw,20px);
-    text-decoration:none;
-    color:var(--ink);
-    white-space:nowrap;
-  }
-  .nav-links{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    flex-wrap:wrap;
-    justify-content:flex-end;
-  }
-  .nav-links a{
-    color:var(--ink);
-    text-decoration:none;
-    font-weight:700;
-    font-size:16px;
-    padding:11px 14px;
-    border-radius:999px;
-    transition:background .2s ease, transform .2s ease;
-  }
-  .nav-links a:hover{ background:rgba(44,120,115,.10); transform:translateY(-1px); }
-  .nav-links a[aria-current="page"]{ background:rgba(44,120,115,.12); }
+  html { scroll-behavior: smooth; }
 
-  .nav-toggle{
-    display:none;
-    width:44px; height:44px;
-    border-radius:12px;
-    border:1px solid rgba(0,0,0,.18);
-    background:transparent;
-    color:var(--ink);
-    cursor:pointer;
-    align-items:center;
-    justify-content:center;
-  }
-  .nav-toggle span{
-    position:relative;
-    display:block;
-    width:18px; height:2px;
-    background:currentColor;
-  }
-  .nav-toggle span::before,
-  .nav-toggle span::after{
-    content:"";
-    position:absolute; left:0;
-    width:18px; height:2px;
-    background:currentColor;
-  }
-  .nav-toggle span::before{ top:-6px; }
-  .nav-toggle span::after{ top:6px; }
-
-  .nav-menu{
-    display:none;
-    position:absolute;
-    right:24px;
-    top:calc(var(--nav-h) + 10px);
-    background:rgba(255,255,255,.98);
-    border:1px solid rgba(0,0,0,.12);
-    border-radius:14px;
-    box-shadow:0 18px 40px rgba(0,0,0,.12);
-    padding:8px;
-    min-width:220px;
-  }
-  .nav-menu a{
-    display:block;
-    padding:10px 12px;
-    border-radius:10px;
-    text-decoration:none;
-    color:var(--ink);
-    font-weight:700;
-  }
-  .nav-menu a:hover{ background:rgba(44,120,115,.10); }
-  .nav-open .nav-menu{ display:block; }
-
-  @media (max-width: 760px){
-    :root{ --nav-h:74px; }
-    .nav-links{ display:none; }
-    .nav-toggle{ display:flex; }
+  body {
+    background: var(--sand);
+    color: var(--earth);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
   }
 
-  main{ padding-top: calc(var(--nav-h) + 34px); padding-bottom: 24px; }
-
-  h1{
-    font-family:Spectral,serif;
-    font-size:clamp(34px,4vw,46px);
-    margin:0 0 10px;
-    letter-spacing:-.01em;
-  }
-  .sub{
-    margin:0 0 22px;
-    color:var(--muted);
-    max-width:88ch;
+  /* ── GRAIN TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
   }
 
-  .row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    align-items:center;
-    margin: 10px 0 24px;
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.4s, border-bottom 0.4s;
   }
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:10px 12px;
-    border-radius:12px;
-    border:1px solid rgba(0,0,0,.12);
-    background:#fff;
-    color:var(--ink);
-    text-decoration:none;
-    font-weight:800;
+  nav.scrolled {
+    background: rgba(242, 234, 216, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--taupe-light);
   }
-  .btn.primary{
-    background:var(--accent);
-    color:#fff;
-    border-color:rgba(44,120,115,.35);
-    text-decoration:none;
+  .nav-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--earth);
+    text-decoration: none;
+    text-transform: uppercase;
   }
-  .btn.primary:hover{ background:var(--accent-hover); }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--earth-mid);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--rust);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--rust); }
+  .nav-links a:hover::after { width: 100%; }
 
-  .section{ margin-top:18px; }
-  .section h2{
-    font-family:Spectral,serif;
-    font-size:22px;
-    margin:0 0 12px;
-  }
-
-  /* Themes */
-  .grid{
-    display:grid;
-    grid-template-columns: 1fr;
-    gap:14px;
-  }
-  @media (min-width: 920px){
-    .grid{ grid-template-columns: repeat(2, 1fr); gap:16px; }
-  }
-  .card{
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:16px;
-    box-shadow:var(--shadow);
-    background:#fff;
-  }
-  .card h3{
-    margin:0 0 10px;
-    font-size:16px;
-    letter-spacing:.1px;
-  }
-  .card ul{ margin:0; padding-left:18px; color:rgba(27,38,34,.88); }
-  .card li{ margin:6px 0; }
-
-  /* Methods pills */
-  .pills{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:10px;
-  }
-  .pill{
-    border:1px solid rgba(44,120,115,.22);
-    background:rgba(44,120,115,.08);
-    color:rgba(27,38,34,.90);
-    border-radius:999px;
-    padding:7px 10px;
-    font-weight:700;
-    font-size:13px;
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 4rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
   }
 
-  /* Publications */
-  .pubs{
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:14px 16px;
-    background:#fff;
-  }
-  .pubs ol{ margin:0; padding-left:18px; }
-  .pubs li{ margin:12px 0; }
-  .pub-title{ font-weight:900; }
-  .pub-meta{
-    display:block;
-    margin-top:4px;
-    color:rgba(27,38,34,.78);
-    font-size:0.95em;
+  /* Background network SVG */
+  .hero-network {
+    position: absolute;
+    top: 0; right: 0;
+    width: 55%;
+    height: 100%;
+    opacity: 0.07;
+    pointer-events: none;
   }
 
-  /* Decorative banner */
-  .art-strip{
-    width:100%;
-    margin-top:16px;
-    line-height:0;
-    display:flex;
+  .hero-left {
+    padding-top: 6rem;
+    animation: fadeUp 1s ease both;
   }
-  .art-strip img{ width:calc(100% / 3); height:auto; display:block; }
 
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto}
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 1px;
+    background: var(--rust);
+  }
+
+  h1.hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--earth);
+    margin-bottom: 0.2rem;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--rust);
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--taupe);
+    margin: 1.5rem 0 2.5rem;
+    max-width: 30rem;
+    line-height: 1.5;
+  }
+
+  .hero-question {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--earth-mid);
+    max-width: 28rem;
+    border-left: 2px solid var(--rust);
+    padding-left: 1.2rem;
+    line-height: 1.65;
+    margin-bottom: 3rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background: var(--earth);
+    color: var(--sand);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: background 0.25s;
+  }
+  .btn-primary:hover { background: var(--rust); }
+  .btn-ghost {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    border: 1px solid var(--taupe);
+    color: var(--earth);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: border-color 0.25s, color 0.25s;
+  }
+  .btn-ghost:hover { border-color: var(--rust); color: var(--rust); }
+
+  /* Hero right: portrait */
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 6rem;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+  .portrait-frame {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 3/4;
+  }
+  .portrait-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: sepia(20%) contrast(1.05);
+  }
+  .portrait-frame::before {
+    content: '';
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    width: 60%;
+    height: 60%;
+    border-top: 1px solid var(--rust);
+    border-right: 1px solid var(--rust);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .portrait-frame::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: -1rem;
+    width: 60%;
+    height: 60%;
+    border-bottom: 1px solid var(--taupe);
+    border-left: 1px solid var(--taupe);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .portrait-caption {
+    margin-top: 1.5rem;
+    max-width: 360px;
+  }
+  .portrait-caption .name-lg {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--earth);
+  }
+  .roles {
+    margin-top: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .role-item {
+    font-size: 0.78rem;
+    color: var(--taupe);
+    letter-spacing: 0.02em;
+    font-weight: 400;
+  }
+  .role-item span {
+    color: var(--rust);
+    font-weight: 500;
+  }
+
+  .social-strip {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .social-strip a {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--earth-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--taupe-light);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .social-strip a:hover { color: var(--rust); border-color: var(--rust); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--taupe-light), transparent);
+    margin: 0 4rem;
+  }
+
+  /* ── ABOUT SECTION ── */
+  .about {
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .about-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe);
+    position: sticky;
+    top: 7rem;
+  }
+  .about-label .number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-weight: 300;
+    color: var(--sand-dark);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .about-content h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 2rem;
+    color: var(--earth);
+  }
+  .about-content h2 em { font-style: italic; color: var(--rust); }
+  .about-content p {
+    color: var(--earth-mid);
+    margin-bottom: 1.4rem;
+    font-size: 1rem;
+    font-weight: 300;
+    max-width: 56ch;
+  }
+
+  .pull-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--earth);
+    border-left: 3px solid var(--rust);
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    margin: 2.5rem 0;
+    line-height: 1.4;
+    max-width: 50ch;
+  }
+
+  /* ── JOURNEY STATS ── */
+  .stats-bar {
+    background: var(--earth);
+    color: var(--sand);
+    padding: 4rem 4rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .stat-item { border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem; }
+  .stat-item:first-child { border-left: none; padding-left: 0; }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--rust-light);
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--taupe-light);
+    line-height: 1.5;
+  }
+
+  /* ── RESEARCH SECTION ── */
+  .research {
+    padding: 8rem 4rem;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    color: var(--earth);
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--sand-dark);
+  }
+  .section-link {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rust);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .section-link:hover { text-decoration: underline; }
+
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .research-card {
+    background: var(--cream);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .research-card:hover { background: var(--earth); }
+  .research-card:hover .rc-number,
+  .research-card:hover .rc-title,
+  .research-card:hover .rc-desc { color: var(--sand); }
+  .research-card:hover .rc-number { color: var(--rust-light); }
+  .research-card:hover .rc-tag { border-color: rgba(255,255,255,0.2); color: var(--taupe-light); }
+
+  .rc-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--taupe-light);
+    letter-spacing: 0.06em;
+    margin-bottom: 1.2rem;
+    display: block;
+    transition: color 0.3s;
+  }
+  .rc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--earth);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    transition: color 0.3s;
+  }
+  .rc-desc {
+    font-size: 0.88rem;
+    color: var(--taupe);
+    line-height: 1.65;
+    transition: color 0.3s;
+    font-weight: 300;
+  }
+  .rc-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .rc-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--taupe-light);
+    color: var(--taupe);
+    padding: 0.25rem 0.6rem;
+    transition: border-color 0.3s, color 0.3s;
+  }
+
+  /* ── FIELD LOCATIONS ── */
+  .fieldwork {
+    padding: 8rem 4rem;
+    background: var(--sand-dark);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .fieldwork-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    color: var(--earth);
+    line-height: 1.15;
+  }
+  .fieldwork-text p {
+    font-size: 0.95rem;
+    color: var(--earth-mid);
+    font-weight: 300;
+    max-width: 44ch;
+  }
+  .locations-list {
+    list-style: none;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .locations-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: 0.88rem;
+    color: var(--earth-mid);
+    font-weight: 400;
+  }
+  .loc-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--rust);
+    flex-shrink: 0;
+    position: relative;
+    top: -1px;
+  }
+  .loc-region {
+    color: var(--taupe);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-left: auto;
+  }
+
+  .fieldwork-visual {
+    position: relative;
+  }
+  .world-map-container {
+    background: var(--sand);
+    padding: 2rem;
+    border: 1px solid var(--taupe-light);
+  }
+
+  /* ── CONTACT / FOOTER ── */
+  .contact {
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: end;
+  }
+  .contact-left h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--earth);
+    margin-bottom: 2rem;
+  }
+  .contact-left h2 em { font-style: italic; color: var(--rust); }
+  .contact-left p {
+    font-size: 0.95rem;
+    color: var(--taupe);
+    font-weight: 300;
+    max-width: 38ch;
+    margin-bottom: 2rem;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .contact-row {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    font-size: 0.9rem;
+  }
+  .contact-row .cl { color: var(--taupe); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; width: 4rem; flex-shrink: 0; }
+  .contact-row a { color: var(--earth); text-decoration: none; border-bottom: 1px solid var(--taupe-light); padding-bottom: 1px; transition: color 0.2s, border-color 0.2s; }
+  .contact-row a:hover { color: var(--rust); border-color: var(--rust); }
+
+  .contact-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .affiliation {
+    border-left: 2px solid var(--sand-dark);
+    padding: 1rem 1.5rem;
+  }
+  .affiliation-title {
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--earth);
+    font-weight: 500;
+  }
+  .affiliation-sub {
+    font-size: 0.78rem;
+    color: var(--taupe);
+    margin-top: 0.2rem;
+    font-weight: 300;
+  }
+
+  footer {
+    background: var(--earth);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer .foot-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--taupe-light);
+    letter-spacing: 0.06em;
+  }
+  footer .foot-copy {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .hero { grid-template-columns: 1fr; padding: 0 2rem; min-height: auto; padding-top: 7rem; padding-bottom: 4rem; }
+    .hero-right { align-items: center; }
+    .portrait-frame { max-width: 280px; }
+    .about { grid-template-columns: 1fr; padding: 5rem 2rem; gap: 2rem; }
+    .about-label { position: static; }
+    .about-label .number { display: none; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 3rem 2rem; }
+    .research { padding: 5rem 2rem; }
+    .research-grid { grid-template-columns: 1fr; }
+    .fieldwork { grid-template-columns: 1fr; padding: 5rem 2rem; gap: 3rem; }
+    .contact { grid-template-columns: 1fr; padding: 5rem 2rem; gap: 3rem; }
+    footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem 2rem; text-align: center; }
+    .divider { margin: 0 2rem; }
   }
 </style>
 </head>
-
 <body>
+
 <!-- NAV -->
-<div class="navband" id="nav" role="navigation" aria-label="Primary">
-  <div class="wrap nav-inner">
-    <a class="nav-brand" href="index.html#about">Shubham Tiwari</a>
+<nav id="nav">
+  <a class="nav-name" href="#about">Shubham Tiwari</a>
+  <ul class="nav-links">
+    <li><a href="#research">Research</a></li>
+    <li><a href="#fieldwork">Fieldwork</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="CV_shubham_tiwari_290126.pdf">CV</a></li>
+  </ul>
+</nav>
 
-    <div class="nav-links" aria-label="Site pages">
-      <a href="research.html" aria-current="page">Research</a>
-      <a href="key-concept.html">Key Concept</a>
-      <a href="news.html">News</a>
+<!-- HERO -->
+<section class="hero" id="about">
+
+  <!-- Background network decoration -->
+  <svg class="hero-network" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMid meet">
+    <g stroke="#5C3D20" fill="none">
+      <line x1="120" y1="200" x2="280" y2="320" stroke-width="0.8"/>
+      <line x1="280" y1="320" x2="450" y2="250" stroke-width="0.8"/>
+      <line x1="450" y1="250" x2="520" y2="400" stroke-width="0.8"/>
+      <line x1="280" y1="320" x2="320" y2="500" stroke-width="0.8"/>
+      <line x1="320" y1="500" x2="180" y2="580" stroke-width="0.8"/>
+      <line x1="320" y1="500" x2="460" y2="600" stroke-width="0.8"/>
+      <line x1="460" y1="600" x2="530" y2="700" stroke-width="0.8"/>
+      <line x1="180" y1="580" x2="100" y2="680" stroke-width="0.8"/>
+      <line x1="520" y1="400" x2="580" y2="550" stroke-width="0.8"/>
+      <line x1="60" y1="350" x2="120" y2="200" stroke-width="0.8"/>
+      <line x1="60" y1="350" x2="180" y2="580" stroke-width="0.8"/>
+      <line x1="400" y1="150" x2="450" y2="250" stroke-width="0.8"/>
+      <line x1="400" y1="150" x2="280" y2="320" stroke-width="0.5" stroke-dasharray="4 6"/>
+    </g>
+    <g fill="#5C3D20">
+      <circle cx="120" cy="200" r="5"/>
+      <circle cx="280" cy="320" r="8"/>
+      <circle cx="450" cy="250" r="5"/>
+      <circle cx="520" cy="400" r="4"/>
+      <circle cx="320" cy="500" r="7"/>
+      <circle cx="180" cy="580" r="5"/>
+      <circle cx="460" cy="600" r="6"/>
+      <circle cx="60"  cy="350" r="4"/>
+      <circle cx="530" cy="700" r="3"/>
+      <circle cx="100" cy="680" r="3"/>
+      <circle cx="580" cy="550" r="3"/>
+      <circle cx="400" cy="150" r="4"/>
+    </g>
+  </svg>
+
+  <div class="hero-left">
+    <p class="hero-eyebrow">Postdoctoral Researcher · Senior Hydrologist</p>
+    <h1 class="hero-title">
+      Dryland<br>
+      <em>Connectivity</em><br>
+      & Resilience
+    </h1>
+    <p class="hero-subtitle">
+      Mapping the pathways through which landscapes fall apart — and how to see it coming.
+    </p>
+    <p class="hero-question">
+      How do dryland landscapes degrade, and can we detect the warning signs before collapse becomes irreversible?
+    </p>
+    <div class="hero-ctas">
+      <a href="#research" class="btn-primary">Explore Research</a>
+      <a href="#contact" class="btn-ghost">Get in Touch</a>
     </div>
+  </div>
 
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
-      <span></span>
-    </button>
-
-    <div class="nav-menu" id="navMenu" role="menu" aria-label="Mobile menu">
-      <a role="menuitem" href="research.html" aria-current="page">Research</a>
-      <a role="menuitem" href="key-concept.html">Key Concept</a>
-      <a role="menuitem" href="news.html">News</a>
-      <a role="menuitem" href="index.html#about">About</a>
+  <div class="hero-right">
+    <div class="portrait-frame">
+      <img src="img/profile.jpg" alt="Dr Shubham Tiwari" onerror="this.style.background='#C4B39E';this.removeAttribute('src')">
     </div>
+    <div class="portrait-caption">
+      <p class="name-lg">Dr Shubham Tiwari</p>
+      <div class="roles">
+        <p class="role-item"><span>Senior Hydrologist</span> — Environment Agency, DEFRA UK</p>
+        <p class="role-item"><span>Postdoctoral Researcher</span> — NMSU & Jornada Experimental Range</p>
+        <p class="role-item"><span>Marie Curie ESR</span> — i-CONN Network, Durham University</p>
+      </div>
+      <div class="social-strip">
+        <a href="https://scholar.google.com/citations?user=xdspNSQAAAAJ&hl=en" target="_blank">Scholar</a>
+        <a href="https://linkedin.com/in/shubhamrt" target="_blank">LinkedIn</a>
+        <a href="https://x.com/EcoGeoNetwork" target="_blank">X / Twitter</a>
+        <a href="CV_shubham_tiwari_290126.pdf">Download CV</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STATS BAR -->
+<div class="stats-bar reveal">
+  <div class="stat-item">
+    <span class="stat-number">40%</span>
+    <span class="stat-label">of Earth's land surface<br>covered by drylands</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">4+</span>
+    <span class="stat-label">continents & regions<br>studied in the field</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">i-CONN</span>
+    <span class="stat-label">Marie Skłodowska-Curie<br>network participant</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">PhD</span>
+    <span class="stat-label">Durham University<br>network-based dryland degradation</span>
   </div>
 </div>
 
-<main class="wrap">
-  <h1>Research</h1>
-  <p class="sub">
-    I use connectivity thinking—especially <strong>complex networks</strong> and <strong>spatiotemporal analysis</strong>—to understand where environmental systems become vulnerable,
-    and how we can detect change early enough to act.
-  </p>
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-label reveal">
+    <span class="number">01</span>
+    About
+  </div>
+  <div class="about-content reveal">
+    <h2>Landscapes as <em>living networks</em> of connection</h2>
+    <p>
+      Drylands cover about 40% of Earth's land surface and support billions of people. When they degrade, the consequences ripple outward: dust storms, lost livelihoods, entire ecosystems shifting into new states.
+    </p>
+    <div class="pull-quote">
+      "Degradation doesn't happen uniformly. It flows through the landscape along pathways of water, wind, and vegetation."
+    </div>
+    <p>
+      During my PhD at Durham University — as an Early Stage Researcher in the Marie Skłodowska-Curie i-CONN network — I developed a network-based approach to understanding dryland degradation. The key insight: landscapes aren't collections of isolated components. They're living systems of connections, and those connections determine resilience.
+    </p>
+    <p>
+      Now, as a Senior Hydrologist at the UK's Environment Agency and postdoctoral researcher at New Mexico State University and the Jornada Experimental Range, I'm extending this thinking to wind-driven processes and dust emission dynamics across the western United States.
+    </p>
+    <p>
+      Different erosive forces — water, wind — same underlying question: <strong>what makes a landscape resilient, and what tips it over the edge?</strong>
+    </p>
+  </div>
+</section>
 
-  <div class="row" aria-label="Quick actions">
-    <a class="btn primary" href="CV_shubham_tiwari_290126.pdf">Download CV</a>
-    <a class="btn" href="https://scholar.google.com/citations?user=xdspNSQAAAAJ&hl=en" target="_blank" rel="noreferrer">Google Scholar</a>
+<!-- RESEARCH -->
+<section class="research" id="research">
+  <div class="section-header reveal">
+    <h2 class="section-title">Research themes</h2>
+    <span class="section-line"></span>
+    <a href="research.html" class="section-link">View all →</a>
   </div>
 
-  <section class="section" aria-label="Research themes">
-    <h2>Themes</h2>
-
-    <div class="grid">
-      <article class="card">
-        <h3>Dryland degradation & ecogeomorphic connectivity</h3>
-        <ul>
-          <li>Mapping how water–sediment–vegetation interactions connect (or disconnect) across landscapes.</li>
-          <li>Using network metrics to flag critical pathways and early-warning signals of instability.</li>
-        </ul>
-      </article>
-
-      <article class="card">
-        <h3>Dust source dynamics & wind-driven processes</h3>
-        <ul>
-          <li>Linking land condition, thresholds, and erodibility to anticipate dust emission risk.</li>
-          <li>Connecting process models with “critical node” ideas to target monitoring and action.</li>
-        </ul>
-      </article>
-
-      <article class="card">
-        <h3>Spatiotemporal rainfall & hydroclimate networks</h3>
-        <ul>
-          <li>Network-based rainfall reconstruction, gauge-network design, and forecast evaluation.</li>
-          <li>Detecting changes in rainfall patterns across decades and translating them into risk signals.</li>
-        </ul>
-      </article>
-
-      <article class="card">
-        <h3>Interdisciplinary connectivity science</h3>
-        <ul>
-          <li>Multilayer networks for connectivity in ecology, geomorphology, and coupled human–natural systems.</li>
-          <li>Transferable tools for identifying structure, influence, and thresholds in complex systems.</li>
-        </ul>
-      </article>
+  <div class="research-grid">
+    <div class="research-card reveal">
+      <span class="rc-number">01 —</span>
+      <h3 class="rc-title">Network-Based Landscape Degradation</h3>
+      <p class="rc-desc">Treating drylands as connectivity networks to detect vulnerability nodes and predict cascade failures before they occur.</p>
+      <div class="rc-tags">
+        <span class="rc-tag">Graph theory</span>
+        <span class="rc-tag">Connectivity</span>
+        <span class="rc-tag">Semi-arid</span>
+      </div>
     </div>
-
-    <div class="pills" aria-label="Methods">
-      <span class="pill">Complex network theory</span>
-      <span class="pill">Spatiotemporal analysis</span>
-      <span class="pill">Numerical & process-based modeling</span>
-      <span class="pill">Geospatial analysis (GIS / GEE)</span>
-      <span class="pill">Statistical modeling & ML</span>
+    <div class="research-card reveal" style="transition-delay: 0.1s">
+      <span class="rc-number">02 —</span>
+      <h3 class="rc-title">Dust Source Dynamics</h3>
+      <p class="rc-desc">Mapping dust emission sources across the western United States using remote sensing and field measurements at Jornada Experimental Range.</p>
+      <div class="rc-tags">
+        <span class="rc-tag">Aeolian processes</span>
+        <span class="rc-tag">Remote sensing</span>
+        <span class="rc-tag">USA West</span>
+      </div>
     </div>
-  </section>
-
-  <section class="section" aria-label="Publications">
-    <h2>Publications</h2>
-
-    <div class="pubs">
-      <ol>
-        <li>
-          <a class="pub-title" href="https://doi.org/10.1016/j.jhydrol.2025.132896" target="_blank" rel="noreferrer">
-            Local- and global-scale hydrological and sediment connectivity over grassland and shrubland hillslopes
-          </a>
-          <span class="pub-meta">Tiwari, S., Turnbull, L., &amp; Wainwright, J. (2025). <em>Journal of Hydrology</em>, 655, 132896.</span>
-        </li>
-
-        <li>
-          <a class="pub-title" href="https://doi.org/10.1002/eco.2690" target="_blank" rel="noreferrer">
-            Water-controlled ecosystems as complex networks: Evaluation of network-based approaches to quantify patterns of connectivity
-          </a>
-          <span class="pub-meta">Tiwari, S., Turnbull, L., &amp; Wainwright, J. (2024). <em>Ecohydrology</em>, 17(7), e2690.</span>
-        </li>
-
-        <li>
-          <a class="pub-title" href="https://doi.org/10.3389/fnsys.2023.1305022" target="_blank" rel="noreferrer">
-            First activity and interactions in thalamus and cortex using raw single-trial EEG and MEG elicited by somatosensory stimulation
-          </a>
-          <span class="pub-meta">Karittevlis, C., Papadopoulos, M., Lima, V., Orphanides, G. A., Tiwari, S., Antonakakis, M., Papadopoulou Lesta, V., &amp; Ioannides, A. A. (2024). <em>Frontiers in Systems Neuroscience</em>, 17, 1305022.</span>
-        </li>
-
-        <li>
-          <a class="pub-title" href="https://doi.org/10.1007/s10980-024-01975-0" target="_blank" rel="noreferrer">
-            Multilayer networks in landscape ecology: A case study to assess changes in aquatic habitat connectivity for flying and non-flying benthic macroinvertebrates in a Danube floodplain
-          </a>
-          <span class="pub-meta">Recinos Brizuela, S. S., Funk, A., Tiwari, S., Baldan, D., &amp; Hein, T. (2024). <em>Landscape Ecology</em>, 39, 186.</span>
-        </li>
-
-        <li>
-          <a class="pub-title" href="https://doi.org/10.1080/02626667.2021.1982138" target="_blank" rel="noreferrer">
-            Evaluation of quantitative precipitation forecast in five Indian river basins
-          </a>
-          <span class="pub-meta">Singh, A., Tiwari, S., &amp; Jha, S. K. (2021). <em>Hydrological Sciences Journal</em>, 66(15), 2216–2231.</span>
-        </li>
-
-        <li>
-          <a class="pub-title" href="https://doi.org/10.1098/rsif.2021.0486" target="_blank" rel="noreferrer">
-            Two classes of functional connectivity in dynamical processes in networks
-          </a>
-          <span class="pub-meta">Vousta, V. et&nbsp;al. (2021). <em>Journal of the Royal Society Interface</em>, 18(183), 20210486.</span>
-        </li>
-
-        <li>
-          <a class="pub-title" href="https://doi.org/10.1038/s41598-020-66363-5" target="_blank" rel="noreferrer">
-            Quantification of node importance in rain gauge network: influence of temporal resolution and rain gauge density
-          </a>
-          <span class="pub-meta">Tiwari, S., Jha, S. K., &amp; Singh, A. (2020). <em>Scientific Reports</em>, 10(1), 9761.</span>
-        </li>
-
-        <li>
-          <a class="pub-title" href="https://doi.org/10.1016/j.jhydrol.2019.124185" target="_blank" rel="noreferrer">
-            Reconstruction of daily rainfall data using the concepts of networks: accounting for spatial connections in neighborhood selection
-          </a>
-          <span class="pub-meta">Tiwari, S., Jha, S. K., &amp; Sivakumar, B. (2019). <em>Journal of Hydrology</em>, 579, 124185.</span>
-        </li>
-      </ol>
+    <div class="research-card reveal" style="transition-delay: 0.2s">
+      <span class="rc-number">03 —</span>
+      <h3 class="rc-title">Water-Driven Erosion & Vegetation</h3>
+      <p class="rc-desc">How vegetation spatial patterns exert fundamental control over hillslope stability and water-erosion pathways in semi-arid systems.</p>
+      <div class="rc-tags">
+        <span class="rc-tag">Hydrology</span>
+        <span class="rc-tag">UAV / LiDAR</span>
+        <span class="rc-tag">Arizona</span>
+      </div>
     </div>
-  </section>
-</main>
+    <div class="research-card reveal" style="transition-delay: 0.3s">
+      <span class="rc-number">04 —</span>
+      <h3 class="rc-title">Rainfall Network Analysis</h3>
+      <p class="rc-desc">Applying network science to rainfall variability in Australia's Murray-Darling Basin to understand hydrological connectivity at the catchment scale.</p>
+      <div class="rc-tags">
+        <span class="rc-tag">Climate</span>
+        <span class="rc-tag">Australia</span>
+        <span class="rc-tag">Network science</span>
+      </div>
+    </div>
+    <div class="research-card reveal" style="transition-delay: 0.4s">
+      <span class="rc-number">05 —</span>
+      <h3 class="rc-title">Floodplain & Riparian Systems</h3>
+      <p class="rc-desc">Field investigations of connectivity dynamics in Central European floodplains, including comparative work in Austria's river corridors.</p>
+      <div class="rc-tags">
+        <span class="rc-tag">Fluvial geomorphology</span>
+        <span class="rc-tag">Austria</span>
+        <span class="rc-tag">Riparian</span>
+      </div>
+    </div>
+    <div class="research-card reveal" style="transition-delay: 0.5s">
+      <span class="rc-number">06 —</span>
+      <h3 class="rc-title">Operational Hydrology & Policy</h3>
+      <p class="rc-desc">Bridging science and real-world water management at the UK Environment Agency — one of the youngest Senior Hydrologists in the organisation.</p>
+      <div class="rc-tags">
+        <span class="rc-tag">UK water policy</span>
+        <span class="rc-tag">DEFRA</span>
+        <span class="rc-tag">Applied</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- Optional decorative strip (matches your index aesthetic) -->
-<div class="art-strip" aria-hidden="true">
-  <img src="img/banner.png" alt="">
-  <img src="img/banner.png" alt="">
-  <img src="img/banner.png" alt="">
-</div>
+<!-- FIELDWORK / LOCATIONS -->
+<section class="fieldwork" id="fieldwork">
+  <div class="fieldwork-text reveal">
+    <h2>From grasslands in Arizona to floodplains in Austria</h2>
+    <p>
+      Field-based science across four continents, connecting remote sensing data with boots-on-ground measurements.
+    </p>
+    <ul class="locations-list">
+      <li>
+        <span class="loc-dot"></span>
+        Jornada Experimental Range — dust &amp; wind erosion
+        <span class="loc-region">New Mexico, USA</span>
+      </li>
+      <li>
+        <span class="loc-dot"></span>
+        Semi-arid hillslopes — drone &amp; LiDAR surveys
+        <span class="loc-region">Arizona, USA</span>
+      </li>
+      <li>
+        <span class="loc-dot"></span>
+        Murray-Darling Basin — rainfall network analysis
+        <span class="loc-region">Australia</span>
+      </li>
+      <li>
+        <span class="loc-dot"></span>
+        Alpine &amp; lowland floodplains — connectivity
+        <span class="loc-region">Austria</span>
+      </li>
+      <li>
+        <span class="loc-dot"></span>
+        River &amp; catchment monitoring
+        <span class="loc-region">England &amp; Wales, UK</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="fieldwork-visual reveal">
+    <div class="world-map-container">
+      <!-- Simplified world map SVG with location dots -->
+      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <!-- Simple world landmass outlines (simplified) -->
+        <g fill="#E4D9C3" stroke="#C4B39E" stroke-width="0.5">
+          <!-- North America simplified -->
+          <path d="M70,60 L155,50 L180,65 L195,90 L185,130 L160,150 L140,175 L115,190 L85,185 L60,165 L45,140 L40,110 L50,80 Z"/>
+          <!-- South America simplified -->
+          <path d="M140,200 L175,195 L195,215 L200,260 L185,295 L160,305 L140,290 L125,260 L120,230 L130,210 Z"/>
+          <!-- Europe simplified -->
+          <path d="M255,50 L310,45 L330,60 L325,85 L300,95 L270,90 L250,75 Z"/>
+          <!-- Africa simplified -->
+          <path d="M265,105 L315,100 L335,120 L340,165 L325,210 L305,235 L280,235 L260,210 L248,165 L248,125 Z"/>
+          <!-- Asia simplified -->
+          <path d="M330,40 L460,30 L510,55 L525,90 L510,120 L470,135 L420,125 L380,110 L345,95 L325,70 Z"/>
+          <!-- Australia simplified -->
+          <path d="M430,195 L490,185 L520,200 L525,240 L505,265 L465,270 L435,255 L420,225 L425,205 Z"/>
+          <!-- UK simplified -->
+          <path d="M253,50 L264,45 L268,55 L260,65 L252,62 Z"/>
+        </g>
+        <!-- Field location dots -->
+        <g fill="#B84F1A">
+          <!-- New Mexico, USA -->
+          <circle cx="95" cy="120" r="5"/>
+          <text x="100" y="118" font-family="Jost, sans-serif" font-size="8" fill="#1E120A">New Mexico</text>
+          <!-- Arizona, USA -->
+          <circle cx="82" cy="125" r="4"/>
+          <!-- Australia Murray-Darling -->
+          <circle cx="480" cy="238" r="5"/>
+          <text x="485" y="236" font-family="Jost, sans-serif" font-size="8" fill="#1E120A">Australia</text>
+          <!-- Austria -->
+          <circle cx="295" cy="68" r="4"/>
+          <text x="300" y="66" font-family="Jost, sans-serif" font-size="8" fill="#1E120A">Austria</text>
+          <!-- UK -->
+          <circle cx="257" cy="54" r="4"/>
+          <text x="262" y="52" font-family="Jost, sans-serif" font-size="8" fill="#1E120A">UK</text>
+        </g>
+        <!-- Connecting lines between sites (connectivity theme) -->
+        <g stroke="#B84F1A" stroke-width="0.5" stroke-dasharray="3 4" fill="none" opacity="0.5">
+          <line x1="95" y1="120" x2="480" y2="238"/>
+          <line x1="95" y1="120" x2="295" y2="68"/>
+          <line x1="295" y1="68" x2="257" y2="54"/>
+          <line x1="295" y1="68" x2="480" y2="238"/>
+        </g>
+      </svg>
+      <p style="font-size:0.7rem;color:var(--taupe);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.8rem;text-align:center;">Field sites across four continents</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-left reveal">
+    <h2>Let's talk about<br><em>drylands, networks,</em><br>or anything in between.</h2>
+    <p>Whether you're a researcher, policymaker, or someone fascinated by how landscapes work — I'd love to hear from you.</p>
+    <div class="contact-info">
+      <div class="contact-row">
+        <span class="cl">Email</span>
+        <a href="mailto:shubham.tiwari@environment-agency.gov.uk">shubham.tiwari@environment-agency.gov.uk</a>
+      </div>
+      <div class="contact-row">
+        <span class="cl">Phone</span>
+        <a href="tel:+447586782408">+44 7586 782408</a>
+      </div>
+    </div>
+    <div class="hero-ctas">
+      <a href="mailto:shubham.tiwari@environment-agency.gov.uk" class="btn-primary">Send an Email</a>
+      <a href="CV_shubham_tiwari_290126.pdf" class="btn-ghost">Download CV</a>
+    </div>
+  </div>
+
+  <div class="contact-right reveal">
+    <div class="affiliation">
+      <p class="affiliation-title">Environment Agency, DEFRA</p>
+      <p class="affiliation-sub">Senior Hydrologist — England & Wales, UK</p>
+    </div>
+    <div class="affiliation">
+      <p class="affiliation-title">New Mexico State University</p>
+      <p class="affiliation-sub">Postdoctoral Researcher — Las Cruces, New Mexico</p>
+    </div>
+    <div class="affiliation">
+      <p class="affiliation-title">Jornada Experimental Range</p>
+      <p class="affiliation-sub">Dust Source Dynamics — USDA, New Mexico</p>
+    </div>
+    <div class="affiliation">
+      <p class="affiliation-title">Durham University</p>
+      <p class="affiliation-sub">PhD — i-CONN Marie Skłodowska-Curie Network</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="foot-name">Shubham Tiwari — Dryland Connectivity</span>
+  <span class="foot-copy">© 2025</span>
+</footer>
 
 <script>
-(function(){
-  // Mobile burger toggle
   const nav = document.getElementById('nav');
-  const btn = document.getElementById('navToggle');
-  const menu = document.getElementById('navMenu');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
 
-  if(btn && nav && menu){
-    const close = () => {
-      document.body.classList.remove('nav-open');
-      btn.setAttribute('aria-expanded','false');
-      menu.style.display = 'none';
-    };
-    const open = () => {
-      document.body.classList.add('nav-open');
-      btn.setAttribute('aria-expanded','true');
-      menu.style.display = 'block';
-    };
-    const toggle = () => (document.body.classList.contains('nav-open') ? close() : open());
-
-    btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggle(); });
-    menu.addEventListener('click', (e)=>{ if(e.target.tagName === 'A') close(); });
-    document.addEventListener('click', (e)=>{ if(!nav.contains(e.target)) close(); });
-    window.addEventListener('resize', close);
-  }
-})();
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
 </script>
-
 </body>
 </html>
