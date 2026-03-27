@@ -1,1033 +1,866 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shubham Tiwari — Dryland Connectivity</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shubham Tiwari | Dryland Connectivity</title>
+
+<link rel="icon" type="image/png" sizes="512x512" href="img/logo.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-  :root {
-    --sand: #F2EAD8;
-    --sand-dark: #E4D9C3;
-    --earth: #1E120A;
-    --earth-mid: #3D2415;
-    --rust: #B84F1A;
-    --rust-light: #D96535;
-    --taupe: #8A7260;
-    --taupe-light: #C4B39E;
-    --cream: #FBF6EE;
-    --sage: #6B7C5A;
-  }
+/* ─── TOKENS ─────────────────────────────────────────────────────────────── */
+:root {
+  --green:       #2C7873;
+  --green-dark:  #1f5f5b;
+  --green-dim:   rgba(44,120,115,.15);
+  --ink:         #1b2622;
+  --muted:       #4d6158;
+  --line:        rgba(0,0,0,.10);
+  --cream:       #f8f6f1;
+  --hero-bg:     #0e2420;
+  --nav-h:       68px;
+  --max:         1120px;
+  --serif:       'Cormorant Garamond', Georgia, serif;
+  --sans:        'Inter', system-ui, sans-serif;
+}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── RESET ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.72;
+  color: var(--ink);
+  background: #fff;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; }
 
-  html { scroll-behavior: smooth; }
+/* ─── NAV ────────────────────────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--nav-h);
+  z-index: 50;
+  transition: background .3s, border-color .3s;
+}
+.nav.hero-nav { background: transparent; border-bottom: 1px solid rgba(255,255,255,.12); }
+.nav.solid    { background: rgba(255,255,255,.96); border-bottom: 1px solid var(--line); backdrop-filter: blur(10px); }
 
-  body {
-    background: var(--sand);
-    color: var(--earth);
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    font-size: 17px;
-    line-height: 1.75;
-    overflow-x: hidden;
-  }
+.nav-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -.01em;
+  text-decoration: none;
+  color: #fff;
+  transition: color .3s;
+}
+.nav.solid .nav-brand { color: var(--ink); }
 
-  /* ── GRAIN TEXTURE ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.6;
-  }
+.nav-links { display: flex; gap: 4px; list-style: none; }
+.nav-links a {
+  font-weight: 600;
+  font-size: .9rem;
+  text-decoration: none;
+  color: rgba(255,255,255,.9);
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  transition: background .2s, color .2s;
+}
+.nav-links a:hover { background: rgba(255,255,255,.12); }
+.nav.solid .nav-links a { color: var(--ink); }
+.nav.solid .nav-links a:hover { background: var(--green-dim); color: var(--green); }
 
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    padding: 1.5rem 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.4s, border-bottom 0.4s;
-  }
-  nav.scrolled {
-    background: rgba(242, 234, 216, 0.92);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--taupe-light);
-  }
-  .nav-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    color: var(--earth);
-    text-decoration: none;
-    text-transform: uppercase;
-  }
-  .nav-links {
-    display: flex;
+/* Mobile burger */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 8px;
+  padding: .5rem .6rem;
+  cursor: pointer;
+}
+.nav-burger span { display: block; width: 18px; height: 2px; background: #fff; border-radius: 2px; transition: background .3s; }
+.nav.solid .nav-burger { border-color: var(--line); }
+.nav.solid .nav-burger span { background: var(--ink); }
+.nav-drawer {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 1rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.12);
+  padding: .5rem;
+  min-width: 200px;
+}
+.nav-drawer a { display: block; padding: .6rem .8rem; border-radius: 10px; font-weight: 600; color: var(--ink); text-decoration: none; }
+.nav-drawer a:hover { background: var(--green-dim); color: var(--green); }
+.nav.open .nav-drawer { display: block; }
+
+@media (max-width: 680px) {
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+}
+
+/* ─── HERO ───────────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  background: var(--hero-bg) url('img/banner_contours.jpg') center / cover no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
+}
+@media (min-width: 900px) { .hero { background-attachment: fixed; } }
+
+.hero-film {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(14,36,32,.72) 0%, rgba(14,36,32,.45) 60%, rgba(14,36,32,.65) 100%);
+  z-index: 0;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 3rem) 2rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+}
+
+/* Left column */
+.hero-left { display: flex; flex-direction: column; gap: 1.6rem; }
+
+.hero-eyebrow {
+  font-family: var(--sans);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  line-height: 1.0;
+  letter-spacing: -.01em;
+  color: #fff;
+}
+.hero-title em {
+  font-style: italic;
+  color: #7ecfc9;
+}
+
+.hero-question {
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(255,255,255,.82);
+  max-width: 42ch;
+  border-left: 2px solid var(--green);
+  padding-left: 1.1rem;
+}
+.hero-question strong {
+  display: block;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  margin-bottom: .5rem;
+}
+
+.hero-ctas { display: flex; gap: .8rem; flex-wrap: wrap; }
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .7rem 1.6rem;
+  border-radius: 999px;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.btn-fill   { background: var(--green); color: #fff; border: 2px solid var(--green); }
+.btn-fill:hover { background: var(--green-dark); border-color: var(--green-dark); }
+.btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.45); }
+.btn-outline:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+
+/* Right column: portrait */
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+}
+.hero-photo {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: brightness(.95) contrast(1.04);
+}
+.hero-caption { text-align: center; max-width: 300px; }
+.hero-caption .hc-name {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: .01em;
+  color: #fff;
+  margin-bottom: .3rem;
+}
+.hero-caption .hc-role {
+  font-size: .78rem;
+  font-weight: 400;
+  color: rgba(255,255,255,.5);
+  line-height: 1.6;
+  letter-spacing: .01em;
+}
+.hero-caption .hc-role-label {
+  color: #7ecfc9;
+  font-weight: 600;
+}
+
+@media (max-width: 800px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
     gap: 2.5rem;
-    list-style: none;
   }
-  .nav-links a {
-    font-size: 0.75rem;
-    font-weight: 400;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--earth-mid);
-    text-decoration: none;
-    position: relative;
-    transition: color 0.2s;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--rust);
-    transition: width 0.3s ease;
-  }
-  .nav-links a:hover { color: var(--rust); }
-  .nav-links a:hover::after { width: 100%; }
+  .hero-right { order: -1; }
+  .hero-photo { max-width: 220px; aspect-ratio: 1/1; }
+  .hero-title { font-size: clamp(2.5rem, 8vw, 3.5rem); }
+}
 
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 0 4rem;
-    gap: 4rem;
-    position: relative;
-    overflow: hidden;
-  }
+/* ─── STATS BAR ──────────────────────────────────────────────────────────── */
+.stats {
+  background: var(--ink);
+  color: #fff;
+  padding: 3.5rem 2rem;
+}
+.stats-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat {
+  padding: 0 2rem 0 2rem;
+  border-left: 1px solid rgba(255,255,255,.10);
+}
+.stat:first-child { border-left: none; padding-left: 0; }
+.stat-number {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 300;
+  color: #7ecfc9;
+  line-height: 1;
+  display: block;
+  margin-bottom: .4rem;
+}
+.stat-label {
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: rgba(255,255,255,.45);
+  line-height: 1.55;
+  text-transform: uppercase;
+}
 
-  /* Background network SVG */
-  .hero-network {
-    position: absolute;
-    top: 0; right: 0;
-    width: 55%;
-    height: 100%;
-    opacity: 0.07;
-    pointer-events: none;
-  }
+@media (max-width: 700px) {
+  .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .stat { border-left: none; padding-left: 0; }
+  .stat:nth-child(2), .stat:nth-child(4) { border-left: 1px solid rgba(255,255,255,.10); padding-left: 1.5rem; }
+}
 
-  .hero-left {
-    padding-top: 6rem;
-    animation: fadeUp 1s ease both;
-  }
+/* ─── BANNER STRIP ───────────────────────────────────────────────────────── */
+.banner-strip {
+  width: 100%;
+  display: flex;
+  line-height: 0;
+  overflow: hidden;
+  height: 180px;
+  position: relative;
+}
+.banner-strip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(27,38,34,.25), rgba(255,255,255,.9));
+}
+.banner-strip img {
+  width: calc(100% / 3);
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+  filter: sepia(20%) contrast(1.05) brightness(.95);
+}
 
-  .hero-eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--rust);
-    margin-bottom: 1.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: block;
-    width: 2.5rem;
-    height: 1px;
-    background: var(--rust);
-  }
+/* ─── ABOUT ──────────────────────────────────────────────────────────────── */
+.about {
+  background: #fff;
+  padding: 5rem 2rem 6rem;
+}
+.about-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+.about-inner h2 {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 1.6rem;
+}
+.about-pull {
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  border-left: 3px solid var(--green);
+  padding: .4rem 0 .4rem 1.4rem;
+  margin: 1.8rem 0 1.8rem;
+  line-height: 1.45;
+  max-width: 52ch;
+}
+.about-prose {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(27,38,34,.85);
+  max-width: 68ch;
+}
+.about-prose p { margin-bottom: .9rem; }
+.about-prose p:last-child { margin-bottom: 0; }
+.about-prose a { color: var(--green); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.about-prose a:hover { color: var(--green-dark); }
 
-  h1.hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3.5rem, 6vw, 5.5rem);
-    font-weight: 300;
-    line-height: 1.05;
-    letter-spacing: -0.01em;
-    color: var(--earth);
-    margin-bottom: 0.2rem;
-  }
-  h1.hero-title em {
-    font-style: italic;
-    color: var(--rust);
-  }
+/* ─── RESEARCH ───────────────────────────────────────────────────────────── */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.section-header h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.section-rule {
+  flex: 1;
+  height: 1px;
+  background: rgba(0,0,0,.12);
+}
+.section-link {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--green);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color .2s;
+}
+.section-link:hover { color: var(--green-dark); }
+.research {
+  background: #fff;
+  padding: 5rem 2rem 6rem;
+}
+.research-inner { max-width: var(--max); margin: 0 auto; }
 
-  .hero-subtitle {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
-    font-weight: 300;
-    font-style: italic;
-    color: var(--taupe);
-    margin: 1.5rem 0 2.5rem;
-    max-width: 30rem;
-    line-height: 1.5;
-  }
+.research-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.research-card {
+  background: var(--cream);
+  padding: 2rem 1.6rem;
+  transition: background .25s;
+  cursor: default;
+  position: relative;
+}
+.research-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s ease;
+}
+.research-card:hover { background: var(--ink); }
+.research-card:hover .rc-num,
+.research-card:hover .rc-title,
+.research-card:hover .rc-desc { color: rgba(255,255,255,.9); }
+.research-card:hover .rc-num { color: #7ecfc9; }
+.research-card:hover .rc-tag { border-color: rgba(255,255,255,.2); color: rgba(255,255,255,.5); }
+.research-card:hover::before { transform: scaleX(1); }
 
-  .hero-question {
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--earth-mid);
-    max-width: 28rem;
-    border-left: 2px solid var(--rust);
-    padding-left: 1.2rem;
-    line-height: 1.65;
-    margin-bottom: 3rem;
-  }
+.rc-num {
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(27,38,34,.35);
+  display: block;
+  margin-bottom: 1rem;
+  transition: color .25s;
+}
+.rc-title {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: .8rem;
+  transition: color .25s;
+}
+.rc-desc {
+  font-size: .86rem;
+  color: var(--muted);
+  line-height: 1.65;
+  font-weight: 300;
+  transition: color .25s;
+}
+.rc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: 1.2rem;
+}
+.rc-tag {
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(27,38,34,.18);
+  color: var(--muted);
+  padding: .2rem .55rem;
+  border-radius: 4px;
+  transition: border-color .25s, color .25s;
+}
 
-  .hero-ctas {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .btn-primary {
-    display: inline-block;
-    padding: 0.75rem 2rem;
-    background: var(--earth);
-    color: var(--sand);
-    text-decoration: none;
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    transition: background 0.25s;
-  }
-  .btn-primary:hover { background: var(--rust); }
-  .btn-ghost {
-    display: inline-block;
-    padding: 0.75rem 2rem;
-    border: 1px solid var(--taupe);
-    color: var(--earth);
-    text-decoration: none;
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    transition: border-color 0.25s, color 0.25s;
-  }
-  .btn-ghost:hover { border-color: var(--rust); color: var(--rust); }
+@media (max-width: 800px) { .research-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .research-grid { grid-template-columns: 1fr; } }
 
-  /* Hero right: portrait */
-  .hero-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding-top: 6rem;
-    animation: fadeUp 1s 0.2s ease both;
-  }
-  .portrait-frame {
-    position: relative;
-    width: 100%;
-    max-width: 360px;
-    aspect-ratio: 3/4;
-  }
-  .portrait-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: sepia(20%) contrast(1.05);
-  }
-  .portrait-frame::before {
-    content: '';
-    position: absolute;
-    top: -1rem;
-    right: -1rem;
-    width: 60%;
-    height: 60%;
-    border-top: 1px solid var(--rust);
-    border-right: 1px solid var(--rust);
-    z-index: 2;
-    pointer-events: none;
-  }
-  .portrait-frame::after {
-    content: '';
-    position: absolute;
-    bottom: -1rem;
-    left: -1rem;
-    width: 60%;
-    height: 60%;
-    border-bottom: 1px solid var(--taupe);
-    border-left: 1px solid var(--taupe);
-    z-index: 2;
-    pointer-events: none;
-  }
+/* ─── CONTACT ────────────────────────────────────────────────────────────── */
+.contact {
+  background: var(--cream);
+  padding: 5rem 2rem 6rem;
+}
+.contact-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+.contact-left h2 {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.contact-left h2 em { font-style: italic; color: var(--green); }
+.contact-left p {
+  font-size: .97rem;
+  color: var(--muted);
+  font-weight: 300;
+  max-width: 40ch;
+  line-height: 1.7;
+  margin-bottom: 1.8rem;
+}
+.contact-rows { display: flex; flex-direction: column; gap: .8rem; margin-bottom: 2rem; }
+.contact-row { display: flex; align-items: baseline; gap: 1rem; font-size: .92rem; }
+.contact-row .cr-label { font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(27,38,34,.4); width: 3.5rem; flex-shrink: 0; }
+.contact-row a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color .2s; }
+.contact-row a:hover { color: var(--green); }
+.contact-ctas { display: flex; gap: .8rem; flex-wrap: wrap; }
+.btn-fill-dark { background: var(--ink); color: #fff; border: 2px solid var(--ink); }
+.btn-fill-dark:hover { background: var(--green-dark); border-color: var(--green-dark); }
+.btn-outline-dark { background: transparent; color: var(--ink); border: 2px solid rgba(27,38,34,.3); }
+.btn-outline-dark:hover { border-color: var(--green); color: var(--green); }
 
-  .portrait-caption {
-    margin-top: 1.5rem;
-    max-width: 360px;
-  }
-  .portrait-caption .name-lg {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--earth);
-  }
-  .roles {
-    margin-top: 0.6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-  .role-item {
-    font-size: 0.78rem;
-    color: var(--taupe);
-    letter-spacing: 0.02em;
-    font-weight: 400;
-  }
-  .role-item span {
-    color: var(--rust);
-    font-weight: 500;
-  }
+.contact-right { padding-top: .5rem; }
+.contact-right h3 {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(27,38,34,.4);
+  margin-bottom: 1.4rem;
+}
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+}
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .9rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: .95rem;
+  transition: background .2s, color .2s;
+  border: 1px solid transparent;
+}
+.social-link:hover { background: #fff; border-color: var(--line); color: var(--green); }
+.social-link svg { width: 18px; height: 18px; flex-shrink: 0; stroke: var(--green); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.social-link .sl-handle { font-size: .8rem; color: rgba(27,38,34,.4); margin-left: auto; }
 
-  .social-strip {
-    display: flex;
-    gap: 1.2rem;
-    margin-top: 1.2rem;
-    flex-wrap: wrap;
-  }
-  .social-strip a {
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--earth-mid);
-    text-decoration: none;
-    border-bottom: 1px solid var(--taupe-light);
-    padding-bottom: 1px;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .social-strip a:hover { color: var(--rust); border-color: var(--rust); }
+@media (max-width: 720px) {
+  .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+}
 
-  /* ── DIVIDER ── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--taupe-light), transparent);
-    margin: 0 4rem;
-  }
+/* ─── FOOTER ─────────────────────────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  color: rgba(255,255,255,.45);
+  padding: 1.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .78rem;
+  font-weight: 400;
+  letter-spacing: .04em;
+}
+footer .foot-brand { font-weight: 700; color: rgba(255,255,255,.7); letter-spacing: .02em; }
+@media (max-width: 480px) {
+  footer { flex-direction: column; gap: .4rem; text-align: center; }
+}
 
-  /* ── ABOUT SECTION ── */
-  .about {
-    padding: 8rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 6rem;
-    align-items: start;
-  }
-  .about-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--taupe);
-    position: sticky;
-    top: 7rem;
-  }
-  .about-label .number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 4rem;
-    font-weight: 300;
-    color: var(--sand-dark);
-    display: block;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-  .about-content h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    font-weight: 300;
-    line-height: 1.15;
-    margin-bottom: 2rem;
-    color: var(--earth);
-  }
-  .about-content h2 em { font-style: italic; color: var(--rust); }
-  .about-content p {
-    color: var(--earth-mid);
-    margin-bottom: 1.4rem;
-    font-size: 1rem;
-    font-weight: 300;
-    max-width: 56ch;
-  }
-
-  .pull-quote {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
-    font-weight: 400;
-    font-style: italic;
-    color: var(--earth);
-    border-left: 3px solid var(--rust);
-    padding: 0.5rem 0 0.5rem 1.5rem;
-    margin: 2.5rem 0;
-    line-height: 1.4;
-    max-width: 50ch;
-  }
-
-  /* ── JOURNEY STATS ── */
-  .stats-bar {
-    background: var(--earth);
-    color: var(--sand);
-    padding: 4rem 4rem;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-  }
-  .stat-item { border-left: 1px solid rgba(255,255,255,0.15); padding-left: 1.5rem; }
-  .stat-item:first-child { border-left: none; padding-left: 0; }
-  .stat-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 300;
-    color: var(--rust-light);
-    line-height: 1;
-    display: block;
-    margin-bottom: 0.4rem;
-  }
-  .stat-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--taupe-light);
-    line-height: 1.5;
-  }
-
-  /* ── RESEARCH SECTION ── */
-  .research {
-    padding: 8rem 4rem;
-  }
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    gap: 2rem;
-    margin-bottom: 4rem;
-  }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    font-weight: 300;
-    color: var(--earth);
-  }
-  .section-line {
-    flex: 1;
-    height: 1px;
-    background: var(--sand-dark);
-  }
-  .section-link {
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--rust);
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .section-link:hover { text-decoration: underline; }
-
-  .research-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-  }
-  .research-card {
-    background: var(--cream);
-    padding: 2.5rem 2rem;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-    cursor: default;
-  }
-  .research-card:hover { background: var(--earth); }
-  .research-card:hover .rc-number,
-  .research-card:hover .rc-title,
-  .research-card:hover .rc-desc { color: var(--sand); }
-  .research-card:hover .rc-number { color: var(--rust-light); }
-  .research-card:hover .rc-tag { border-color: rgba(255,255,255,0.2); color: var(--taupe-light); }
-
-  .rc-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.85rem;
-    font-weight: 400;
-    color: var(--taupe-light);
-    letter-spacing: 0.06em;
-    margin-bottom: 1.2rem;
-    display: block;
-    transition: color 0.3s;
-  }
-  .rc-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: var(--earth);
-    margin-bottom: 1rem;
-    line-height: 1.2;
-    transition: color 0.3s;
-  }
-  .rc-desc {
-    font-size: 0.88rem;
-    color: var(--taupe);
-    line-height: 1.65;
-    transition: color 0.3s;
-    font-weight: 300;
-  }
-  .rc-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-  }
-  .rc-tag {
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: 1px solid var(--taupe-light);
-    color: var(--taupe);
-    padding: 0.25rem 0.6rem;
-    transition: border-color 0.3s, color 0.3s;
-  }
-
-  /* ── FIELD LOCATIONS ── */
-  .fieldwork {
-    padding: 8rem 4rem;
-    background: var(--sand-dark);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: center;
-  }
-  .fieldwork-text h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 3vw, 2.6rem);
-    font-weight: 300;
-    margin-bottom: 1.5rem;
-    color: var(--earth);
-    line-height: 1.15;
-  }
-  .fieldwork-text p {
-    font-size: 0.95rem;
-    color: var(--earth-mid);
-    font-weight: 300;
-    max-width: 44ch;
-  }
-  .locations-list {
-    list-style: none;
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-  .locations-list li {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    font-size: 0.88rem;
-    color: var(--earth-mid);
-    font-weight: 400;
-  }
-  .loc-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--rust);
-    flex-shrink: 0;
-    position: relative;
-    top: -1px;
-  }
-  .loc-region {
-    color: var(--taupe);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-left: auto;
-  }
-
-  .fieldwork-visual {
-    position: relative;
-  }
-  .world-map-container {
-    background: var(--sand);
-    padding: 2rem;
-    border: 1px solid var(--taupe-light);
-  }
-
-  /* ── CONTACT / FOOTER ── */
-  .contact {
-    padding: 8rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: end;
-  }
-  .contact-left h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.5rem, 4vw, 3.5rem);
-    font-weight: 300;
-    line-height: 1.1;
-    color: var(--earth);
-    margin-bottom: 2rem;
-  }
-  .contact-left h2 em { font-style: italic; color: var(--rust); }
-  .contact-left p {
-    font-size: 0.95rem;
-    color: var(--taupe);
-    font-weight: 300;
-    max-width: 38ch;
-    margin-bottom: 2rem;
-  }
-
-  .contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-  }
-  .contact-row {
-    display: flex;
-    gap: 1rem;
-    align-items: baseline;
-    font-size: 0.9rem;
-  }
-  .contact-row .cl { color: var(--taupe); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; width: 4rem; flex-shrink: 0; }
-  .contact-row a { color: var(--earth); text-decoration: none; border-bottom: 1px solid var(--taupe-light); padding-bottom: 1px; transition: color 0.2s, border-color 0.2s; }
-  .contact-row a:hover { color: var(--rust); border-color: var(--rust); }
-
-  .contact-right {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  .affiliation {
-    border-left: 2px solid var(--sand-dark);
-    padding: 1rem 1.5rem;
-  }
-  .affiliation-title {
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-    color: var(--earth);
-    font-weight: 500;
-  }
-  .affiliation-sub {
-    font-size: 0.78rem;
-    color: var(--taupe);
-    margin-top: 0.2rem;
-    font-weight: 300;
-  }
-
-  footer {
-    background: var(--earth);
-    padding: 2rem 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  footer .foot-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--taupe-light);
-    letter-spacing: 0.06em;
-  }
-  footer .foot-copy {
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.25);
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    nav { padding: 1.2rem 2rem; }
-    .hero { grid-template-columns: 1fr; padding: 0 2rem; min-height: auto; padding-top: 7rem; padding-bottom: 4rem; }
-    .hero-right { align-items: center; }
-    .portrait-frame { max-width: 280px; }
-    .about { grid-template-columns: 1fr; padding: 5rem 2rem; gap: 2rem; }
-    .about-label { position: static; }
-    .about-label .number { display: none; }
-    .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 3rem 2rem; }
-    .research { padding: 5rem 2rem; }
-    .research-grid { grid-template-columns: 1fr; }
-    .fieldwork { grid-template-columns: 1fr; padding: 5rem 2rem; gap: 3rem; }
-    .contact { grid-template-columns: 1fr; padding: 5rem 2rem; gap: 3rem; }
-    footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem 2rem; text-align: center; }
-    .divider { margin: 0 2rem; }
-  }
+/* ─── SCROLL REVEALS ─────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="nav">
-  <a class="nav-name" href="#about">Shubham Tiwari</a>
-  <ul class="nav-links">
-    <li><a href="#research">Research</a></li>
-    <li><a href="#fieldwork">Fieldwork</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="CV_shubham_tiwari_290126.pdf">CV</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero" id="about">
-
-  <!-- Background network decoration -->
-  <svg class="hero-network" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMid meet">
-    <g stroke="#5C3D20" fill="none">
-      <line x1="120" y1="200" x2="280" y2="320" stroke-width="0.8"/>
-      <line x1="280" y1="320" x2="450" y2="250" stroke-width="0.8"/>
-      <line x1="450" y1="250" x2="520" y2="400" stroke-width="0.8"/>
-      <line x1="280" y1="320" x2="320" y2="500" stroke-width="0.8"/>
-      <line x1="320" y1="500" x2="180" y2="580" stroke-width="0.8"/>
-      <line x1="320" y1="500" x2="460" y2="600" stroke-width="0.8"/>
-      <line x1="460" y1="600" x2="530" y2="700" stroke-width="0.8"/>
-      <line x1="180" y1="580" x2="100" y2="680" stroke-width="0.8"/>
-      <line x1="520" y1="400" x2="580" y2="550" stroke-width="0.8"/>
-      <line x1="60" y1="350" x2="120" y2="200" stroke-width="0.8"/>
-      <line x1="60" y1="350" x2="180" y2="580" stroke-width="0.8"/>
-      <line x1="400" y1="150" x2="450" y2="250" stroke-width="0.8"/>
-      <line x1="400" y1="150" x2="280" y2="320" stroke-width="0.5" stroke-dasharray="4 6"/>
-    </g>
-    <g fill="#5C3D20">
-      <circle cx="120" cy="200" r="5"/>
-      <circle cx="280" cy="320" r="8"/>
-      <circle cx="450" cy="250" r="5"/>
-      <circle cx="520" cy="400" r="4"/>
-      <circle cx="320" cy="500" r="7"/>
-      <circle cx="180" cy="580" r="5"/>
-      <circle cx="460" cy="600" r="6"/>
-      <circle cx="60"  cy="350" r="4"/>
-      <circle cx="530" cy="700" r="3"/>
-      <circle cx="100" cy="680" r="3"/>
-      <circle cx="580" cy="550" r="3"/>
-      <circle cx="400" cy="150" r="4"/>
-    </g>
-  </svg>
-
-  <div class="hero-left">
-    <p class="hero-eyebrow">Postdoctoral Researcher · Senior Hydrologist</p>
-    <h1 class="hero-title">
-      Dryland<br>
-      <em>Connectivity</em><br>
-      & Resilience
-    </h1>
-    <p class="hero-subtitle">
-      Mapping the pathways through which landscapes fall apart — and how to see it coming.
-    </p>
-    <p class="hero-question">
-      How do dryland landscapes degrade, and can we detect the warning signs before collapse becomes irreversible?
-    </p>
-    <div class="hero-ctas">
-      <a href="#research" class="btn-primary">Explore Research</a>
-      <a href="#contact" class="btn-ghost">Get in Touch</a>
+<!-- ══ NAV ══════════════════════════════════════════════════════════════════ -->
+<nav class="nav hero-nav" id="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top">Shubham Tiwari</a>
+    <ul class="nav-links">
+      <li><a href="research.html">Research</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="#contact" style="background:var(--green-dim);color:#7ecfc9;border-radius:999px;">Get in Touch</a></li>
+    </ul>
+    <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-drawer" id="drawer">
+      <a href="research.html">Research</a>
+      <a href="news.html">News</a>
+      <a href="#contact">Get in Touch</a>
     </div>
   </div>
+</nav>
 
-  <div class="hero-right">
-    <div class="portrait-frame">
-      <img src="img/profile.jpg" alt="Dr Shubham Tiwari" onerror="this.style.background='#C4B39E';this.removeAttribute('src')">
-    </div>
-    <div class="portrait-caption">
-      <p class="name-lg">Dr Shubham Tiwari</p>
-      <div class="roles">
-        <p class="role-item"><span>Senior Hydrologist</span> — Environment Agency, DEFRA UK</p>
-        <p class="role-item"><span>Postdoctoral Researcher</span> — NMSU & Jornada Experimental Range</p>
-        <p class="role-item"><span>Marie Curie ESR</span> — i-CONN Network, Durham University</p>
+<!-- ══ HERO ══════════════════════════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-film" aria-hidden="true"></div>
+
+  <div class="hero-inner">
+
+    <!-- LEFT: text -->
+    <div class="hero-left">
+      <p class="hero-eyebrow">Postdoctoral Researcher · Senior Hydrologist</p>
+
+      <h1 class="hero-title">
+        Dryland<br>
+        <em>Connectivity</em><br>
+        &amp; Resilience
+      </h1>
+
+      <div class="hero-question">
+        <strong>I'm fascinated by a question that drives most of my research:</strong>
+        How do dryland landscapes fall apart — and how can we see it coming before it's too late?
       </div>
-      <div class="social-strip">
-        <a href="https://scholar.google.com/citations?user=xdspNSQAAAAJ&hl=en" target="_blank">Scholar</a>
-        <a href="https://linkedin.com/in/shubhamrt" target="_blank">LinkedIn</a>
-        <a href="https://x.com/EcoGeoNetwork" target="_blank">X / Twitter</a>
-        <a href="CV_shubham_tiwari_290126.pdf">Download CV</a>
+
+      <div class="hero-ctas">
+        <a href="#research" class="btn btn-fill">Explore Research</a>
+        <a href="#contact"  class="btn btn-outline">Get in Touch</a>
       </div>
     </div>
+
+    <!-- RIGHT: portrait -->
+    <div class="hero-right">
+      <div class="hero-photo">
+        <img src="img/profile.jpg" alt="Portrait of Shubham Tiwari"
+             onerror="this.style.background='#2C7873';this.removeAttribute('src')">
+      </div>
+      <div class="hero-caption">
+        <p class="hc-name">Dr Shubham Tiwari</p>
+        <p class="hc-role"><span class="hc-role-label">Postdoctoral Researcher</span> — NMSU &amp; Jornada Experimental Range</p>
+        <p class="hc-role"><span class="hc-role-label">Marie Curie ESR</span> — i-CONN Network, Durham University</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<div class="divider"></div>
-
-<!-- STATS BAR -->
-<div class="stats-bar reveal">
-  <div class="stat-item">
-    <span class="stat-number">40%</span>
-    <span class="stat-label">of Earth's land surface<br>covered by drylands</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-number">4+</span>
-    <span class="stat-label">continents & regions<br>studied in the field</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-number">i-CONN</span>
-    <span class="stat-label">Marie Skłodowska-Curie<br>network participant</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-number">PhD</span>
-    <span class="stat-label">Durham University<br>network-based dryland degradation</span>
+<!-- ══ STATS BAR ═════════════════════════════════════════════════════════════ -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat reveal">
+      <span class="stat-number">40%</span>
+      <span class="stat-label">of Earth's land surface<br>is dryland</span>
+    </div>
+    <div class="stat reveal" style="transition-delay:.08s">
+      <span class="stat-number">~2B</span>
+      <span class="stat-label">people depend on<br>dryland ecosystems</span>
+    </div>
+    <div class="stat reveal" style="transition-delay:.16s">
+      <span class="stat-number">i-CONN</span>
+      <span class="stat-label">Marie Skłodowska-Curie<br>network researcher</span>
+    </div>
+    <div class="stat reveal" style="transition-delay:.24s">
+      <span class="stat-number">PhD</span>
+      <span class="stat-label">Durham University<br>network-based degradation</span>
+    </div>
   </div>
 </div>
 
-<!-- ABOUT -->
-<section class="about">
-  <div class="about-label reveal">
-    <span class="number">01</span>
-    About
-  </div>
-  <div class="about-content reveal">
-    <h2>Landscapes as <em>living networks</em> of connection</h2>
-    <p>
-      Drylands cover about 40% of Earth's land surface and support billions of people. When they degrade, the consequences ripple outward: dust storms, lost livelihoods, entire ecosystems shifting into new states.
-    </p>
-    <div class="pull-quote">
+<!-- ══ BANNER STRIP ══════════════════════════════════════════════════════════ -->
+<div class="banner-strip" aria-hidden="true">
+  <img src="img/banner.png" alt="">
+  <img src="img/banner.png" alt="">
+  <img src="img/banner.png" alt="">
+</div>
+
+<!-- ══ ABOUT ══════════════════════════════════════════════════════════════════ -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <h2>Landscapes as <em style="font-style:italic;color:var(--green)">living networks</em> of connection</h2>
+    <div class="about-prose">
+      <p>
+        Drylands cover about 40% of Earth's land surface and support billions of people. When they degrade, the consequences ripple outward: dust storms, lost livelihoods, entire ecosystems shifting into new states.
+      </p>
+    </div>
+    <blockquote class="about-pull">
       "Degradation doesn't happen uniformly. It flows through the landscape along pathways of water, wind, and vegetation."
+    </blockquote>
+    <div class="about-prose">
+      <p>
+        During my PhD at <a href="https://www.durham.ac.uk/" target="_blank" rel="noreferrer">Durham University</a> — as an Early Stage Researcher in the Marie Skłodowska-Curie <a href="https://iconn.network/" target="_blank" rel="noreferrer">i-CONN network</a> — I developed a network-based approach to understanding dryland degradation. The key insight: landscapes aren't collections of isolated components. They're living systems of connections, and those connections determine resilience.
+      </p>
+      <p>
+        Now, as a Senior Hydrologist at the UK's <a href="https://www.gov.uk/government/organisations/environment-agency" target="_blank" rel="noreferrer">Environment Agency</a> and postdoctoral researcher at <a href="https://nmsu.edu/" target="_blank" rel="noreferrer">New Mexico State University</a> and the <a href="https://jornada.nmsu.edu/" target="_blank" rel="noreferrer">Jornada Experimental Range</a>, I'm extending this thinking to wind-driven processes and dust emission dynamics across the western United States.
+      </p>
+      <p>
+        Different erosive forces — water, wind — same underlying question: what makes a landscape resilient, and what tips it over the edge?
+      </p>
     </div>
-    <p>
-      During my PhD at Durham University — as an Early Stage Researcher in the Marie Skłodowska-Curie i-CONN network — I developed a network-based approach to understanding dryland degradation. The key insight: landscapes aren't collections of isolated components. They're living systems of connections, and those connections determine resilience.
-    </p>
-    <p>
-      Now, as a Senior Hydrologist at the UK's Environment Agency and postdoctoral researcher at New Mexico State University and the Jornada Experimental Range, I'm extending this thinking to wind-driven processes and dust emission dynamics across the western United States.
-    </p>
-    <p>
-      Different erosive forces — water, wind — same underlying question: <strong>what makes a landscape resilient, and what tips it over the edge?</strong>
-    </p>
   </div>
 </section>
 
-<!-- RESEARCH -->
+
+<!-- ══ RESEARCH ═══════════════════════════════════════════════════════════════ -->
 <section class="research" id="research">
-  <div class="section-header reveal">
-    <h2 class="section-title">Research themes</h2>
-    <span class="section-line"></span>
-    <a href="research.html" class="section-link">View all →</a>
-  </div>
+  <div class="research-inner">
+    <div class="section-header">
+      <h2>Research Themes</h2>
+      <span class="section-rule"></span>
+      <a href="research.html" class="section-link">View all →</a>
+    </div>
 
-  <div class="research-grid">
-    <div class="research-card reveal">
-      <span class="rc-number">01 —</span>
-      <h3 class="rc-title">Network-Based Landscape Degradation</h3>
-      <p class="rc-desc">Treating drylands as connectivity networks to detect vulnerability nodes and predict cascade failures before they occur.</p>
-      <div class="rc-tags">
-        <span class="rc-tag">Graph theory</span>
-        <span class="rc-tag">Connectivity</span>
-        <span class="rc-tag">Semi-arid</span>
+    <div class="research-grid">
+      <div class="research-card reveal">
+        <span class="rc-num">01</span>
+        <h3 class="rc-title">Network-Based Landscape Degradation</h3>
+        <p class="rc-desc">Treating drylands as connectivity networks to detect vulnerability nodes and predict cascade failures before they occur.</p>
+        <div class="rc-tags"><span class="rc-tag">Graph theory</span><span class="rc-tag">Connectivity</span><span class="rc-tag">Semi-arid</span></div>
       </div>
-    </div>
-    <div class="research-card reveal" style="transition-delay: 0.1s">
-      <span class="rc-number">02 —</span>
-      <h3 class="rc-title">Dust Source Dynamics</h3>
-      <p class="rc-desc">Mapping dust emission sources across the western United States using remote sensing and field measurements at Jornada Experimental Range.</p>
-      <div class="rc-tags">
-        <span class="rc-tag">Aeolian processes</span>
-        <span class="rc-tag">Remote sensing</span>
-        <span class="rc-tag">USA West</span>
+      <div class="research-card reveal" style="transition-delay:.07s">
+        <span class="rc-num">02</span>
+        <h3 class="rc-title">Dust Source Dynamics</h3>
+        <p class="rc-desc">Mapping dust emission sources across the western United States using remote sensing and field measurements at Jornada Experimental Range.</p>
+        <div class="rc-tags"><span class="rc-tag">Aeolian</span><span class="rc-tag">Remote sensing</span><span class="rc-tag">USA West</span></div>
       </div>
-    </div>
-    <div class="research-card reveal" style="transition-delay: 0.2s">
-      <span class="rc-number">03 —</span>
-      <h3 class="rc-title">Water-Driven Erosion & Vegetation</h3>
-      <p class="rc-desc">How vegetation spatial patterns exert fundamental control over hillslope stability and water-erosion pathways in semi-arid systems.</p>
-      <div class="rc-tags">
-        <span class="rc-tag">Hydrology</span>
-        <span class="rc-tag">UAV / LiDAR</span>
-        <span class="rc-tag">Arizona</span>
+      <div class="research-card reveal" style="transition-delay:.14s">
+        <span class="rc-num">03</span>
+        <h3 class="rc-title">Water-Driven Erosion &amp; Vegetation</h3>
+        <p class="rc-desc">How vegetation spatial patterns exert fundamental control over hillslope stability and water-erosion pathways in semi-arid systems.</p>
+        <div class="rc-tags"><span class="rc-tag">Hydrology</span><span class="rc-tag">UAV / LiDAR</span><span class="rc-tag">Arizona</span></div>
       </div>
-    </div>
-    <div class="research-card reveal" style="transition-delay: 0.3s">
-      <span class="rc-number">04 —</span>
-      <h3 class="rc-title">Rainfall Network Analysis</h3>
-      <p class="rc-desc">Applying network science to rainfall variability in Australia's Murray-Darling Basin to understand hydrological connectivity at the catchment scale.</p>
-      <div class="rc-tags">
-        <span class="rc-tag">Climate</span>
-        <span class="rc-tag">Australia</span>
-        <span class="rc-tag">Network science</span>
+      <div class="research-card reveal" style="transition-delay:.07s">
+        <span class="rc-num">04</span>
+        <h3 class="rc-title">Rainfall Network Analysis</h3>
+        <p class="rc-desc">Applying network science to rainfall variability in Australia's Murray-Darling Basin to understand hydrological connectivity at catchment scale.</p>
+        <div class="rc-tags"><span class="rc-tag">Climate</span><span class="rc-tag">Australia</span><span class="rc-tag">Network science</span></div>
       </div>
-    </div>
-    <div class="research-card reveal" style="transition-delay: 0.4s">
-      <span class="rc-number">05 —</span>
-      <h3 class="rc-title">Floodplain & Riparian Systems</h3>
-      <p class="rc-desc">Field investigations of connectivity dynamics in Central European floodplains, including comparative work in Austria's river corridors.</p>
-      <div class="rc-tags">
-        <span class="rc-tag">Fluvial geomorphology</span>
-        <span class="rc-tag">Austria</span>
-        <span class="rc-tag">Riparian</span>
+      <div class="research-card reveal" style="transition-delay:.14s">
+        <span class="rc-num">05</span>
+        <h3 class="rc-title">Floodplain &amp; Riparian Systems</h3>
+        <p class="rc-desc">Field investigations of connectivity dynamics in Central European floodplains, including comparative work in Austria's river corridors.</p>
+        <div class="rc-tags"><span class="rc-tag">Fluvial</span><span class="rc-tag">Austria</span><span class="rc-tag">Riparian</span></div>
       </div>
-    </div>
-    <div class="research-card reveal" style="transition-delay: 0.5s">
-      <span class="rc-number">06 —</span>
-      <h3 class="rc-title">Operational Hydrology & Policy</h3>
-      <p class="rc-desc">Bridging science and real-world water management at the UK Environment Agency — one of the youngest Senior Hydrologists in the organisation.</p>
-      <div class="rc-tags">
-        <span class="rc-tag">UK water policy</span>
-        <span class="rc-tag">DEFRA</span>
-        <span class="rc-tag">Applied</span>
+      <div class="research-card reveal" style="transition-delay:.21s">
+        <span class="rc-num">06</span>
+        <h3 class="rc-title">Operational Hydrology &amp; Policy</h3>
+        <p class="rc-desc">Bridging science and real-world water management at the UK Environment Agency — one of the youngest Senior Hydrologists in the organisation.</p>
+        <div class="rc-tags"><span class="rc-tag">UK policy</span><span class="rc-tag">DEFRA</span><span class="rc-tag">Applied</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FIELDWORK / LOCATIONS -->
-<section class="fieldwork" id="fieldwork">
-  <div class="fieldwork-text reveal">
-    <h2>From grasslands in Arizona to floodplains in Austria</h2>
-    <p>
-      Field-based science across four continents, connecting remote sensing data with boots-on-ground measurements.
-    </p>
-    <ul class="locations-list">
-      <li>
-        <span class="loc-dot"></span>
-        Jornada Experimental Range — dust &amp; wind erosion
-        <span class="loc-region">New Mexico, USA</span>
-      </li>
-      <li>
-        <span class="loc-dot"></span>
-        Semi-arid hillslopes — drone &amp; LiDAR surveys
-        <span class="loc-region">Arizona, USA</span>
-      </li>
-      <li>
-        <span class="loc-dot"></span>
-        Murray-Darling Basin — rainfall network analysis
-        <span class="loc-region">Australia</span>
-      </li>
-      <li>
-        <span class="loc-dot"></span>
-        Alpine &amp; lowland floodplains — connectivity
-        <span class="loc-region">Austria</span>
-      </li>
-      <li>
-        <span class="loc-dot"></span>
-        River &amp; catchment monitoring
-        <span class="loc-region">England &amp; Wales, UK</span>
-      </li>
-    </ul>
-  </div>
-
-  <div class="fieldwork-visual reveal">
-    <div class="world-map-container">
-      <!-- Simplified world map SVG with location dots -->
-      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
-        <!-- Simple world landmass outlines (simplified) -->
-        <g fill="#E4D9C3" stroke="#C4B39E" stroke-width="0.5">
-          <!-- North America simplified -->
-          <path d="M70,60 L155,50 L180,65 L195,90 L185,130 L160,150 L140,175 L115,190 L85,185 L60,165 L45,140 L40,110 L50,80 Z"/>
-          <!-- South America simplified -->
-          <path d="M140,200 L175,195 L195,215 L200,260 L185,295 L160,305 L140,290 L125,260 L120,230 L130,210 Z"/>
-          <!-- Europe simplified -->
-          <path d="M255,50 L310,45 L330,60 L325,85 L300,95 L270,90 L250,75 Z"/>
-          <!-- Africa simplified -->
-          <path d="M265,105 L315,100 L335,120 L340,165 L325,210 L305,235 L280,235 L260,210 L248,165 L248,125 Z"/>
-          <!-- Asia simplified -->
-          <path d="M330,40 L460,30 L510,55 L525,90 L510,120 L470,135 L420,125 L380,110 L345,95 L325,70 Z"/>
-          <!-- Australia simplified -->
-          <path d="M430,195 L490,185 L520,200 L525,240 L505,265 L465,270 L435,255 L420,225 L425,205 Z"/>
-          <!-- UK simplified -->
-          <path d="M253,50 L264,45 L268,55 L260,65 L252,62 Z"/>
-        </g>
-        <!-- Field location dots -->
-        <g fill="#B84F1A">
-          <!-- New Mexico, USA -->
-          <circle cx="95" cy="120" r="5"/>
-          <text x="100" y="118" font-family="Jost, sans-serif" font-size="8" fill="#1E120A">New Mexico</text>
-          <!-- Arizona, USA -->
-          <circle cx="82" cy="125" r="4"/>
-          <!-- Australia Murray-Darling -->
-          <circle cx="480" cy="238" r="5"/>
-          <text x="485" y="236" font-family="Jost, sans-serif" font-size="8" fill="#1E120A">Australia</text>
-          <!-- Austria -->
-          <circle cx="295" cy="68" r="4"/>
-          <text x="300" y="66" font-family="Jost, sans-serif" font-size="8" fill="#1E120A">Austria</text>
-          <!-- UK -->
-          <circle cx="257" cy="54" r="4"/>
-          <text x="262" y="52" font-family="Jost, sans-serif" font-size="8" fill="#1E120A">UK</text>
-        </g>
-        <!-- Connecting lines between sites (connectivity theme) -->
-        <g stroke="#B84F1A" stroke-width="0.5" stroke-dasharray="3 4" fill="none" opacity="0.5">
-          <line x1="95" y1="120" x2="480" y2="238"/>
-          <line x1="95" y1="120" x2="295" y2="68"/>
-          <line x1="295" y1="68" x2="257" y2="54"/>
-          <line x1="295" y1="68" x2="480" y2="238"/>
-        </g>
-      </svg>
-      <p style="font-size:0.7rem;color:var(--taupe);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.8rem;text-align:center;">Field sites across four continents</p>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
+<!-- ══ CONTACT ════════════════════════════════════════════════════════════════ -->
 <section class="contact" id="contact">
-  <div class="contact-left reveal">
-    <h2>Let's talk about<br><em>drylands, networks,</em><br>or anything in between.</h2>
-    <p>Whether you're a researcher, policymaker, or someone fascinated by how landscapes work — I'd love to hear from you.</p>
-    <div class="contact-info">
-      <div class="contact-row">
-        <span class="cl">Email</span>
-        <a href="mailto:shubham.tiwari@environment-agency.gov.uk">shubham.tiwari@environment-agency.gov.uk</a>
-      </div>
-      <div class="contact-row">
-        <span class="cl">Phone</span>
-        <a href="tel:+447586782408">+44 7586 782408</a>
-      </div>
-    </div>
-    <div class="hero-ctas">
-      <a href="mailto:shubham.tiwari@environment-agency.gov.uk" class="btn-primary">Send an Email</a>
-      <a href="CV_shubham_tiwari_290126.pdf" class="btn-ghost">Download CV</a>
-    </div>
-  </div>
+  <div class="contact-inner">
 
-  <div class="contact-right reveal">
-    <div class="affiliation">
-      <p class="affiliation-title">Environment Agency, DEFRA</p>
-      <p class="affiliation-sub">Senior Hydrologist — England & Wales, UK</p>
+    <div class="contact-left">
+      <h2>
+        Let's talk about<br>
+        <em>drylands, networks,</em><br>
+        or anything in between.
+      </h2>
+      <p>Whether you're a researcher, policymaker, or someone fascinated by how landscapes work — I'd love to hear from you.</p>
+      <div class="contact-rows">
+        <div class="contact-row">
+          <span class="cr-label">Email</span>
+          <a href="/cdn-cgi/l/email-protection#fa89928f98929b97d48e938d9b8893ba9f948c93889594979f948ed79b9d9f949983d49d958cd48f91"><span class="__cf_email__" data-cfemail="a9dac1dccbc1c8c487ddc0dec8dbc0e9ccc7dfc0dbc6c7c4ccc7dd84c8ceccc7cad087cec6df87dcc2">[email&#160;protected]</span></a>
+        </div>
+        <div class="contact-row">
+          <span class="cr-label">Phone</span>
+          <a href="tel:+447586782408">+44 7586 782408</a>
+        </div>
+      </div>
+      <div class="contact-ctas">
+        <a href="/cdn-cgi/l/email-protection#bdced5c8dfd5dcd093c9d4cadccfd4fdd8d3cbd4cfd2d3d0d8d3c990dcdad8d3dec493dad2cb93c8d6" class="btn btn-fill-dark">Send an Email</a>
+        <a href="CV_shubham_tiwari_290126.pdf" class="btn btn-outline-dark">Download CV</a>
+      </div>
     </div>
-    <div class="affiliation">
-      <p class="affiliation-title">New Mexico State University</p>
-      <p class="affiliation-sub">Postdoctoral Researcher — Las Cruces, New Mexico</p>
+
+    <div class="contact-right">
+      <h3>Find me online</h3>
+      <div class="social-links">
+
+        <a class="social-link" href="https://scholar.google.com/citations?user=xdspNSQAAAAJ&hl=en" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.9V17"/><path d="M5 13.18v4L12 21l7-3.82v-4"/></svg>
+          Google Scholar
+          <span class="sl-handle">Publications &amp; citations →</span>
+        </a>
+
+        <a class="social-link" href="https://linkedin.com/in/shubhamrt" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 10v7"/></svg>
+          LinkedIn
+          <span class="sl-handle">@shubhamrt →</span>
+        </a>
+
+        <a class="social-link" href="https://x.com/EcoGeoNetwork" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4 4 20"/></svg>
+          X / Twitter
+          <span class="sl-handle">@EcoGeoNetwork →</span>
+        </a>
+
+      </div>
     </div>
-    <div class="affiliation">
-      <p class="affiliation-title">Jornada Experimental Range</p>
-      <p class="affiliation-sub">Dust Source Dynamics — USDA, New Mexico</p>
-    </div>
-    <div class="affiliation">
-      <p class="affiliation-title">Durham University</p>
-      <p class="affiliation-sub">PhD — i-CONN Marie Skłodowska-Curie Network</p>
-    </div>
+
   </div>
 </section>
 
+<!-- ══ FOOTER ══════════════════════════════════════════════════════════════════ -->
 <footer>
-  <span class="foot-name">Shubham Tiwari — Dryland Connectivity</span>
-  <span class="foot-copy">© 2025</span>
+  <span class="foot-brand">Shubham Tiwari</span>
+  <span>Dryland Connectivity &amp; Resilience · © 2025</span>
 </footer>
 
-<script>
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-  });
+<!-- ══ SCRIPTS ══════════════════════════════════════════════════════════════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function () {
 
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
+  /* Nav: switch style on scroll */
+  const nav = document.getElementById('nav');
+  function onScroll () {
+    const past = window.scrollY > 60;
+    nav.classList.toggle('solid', past);
+    nav.classList.toggle('hero-nav', !past);
+  }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* Burger */
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  if (burger) {
+    burger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const open = nav.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open);
     });
-  }, { threshold: 0.12 });
-  reveals.forEach(el => observer.observe(el));
-</script>
-</body>
-</html>
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    drawer.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.classList.remove('open'); });
+    });
+  }
+
+  /* Scroll reveal */
+  const reveals = document.querySelectorAll('.re
