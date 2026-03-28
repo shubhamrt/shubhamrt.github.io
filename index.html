@@ -288,7 +288,7 @@ a { color: inherit; }
   max-width: var(--max);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
 }
 .stat { padding: 0 1.6rem; border-left: 1px solid rgba(255,255,255,.2); }
 .stat:first-child { border-left: none; padding-left: 0; }
@@ -309,15 +309,17 @@ a { color: inherit; }
   color: rgba(255,255,255,.7);
   line-height: 1.6;
 }
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .stats-inner { grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
   .stat { border-left: none; padding-left: 0; }
   .stat:nth-child(2), .stat:nth-child(3) { border-left: 1px solid rgba(255,255,255,.2); padding-left: 1.4rem; }
+  .stat:nth-child(5), .stat:nth-child(6) { border-left: 1px solid rgba(255,255,255,.2); padding-left: 1.4rem; }
 }
 @media (max-width: 520px) {
   .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 1.8rem; }
   .stat:nth-child(2) { border-left: 1px solid rgba(255,255,255,.2); padding-left: 1.4rem; }
-  .stat:nth-child(3) { border-left: none; padding-left: 0; }
+  .stat:nth-child(3), .stat:nth-child(5) { border-left: none; padding-left: 0; }
+  .stat:nth-child(4), .stat:nth-child(6) { border-left: 1px solid rgba(255,255,255,.2); padding-left: 1.4rem; }
 }
 
 /* ─── ABOUT ──────────────────────────────────────────────────────────────── */
@@ -492,16 +494,20 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
       <span class="stat-label">people live in<br>dryland regions</span>
     </div>
     <div class="stat">
-      <span class="stat-number">BS MS</span>
-      <span class="stat-label">2019, IISER<br>Bhopal</span>
-    </div>
-    <div class="stat">
-      <span class="stat-number">i-CONN</span>
-      <span class="stat-label">Marie Sklodowska-Curie<br>network researcher</span>
+      <span class="stat-number">BSMS</span>
+      <span class="stat-label">2014 to 2019<br>IISER Bhopal</span>
     </div>
     <div class="stat">
       <span class="stat-number">PhD</span>
-      <span class="stat-label">2025, Durham University<br>network-based degradation</span>
+      <span class="stat-label">2020 to 2025<br>Durham University</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">i-CONN</span>
+      <span class="stat-label">2020 to 2023<br>Marie Sklodowska-Curie<br>Early Stage Researcher</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">EA</span>
+      <span class="stat-label">2024 to 2026<br>Senior Hydrologist<br>Environment Agency</span>
     </div>
   </div>
 </div>
@@ -549,7 +555,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
       <div class="contact-rows">
         <div class="contact-row">
           <span class="cr-label">Email</span>
-          <a href="/cdn-cgi/l/email-protection#592a312c3b313834772d302e382b307f7a6f6d623c372f302b3637343c372d74383e3c373a20773e362f772c32">shubham.tiwari&#64;environment-agency.gov.uk</a>
+          <a href="mailto:shubham.tiwari&#64;environment-agency.gov.uk">shubham.tiwari&#64;environment-agency.gov.uk</a>
         </div>
         <div class="contact-row">
           <span class="cr-label">Phone</span>
@@ -557,7 +563,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
         </div>
       </div>
       <div class="contact-ctas">
-        <a href="/cdn-cgi/l/email-protection#a3d0cbd6c1cbc2ce8dd7cad4c2d1ca8580959798c6cdd5cad1cccdcec6cdd78ec2c4c6cdc0da8dc4ccd58dd6c8" class="btn-fill-dark">Send an Email</a>
+        <a href="mailto:shubham.tiwari&#64;environment-agency.gov.uk" class="btn-fill-dark">Send an Email</a>
         <a href="CV_shubham_tiwari_290126.pdf" class="btn-outline-dark">Download CV</a>
       </div>
     </div>
