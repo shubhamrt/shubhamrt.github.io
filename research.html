@@ -135,31 +135,49 @@ a { color: inherit; }
 }
 
 /* ─── HERO ───────────────────────────────────────────────────────────────── */
+/* CHANGE 1: solid dark background only — no background image */
 .hero {
   min-height: 100vh;
-  background: #0a1c18;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  background: var(--hero-bg);
+  position: relative;
+  display: flex;
+  align-items: center;
   color: #fff;
   overflow: hidden;
 }
 
-/* Left: all the text, vertically centred */
-.hero-left {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.8rem;
-  padding: calc(var(--nav-h) + 3.5rem) 3.5rem 4rem 3rem;
-  max-width: 600px;
+.hero-film {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(10,28,24,.80) 0%,
+    rgba(10,28,24,.52) 55%,
+    rgba(10,28,24,.70) 100%
+  );
+  z-index: 0;
 }
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--max);
+  margin: 0 auto;
+  width: 100%;
+  padding: calc(var(--nav-h) + 3.5rem) 2.5rem 5rem;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.hero-left { display: flex; flex-direction: column; gap: 1.8rem; }
 
 .hero-eyebrow {
   font-size: .7rem;
   font-weight: 600;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.48);
+  color: rgba(255,255,255,.52);
   display: flex;
   align-items: center;
   gap: .75rem;
@@ -176,7 +194,7 @@ a { color: inherit; }
 .hero-title {
   font-family: var(--serif);
   font-weight: 300;
-  font-size: clamp(3rem, 5.2vw, 5rem);
+  font-size: clamp(3.2rem, 5.8vw, 5.2rem);
   line-height: 1.0;
   letter-spacing: -.01em;
   color: #fff;
@@ -187,38 +205,36 @@ a { color: inherit; }
 }
 
 .hero-question {
-  font-size: .95rem;
+  font-size: .97rem;
   font-weight: 300;
   line-height: 1.72;
-  color: rgba(255,255,255,.72);
+  color: rgba(255,255,255,.76);
   max-width: 40ch;
   border-left: 2px solid var(--green);
   padding-left: 1.1rem;
 }
 .hero-question strong {
   display: block;
-  font-size: .66rem;
+  font-size: .68rem;
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.32);
-  margin-bottom: .4rem;
+  color: rgba(255,255,255,.36);
+  margin-bottom: .45rem;
 }
 
-/* Right: plain dark column, portrait centred */
+/* Portrait */
 .hero-right {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 1.6rem;
-  padding: calc(var(--nav-h) + 3.5rem) 3rem 4rem 2rem;
+  gap: 1.5rem;
 }
 .hero-photo {
-  width: 260px;
-  height: 320px;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 3/4;
   overflow: hidden;
-  flex-shrink: 0;
 }
 .hero-photo img {
   width: 100%;
@@ -227,20 +243,20 @@ a { color: inherit; }
   object-position: center top;
   filter: brightness(.95) contrast(1.04);
 }
-.hero-caption { text-align: center; max-width: 300px; }
+.hero-caption { text-align: center; max-width: 310px; }
 .hc-name {
   font-family: var(--serif);
-  font-size: 1.15rem;
+  font-size: 1.22rem;
   font-weight: 500;
   letter-spacing: .01em;
   color: #fff;
-  margin-bottom: .6rem;
+  margin-bottom: .55rem;
 }
 .hc-role {
-  font-size: .76rem;
+  font-size: .78rem;
   font-weight: 400;
-  line-height: 1.7;
-  color: rgba(255,255,255,.45);
+  line-height: 1.65;
+  color: rgba(255,255,255,.48);
 }
 .hc-role-label {
   color: var(--green-light);
@@ -248,22 +264,10 @@ a { color: inherit; }
 }
 
 @media (max-width: 820px) {
-  .hero {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-  .hero-right {
-    order: -1;
-    padding: calc(var(--nav-h) + 2rem) 1.5rem 1rem;
-    gap: 1rem;
-  }
-  .hero-photo { width: 150px; height: 180px; border-radius: 4px; }
-  .hero-left {
-    padding: 0 1.5rem 3rem;
-    gap: 1.4rem;
-  }
-  .hero-title { font-size: clamp(2.4rem, 9vw, 3.4rem); }
-  .hero-question { max-width: 100%; }
+  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; padding-top: calc(var(--nav-h) + 2rem); }
+  .hero-right { order: -1; }
+  .hero-photo { max-width: 200px; aspect-ratio: 1; border-radius: 50%; }
+  .hero-title { font-size: clamp(2.6rem, 9vw, 3.6rem); }
 }
 
 /* ─── STATS BAR ──────────────────────────────────────────────────────────── */
@@ -432,35 +436,43 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 </nav>
 
 <!-- ══ HERO ══════════════════════════════════════════════════════════════════ -->
+<!-- CHANGE 2: removed hero-ctas (Explore Research / Get in Touch buttons) -->
 <section class="hero" id="top" aria-label="Introduction">
+  <div class="hero-film" aria-hidden="true"></div>
+  <div class="hero-inner">
 
-  <!-- LEFT: text -->
-  <div class="hero-left">
-    <p class="hero-eyebrow">Postdoctoral Researcher · Senior Hydrologist</p>
-    <h1 class="hero-title">
-      Dryland<br>
-      <em>Connectivity</em><br>
-      &amp; Resilience
-    </h1>
-    <div class="hero-question">
-      <strong>I'm fascinated by a question that drives most of my research:</strong>
-      How do dryland landscapes fall apart — and how can we see it coming before it's too late?
+    <div class="hero-left">
+      <p class="hero-eyebrow">Postdoctoral Researcher · Senior Hydrologist</p>
+      <h1 class="hero-title">
+        Dryland<br>
+        <em>Connectivity</em><br>
+        &amp; Resilience
+      </h1>
+      <div class="hero-question">
+        <strong>I'm fascinated by a question that drives most of my research:</strong>
+        How do dryland landscapes fall apart — and how can we see it coming before it's too late?
+      </div>
     </div>
+
+    <div class="hero-right">
+      <div class="hero-photo">
+        <img src="img/profile.jpg" alt="Portrait of Dr Shubham Tiwari"
+             onerror="this.style.background='#2C7873';this.removeAttribute('src')">
+      </div>
+      <div class="hero-caption">
+        <p class="hc-name">Dr Shubham Tiwari</p>
+        <p class="hc-role">
+          <span class="hc-role-label">Postdoctoral Researcher</span><br>
+          NMSU &amp; Jornada Experimental Range
+        </p>
+        <p class="hc-role" style="margin-top:.4rem;">
+          <span class="hc-role-label">Marie Curie ESR</span><br>
+          i-CONN Network, Durham University
+        </p>
+      </div>
+    </div>
+
   </div>
-
-  <!-- RIGHT: portrait + caption -->
-  <div class="hero-right">
-    <div class="hero-photo">
-      <img src="img/profile.jpg" alt="Portrait of Dr Shubham Tiwari"
-           onerror="this.style.background='#2C7873';this.removeAttribute('src')">
-    </div>
-    <div class="hero-caption">
-      <p class="hc-name">Dr Shubham Tiwari</p>
-      <p class="hc-role"><span class="hc-role-label">Postdoctoral Researcher</span> — NMSU &amp; Jornada Experimental Range</p>
-      <p class="hc-role" style="margin-top:.3rem;"><span class="hc-role-label">Marie Curie ESR</span> — i-CONN Network, Durham University</p>
-    </div>
-  </div>
-
 </section>
 
 <!-- ══ STATS BAR ═════════════════════════════════════════════════════════════ -->
@@ -484,6 +496,8 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
     </div>
   </div>
 </div>
+
+<!-- CHANGE 3: banner strip removed entirely -->
 
 <!-- ══ ABOUT ══════════════════════════════════════════════════════════════════ -->
 <section class="about" id="about" aria-label="About">
@@ -567,7 +581,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
       <div class="contact-rows">
         <div class="contact-row">
           <span class="cr-label">Email</span>
-          <a href="/cdn-cgi/l/email-protection#72011a07101a131f5c061b0513001b32171c041b001d1c1f171c065f1315171c110b5c151d045c0719"><span class="__cf_email__" data-cfemail="44372c31262c25296a302d3325362d04212a322d362b2a29212a30692523212a273d6a232b326a312f">[email&#160;protected]</span></a>
+          <a href="mailto:shubham.tiwari@environment-agency.gov.uk">shubham.tiwari@environment-agency.gov.uk</a>
         </div>
         <div class="contact-row">
           <span class="cr-label">Phone</span>
@@ -575,7 +589,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
         </div>
       </div>
       <div class="contact-ctas">
-        <a href="/cdn-cgi/l/email-protection#384b504d5a505955164c514f594a51785d564e514a5756555d564c15595f5d565b41165f574e164d53" class="btn-fill-dark">Send an Email</a>
+        <a href="mailto:shubham.tiwari@environment-agency.gov.uk" class="btn-fill-dark">Send an Email</a>
         <a href="CV_shubham_tiwari_290126.pdf" class="btn-outline-dark">Download CV</a>
       </div>
     </div>
@@ -609,7 +623,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 </footer>
 
 <!-- ══ SCRIPTS ═════════════════════════════════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 (function () {
   var nav    = document.getElementById('nav');
   var burger = document.getElementById('burger');
@@ -629,4 +643,18 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
       if (!nav.contains(e.target)) nav.classList.remove('open');
     });
     drawer.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () { nav.classList.remove('open'
+      a.addEventListener('click', function () { nav.classList.remove('open'); });
+    });
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+})();
+</script>
+
+</body>
+</html>
