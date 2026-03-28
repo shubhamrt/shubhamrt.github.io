@@ -13,7 +13,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-/* ─── TOKENS ─────────────────────────────────────────────────────────────── */
 :root {
   --green:        #2C7873;
   --green-dark:   #1f5f5b;
@@ -135,7 +134,6 @@ a { color: inherit; }
 }
 
 /* ─── HERO ───────────────────────────────────────────────────────────────── */
-/* CHANGE 1: solid dark background only — no background image */
 .hero {
   min-height: 100vh;
   background: var(--hero-bg);
@@ -157,20 +155,21 @@ a { color: inherit; }
   z-index: 0;
 }
 
+/* CHANGE 1: tighter top/bottom padding so caption fits fully in viewport */
 .hero-inner {
   position: relative;
   z-index: 1;
   max-width: var(--max);
   margin: 0 auto;
   width: 100%;
-  padding: calc(var(--nav-h) + 3.5rem) 2.5rem 5rem;
+  padding: calc(var(--nav-h) + 2rem) 2.5rem 2.5rem;
   display: grid;
   grid-template-columns: 1.15fr 1fr;
-  gap: 5rem;
+  gap: 4rem;
   align-items: center;
 }
 
-.hero-left { display: flex; flex-direction: column; gap: 1.8rem; }
+.hero-left { display: flex; flex-direction: column; gap: 1.6rem; }
 
 .hero-eyebrow {
   font-size: .7rem;
@@ -194,7 +193,7 @@ a { color: inherit; }
 .hero-title {
   font-family: var(--serif);
   font-weight: 300;
-  font-size: clamp(3.2rem, 5.8vw, 5.2rem);
+  font-size: clamp(3rem, 5.4vw, 4.8rem);
   line-height: 1.0;
   letter-spacing: -.01em;
   color: #fff;
@@ -205,7 +204,7 @@ a { color: inherit; }
 }
 
 .hero-question {
-  font-size: .97rem;
+  font-size: .95rem;
   font-weight: 300;
   line-height: 1.72;
   color: rgba(255,255,255,.76);
@@ -220,7 +219,7 @@ a { color: inherit; }
   letter-spacing: .14em;
   text-transform: uppercase;
   color: rgba(255,255,255,.36);
-  margin-bottom: .45rem;
+  margin-bottom: .4rem;
 }
 
 /* Portrait */
@@ -228,12 +227,13 @@ a { color: inherit; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.2rem;
 }
+/* CHANGE 1: shorter aspect ratio so caption stays in frame */
 .hero-photo {
   width: 100%;
-  max-width: 320px;
-  aspect-ratio: 3/4;
+  max-width: 300px;
+  aspect-ratio: 4/5;
   overflow: hidden;
 }
 .hero-photo img {
@@ -246,16 +246,16 @@ a { color: inherit; }
 .hero-caption { text-align: center; max-width: 310px; }
 .hc-name {
   font-family: var(--serif);
-  font-size: 1.22rem;
+  font-size: 1.2rem;
   font-weight: 500;
   letter-spacing: .01em;
   color: #fff;
-  margin-bottom: .55rem;
+  margin-bottom: .5rem;
 }
 .hc-role {
-  font-size: .78rem;
+  font-size: .76rem;
   font-weight: 400;
-  line-height: 1.65;
+  line-height: 1.6;
   color: rgba(255,255,255,.48);
 }
 .hc-role-label {
@@ -264,14 +264,35 @@ a { color: inherit; }
 }
 
 @media (max-width: 820px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; padding-top: calc(var(--nav-h) + 2rem); }
+  .hero-inner { grid-template-columns: 1fr; gap: 2rem; padding-top: calc(var(--nav-h) + 1.5rem); }
   .hero-right { order: -1; }
-  .hero-photo { max-width: 200px; aspect-ratio: 1; border-radius: 50%; }
+  .hero-photo { max-width: 180px; aspect-ratio: 1; border-radius: 50%; }
   .hero-title { font-size: clamp(2.6rem, 9vw, 3.6rem); }
 }
 
 /* ─── STATS BAR ──────────────────────────────────────────────────────────── */
-.stats { background: var(--ink); padding: 3.5rem 2.5rem; }
+/* CHANGE 3: warm earthy dark tone with subtle diagonal pattern — visually
+   distinct from the cool dark green hero without looking jarring */
+.stats {
+  background-color: #1c1408;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,.025) 0px,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,.015) 0px,
+      rgba(255,255,255,.015) 1px,
+      transparent 1px,
+      transparent 10px
+    );
+  padding: 3.5rem 2.5rem;
+  border-top: 1px solid rgba(126,207,201,.12);
+}
 .stats-inner {
   max-width: var(--max);
   margin: 0 auto;
@@ -304,7 +325,7 @@ a { color: inherit; }
 }
 
 /* ─── ABOUT ──────────────────────────────────────────────────────────────── */
-.about { background: #fff; padding: 5.5rem 2.5rem 6.5rem; }
+.about { background: #fff; padding: 5.5rem 2.5rem 0; }
 .about-inner { max-width: var(--max); margin: 0 auto; }
 .about-inner h2 {
   font-family: var(--serif);
@@ -333,49 +354,44 @@ a { color: inherit; }
   max-width: 52ch;
 }
 
-/* ─── RESEARCH ───────────────────────────────────────────────────────────── */
-.research { background: var(--cream); padding: 5.5rem 2.5rem 6.5rem; }
-.research-inner { max-width: var(--max); margin: 0 auto; }
-.section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
-.section-header h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.8rem, 3vw, 2.3rem); color: var(--ink); white-space: nowrap; }
-.section-rule { flex: 1; height: 1px; background: rgba(27,38,34,.12); }
-.section-link { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green); text-decoration: none; white-space: nowrap; transition: color .2s; }
-.section-link:hover { color: var(--green-dark); }
-
-.research-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-.research-card {
-  background: #fff;
-  padding: 2rem 1.7rem;
-  position: relative;
+/* CHANGE 4: landscape image strip after about text */
+.about-landscape {
+  width: 100%;
+  margin-top: 5rem;
+  height: 380px;
   overflow: hidden;
-  transition: background .25s;
-  cursor: default;
+  position: relative;
 }
-.research-card::before {
+.about-landscape img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+  filter: contrast(1.04) brightness(.96);
+}
+/* subtle fade-in at top so it blends from white */
+.about-landscape::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--green);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .3s ease;
+  height: 80px;
+  background: linear-gradient(to bottom, #fff 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
 }
-.research-card:hover { background: var(--ink); }
-.research-card:hover::before { transform: scaleX(1); }
-.research-card:hover .rc-num   { color: var(--green-light); }
-.research-card:hover .rc-title,
-.research-card:hover .rc-desc  { color: rgba(255,255,255,.85); }
-.research-card:hover .rc-tag   { border-color: rgba(255,255,255,.18); color: rgba(255,255,255,.45); }
+/* subtle fade-out at bottom so it flows into next section */
+.about-landscape::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to top, #fff 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
 
-.rc-num { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(27,38,34,.3); display: block; margin-bottom: 1rem; transition: color .25s; }
-.rc-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; color: var(--ink); line-height: 1.22; margin-bottom: .75rem; transition: color .25s; }
-.rc-desc { font-size: .86rem; color: var(--muted); line-height: 1.65; font-weight: 300; transition: color .25s; }
-.rc-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.2rem; }
-.rc-tag { font-size: .6rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border: 1px solid rgba(27,38,34,.15); color: var(--muted); padding: .2rem .55rem; border-radius: 4px; transition: border-color .25s, color .25s; }
-
-@media (max-width: 820px) { .research-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 520px)  { .research-grid { grid-template-columns: 1fr; } }
+.about-bottom-pad { padding-bottom: 6.5rem; }
 
 /* ─── CONTACT ────────────────────────────────────────────────────────────── */
 .contact { background: #fff; padding: 5.5rem 2.5rem 6.5rem; }
@@ -436,7 +452,6 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 </nav>
 
 <!-- ══ HERO ══════════════════════════════════════════════════════════════════ -->
-<!-- CHANGE 2: removed hero-ctas (Explore Research / Get in Touch buttons) -->
 <section class="hero" id="top" aria-label="Introduction">
   <div class="hero-film" aria-hidden="true"></div>
   <div class="hero-inner">
@@ -450,7 +465,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
       </h1>
       <div class="hero-question">
         <strong>I'm fascinated by a question that drives most of my research:</strong>
-        How do dryland landscapes fall apart — and how can we see it coming before it's too late?
+        How do dryland landscapes fall apart, and how can we see it coming before it's too late?
       </div>
     </div>
 
@@ -462,10 +477,10 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
       <div class="hero-caption">
         <p class="hc-name">Dr Shubham Tiwari</p>
         <p class="hc-role">
-          <span class="hc-role-label">Postdoctoral Researcher</span><br>
+          <span class="hc-role-label">Incoming Postdoctoral Researcher</span><br>
           NMSU &amp; Jornada Experimental Range
         </p>
-        <p class="hc-role" style="margin-top:.4rem;">
+        <p class="hc-role" style="margin-top:.35rem;">
           <span class="hc-role-label">Marie Curie ESR</span><br>
           i-CONN Network, Durham University
         </p>
@@ -488,7 +503,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
     </div>
     <div class="stat reveal" style="transition-delay:.16s">
       <span class="stat-number">i-CONN</span>
-      <span class="stat-label">Marie Skłodowska-Curie<br>network researcher</span>
+      <span class="stat-label">Marie Sklodowska-Curie<br>network researcher</span>
     </div>
     <div class="stat reveal" style="transition-delay:.24s">
       <span class="stat-number">PhD</span>
@@ -496,8 +511,6 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
     </div>
   </div>
 </div>
-
-<!-- CHANGE 3: banner strip removed entirely -->
 
 <!-- ══ ABOUT ══════════════════════════════════════════════════════════════════ -->
 <section class="about" id="about" aria-label="About">
@@ -511,65 +524,22 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
         "Degradation doesn't happen uniformly. It flows through the landscape along pathways of water, wind, and vegetation."
       </blockquote>
       <p>
-        During my PhD at <a href="https://www.durham.ac.uk/" target="_blank" rel="noreferrer">Durham University</a> — as an Early Stage Researcher in the Marie Skłodowska-Curie <a href="https://iconn.network/" target="_blank" rel="noreferrer">i-CONN network</a> — I developed a network-based approach to understanding dryland degradation. The key insight: landscapes aren't collections of isolated components. They're living systems of connections, and those connections determine resilience.
+        During my PhD at <a href="https://www.durham.ac.uk/" target="_blank" rel="noreferrer">Durham University</a>, as an Early Stage Researcher in the Marie Sklodowska-Curie <a href="https://iconn.network/" target="_blank" rel="noreferrer">i-CONN network</a>, I developed a network-based approach to understanding dryland degradation. The key insight: landscapes aren't collections of isolated components. They're living systems of connections, and those connections determine resilience.
       </p>
       <p>
-        Now, as a Senior Hydrologist at the UK's <a href="https://www.gov.uk/government/organisations/environment-agency" target="_blank" rel="noreferrer">Environment Agency</a> and postdoctoral researcher at <a href="https://nmsu.edu/" target="_blank" rel="noreferrer">New Mexico State University</a> and the <a href="https://jornada.nmsu.edu/" target="_blank" rel="noreferrer">Jornada Experimental Range</a>, I'm extending this thinking to wind-driven processes and dust emission dynamics across the western United States.
+        Now, as a Senior Hydrologist at the UK's <a href="https://www.gov.uk/government/organisations/environment-agency" target="_blank" rel="noreferrer">Environment Agency</a> and incoming postdoctoral researcher at <a href="https://nmsu.edu/" target="_blank" rel="noreferrer">New Mexico State University</a> and the <a href="https://jornada.nmsu.edu/" target="_blank" rel="noreferrer">Jornada Experimental Range</a>, I'm extending this thinking to wind-driven processes and dust emission dynamics across the western United States.
       </p>
       <p>
-        Different erosive forces — water, wind — same underlying question: what makes a landscape resilient, and what tips it over the edge?
+        Different erosive forces, water and wind, same underlying question: what makes a landscape resilient, and what tips it over the edge?
       </p>
     </div>
   </div>
-</section>
 
-<!-- ══ RESEARCH ═══════════════════════════════════════════════════════════════ -->
-<section class="research" id="research" aria-label="Research themes">
-  <div class="research-inner">
-    <div class="section-header">
-      <h2>Research Themes</h2>
-      <span class="section-rule"></span>
-      <a href="research.html" class="section-link">View all →</a>
-    </div>
-    <div class="research-grid">
-      <div class="research-card reveal">
-        <span class="rc-num">01</span>
-        <h3 class="rc-title">Network-Based Landscape Degradation</h3>
-        <p class="rc-desc">Treating drylands as connectivity networks to detect vulnerability nodes and predict cascade failures before they occur.</p>
-        <div class="rc-tags"><span class="rc-tag">Graph theory</span><span class="rc-tag">Connectivity</span><span class="rc-tag">Semi-arid</span></div>
-      </div>
-      <div class="research-card reveal" style="transition-delay:.07s">
-        <span class="rc-num">02</span>
-        <h3 class="rc-title">Dust Source Dynamics</h3>
-        <p class="rc-desc">Mapping dust emission sources across the western United States using remote sensing and field measurements at Jornada Experimental Range.</p>
-        <div class="rc-tags"><span class="rc-tag">Aeolian</span><span class="rc-tag">Remote sensing</span><span class="rc-tag">USA West</span></div>
-      </div>
-      <div class="research-card reveal" style="transition-delay:.14s">
-        <span class="rc-num">03</span>
-        <h3 class="rc-title">Water-Driven Erosion &amp; Vegetation</h3>
-        <p class="rc-desc">How vegetation spatial patterns exert fundamental control over hillslope stability and water-erosion pathways in semi-arid systems.</p>
-        <div class="rc-tags"><span class="rc-tag">Hydrology</span><span class="rc-tag">UAV / LiDAR</span><span class="rc-tag">Arizona</span></div>
-      </div>
-      <div class="research-card reveal" style="transition-delay:.07s">
-        <span class="rc-num">04</span>
-        <h3 class="rc-title">Rainfall Network Analysis</h3>
-        <p class="rc-desc">Applying network science to rainfall variability in Australia's Murray-Darling Basin to understand hydrological connectivity at catchment scale.</p>
-        <div class="rc-tags"><span class="rc-tag">Climate</span><span class="rc-tag">Australia</span><span class="rc-tag">Network science</span></div>
-      </div>
-      <div class="research-card reveal" style="transition-delay:.14s">
-        <span class="rc-num">05</span>
-        <h3 class="rc-title">Floodplain &amp; Riparian Systems</h3>
-        <p class="rc-desc">Field investigations of connectivity dynamics in Central European floodplains, including comparative work in Austria's river corridors.</p>
-        <div class="rc-tags"><span class="rc-tag">Fluvial</span><span class="rc-tag">Austria</span><span class="rc-tag">Riparian</span></div>
-      </div>
-      <div class="research-card reveal" style="transition-delay:.21s">
-        <span class="rc-num">06</span>
-        <h3 class="rc-title">Operational Hydrology &amp; Policy</h3>
-        <p class="rc-desc">Bridging science and real-world water management at the UK Environment Agency — one of the youngest Senior Hydrologists in the organisation.</p>
-        <div class="rc-tags"><span class="rc-tag">UK policy</span><span class="rc-tag">DEFRA</span><span class="rc-tag">Applied</span></div>
-      </div>
-    </div>
+  <!-- CHANGE 4: dryland landscape image, placed after the text as a natural visual break -->
+  <div class="about-landscape">
+    <img src="img/banner_contours.jpg" alt="Semi-arid dryland landscape with scattered shrubs and bare soil">
   </div>
+  <div class="about-bottom-pad"></div>
 </section>
 
 <!-- ══ CONTACT ════════════════════════════════════════════════════════════════ -->
@@ -577,7 +547,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
   <div class="contact-inner">
     <div class="contact-left">
       <h2>Let's talk about<br><em>drylands, networks,</em><br>or anything in between.</h2>
-      <p>Whether you're a researcher, policymaker, or someone fascinated by how landscapes work — I'd love to hear from you.</p>
+      <p>Whether you're a researcher, policymaker, or someone fascinated by how landscapes work, I'd love to hear from you.</p>
       <div class="contact-rows">
         <div class="contact-row">
           <span class="cr-label">Email</span>
@@ -599,17 +569,17 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
         <a class="social-link" href="https://scholar.google.com/citations?user=xdspNSQAAAAJ&hl=en" target="_blank" rel="noreferrer">
           <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.9V17"/><path d="M5 13.18v4L12 21l7-3.82v-4"/></svg>
           Google Scholar
-          <span class="sl-handle">Publications →</span>
+          <span class="sl-handle">Publications</span>
         </a>
         <a class="social-link" href="https://linkedin.com/in/shubhamrt" target="_blank" rel="noreferrer">
           <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 10v7"/></svg>
           LinkedIn
-          <span class="sl-handle">@shubhamrt →</span>
+          <span class="sl-handle">@shubhamrt</span>
         </a>
         <a class="social-link" href="https://x.com/EcoGeoNetwork" target="_blank" rel="noreferrer">
           <svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4 4 20"/></svg>
           X / Twitter
-          <span class="sl-handle">@EcoGeoNetwork →</span>
+          <span class="sl-handle">@EcoGeoNetwork</span>
         </a>
       </div>
     </div>
@@ -619,7 +589,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 <!-- ══ FOOTER ══════════════════════════════════════════════════════════════════ -->
 <footer>
   <span class="foot-brand">Shubham Tiwari</span>
-  <span>Dryland Connectivity &amp; Resilience · © 2025</span>
+  <span>Dryland Connectivity &amp; Resilience · 2025</span>
 </footer>
 
 <!-- ══ SCRIPTS ═════════════════════════════════════════════════════════════════ -->
