@@ -207,20 +207,16 @@ a { color: inherit; }
 }
 
 /* ─── SLIDESHOW ──────────────────────────────────────────────────────────── */
+/* ─── SLIDESHOW ──────────────────────────────────────────────────────────── */
 .slideshow {
   background: var(--ink);
-  padding: 5rem 0;
+  padding: 5rem 0 4rem;
   overflow: hidden;
 }
 .slideshow-header {
   max-width: var(--max);
   margin: 0 auto;
   padding: 0 2.5rem 2.5rem;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
 }
 .slideshow-header h2 {
   font-family: var(--serif);
@@ -230,81 +226,100 @@ a { color: inherit; }
   line-height: 1.1;
 }
 .slideshow-header h2 em { font-style: italic; color: var(--green-light); }
-.slideshow-header p { font-size: .88rem; color: rgba(255,255,255,.45); font-weight: 300; max-width: 40ch; }
 
-.slides-track-wrap { overflow: hidden; }
-.slides-track { display: flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+/* Single slide: image left, text right */
+.slides-track-wrap { position: relative; }
+.slides-track {
+  display: flex;
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+}
 .slide {
-  flex: 0 0 calc(50% - 1.5rem);
-  margin-right: 1.5rem;
-  position: relative;
-  border-radius: 6px;
+  flex: 0 0 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  min-height: 420px;
+}
+
+/* Image side — natural aspect ratio, no crop */
+.slide-img-wrap {
+  background: #0e2420;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
-.slide:first-child { margin-left: 2.5rem; }
-.slide img {
+.slide-img-wrap img {
   width: 100%;
-  height: 340px;
-  object-fit: cover;
+  height: auto;
   display: block;
-  filter: brightness(.82) saturate(.85);
+  filter: brightness(.9) saturate(.88);
 }
 .slide-placeholder {
   width: 100%;
-  height: 340px;
+  height: 100%;
+  min-height: 340px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #1a3530;
-  color: rgba(255,255,255,.25);
+  color: rgba(255,255,255,.2);
   font-size: .75rem;
   font-weight: 500;
   letter-spacing: .1em;
   text-transform: uppercase;
 }
-.slide-caption {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 2.5rem 1.4rem 1rem;
-  background: linear-gradient(to top, rgba(10,28,24,.92) 0%, transparent 100%);
+
+/* Text side */
+.slide-text {
+  padding: 3rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid rgba(255,255,255,.07);
 }
-.slide-caption .slide-loc {
+.slide-loc {
   font-size: .62rem;
   font-weight: 700;
-  letter-spacing: .18em;
+  letter-spacing: .2em;
   color: var(--green-light);
   text-transform: uppercase;
   display: block;
-  margin-bottom: .3rem;
+  margin-bottom: .75rem;
 }
-.slide-caption h3 {
+.slide-text h3 {
   font-family: var(--serif);
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-weight: 400;
   color: #fff;
-  line-height: 1.25;
-  margin-bottom: .25rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
 }
-.slide-caption p { font-size: .78rem; color: rgba(255,255,255,.6); font-weight: 300; line-height: 1.5; }
+.slide-text p {
+  font-size: .9rem;
+  color: rgba(255,255,255,.58);
+  font-weight: 300;
+  line-height: 1.72;
+}
 
 .slides-nav {
   max-width: var(--max);
-  margin: 1.8rem auto 0;
+  margin: 2rem auto 0;
   padding: 0 2.5rem;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.slide-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s; }
+.slide-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s; flex-shrink: 0; }
 .slide-btn:hover { background: var(--green); border-color: var(--green); }
 .slide-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .slide-dots { display: flex; gap: .5rem; align-items: center; }
 .slide-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.25); border: none; cursor: pointer; transition: background .2s, transform .2s; padding: 0; }
 .slide-dot.active { background: var(--green-light); transform: scale(1.3); }
 
-@media (max-width: 680px) {
-  .slide { flex: 0 0 calc(88% - 1rem); }
-  .slideshow-header { flex-direction: column; }
+@media (max-width: 720px) {
+  .slide { grid-template-columns: 1fr; }
+  .slide-text { padding: 2rem 2.5rem; border-left: none; border-top: 1px solid rgba(255,255,255,.07); }
 }
 
 /* ─── PUBLICATIONS ───────────────────────────────────────────────────────── */
@@ -488,81 +503,92 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 <section class="slideshow" id="fieldwork">
   <div class="slideshow-header">
     <h2>Field Work &amp; <em>Key Concepts</em></h2>
-    <p>Replace placeholder slides with your own field photos, diagrams, and concept images.</p>
   </div>
 
   <div class="slides-track-wrap">
     <div class="slides-track" id="slidesTrack">
 
       <div class="slide">
-        <img src="img/image2.png"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-             alt="Dryland landscape Arizona">
-        <div class="slide-placeholder" style="display:none">Add field photo</div>
-        <div class="slide-caption">
+        <div class="slide-img-wrap">
+          <img src="img/image2.png"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+               alt="Dryland landscape Arizona">
+          <div class="slide-placeholder" style="display:none">image2.png</div>
+        </div>
+        <div class="slide-text">
           <span class="slide-loc">Arizona, USA, Dec 2022</span>
           <h3>Sonoran Desert Rangeland</h3>
-          <p>Resources flow pathways, wind sediment transport, and grass-shrub patterning in a semi-arid rangeland.</p>
+          <p>Resources flow pathways, wind sediment transport, and grass-shrub patterning in a semi-arid rangeland. This site provided key field evidence for the network-based approach to hillslope connectivity.</p>
         </div>
       </div>
 
       <div class="slide">
-        <img src="img/image3.png"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-             alt="Island of Fertility concept">
-        <div class="slide-placeholder" style="display:none">Island of Fertility concept</div>
-        <div class="slide-caption">
+        <div class="slide-img-wrap">
+          <img src="img/image3.png"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+               alt="Island of Fertility concept">
+          <div class="slide-placeholder" style="display:none">image3.png</div>
+        </div>
+        <div class="slide-text">
           <span class="slide-loc">Key Concept</span>
           <h3>Islands of Fertility</h3>
-          <p>Shrubs act as resource accumulation points, creating fertile islands surrounded by bare, depleted inter-patch soil. A hallmark of degraded dryland systems.</p>
+          <p>Shrubs act as resource accumulation points, creating fertile islands surrounded by bare, depleted inter-patch soil. A hallmark of degraded dryland systems and a key indicator used in my connectivity framework.</p>
         </div>
       </div>
 
       <div class="slide">
-        <img src="img/image4.png"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-             alt="Connected pathway length">
-        <div class="slide-placeholder" style="display:none">Connected pathway length concept</div>
-        <div class="slide-caption">
+        <div class="slide-img-wrap">
+          <img src="img/image4.png"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+               alt="Length of connected pathways">
+          <div class="slide-placeholder" style="display:none">image4.png</div>
+        </div>
+        <div class="slide-text">
           <span class="slide-loc">Key Concept</span>
           <h3>Length of Connected Pathways</h3>
-          <p>A network metric that quantifies the extent over which bare soil patches are hydrologically linked, used as a proxy for erosion risk and system instability.</p>
+          <p>A network metric that quantifies the extent over which bare soil patches are hydrologically linked, used as a proxy for erosion risk and system instability. Longer connected pathways signal higher vulnerability to degradation.</p>
         </div>
       </div>
 
       <div class="slide">
-        <img src="img/image5.png"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-             alt="Relative Productivity Index">
-        <div class="slide-placeholder" style="display:none">Relative Productivity Index</div>
-        <div class="slide-caption">
+        <div class="slide-img-wrap">
+          <img src="img/image5.png"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+               alt="Relative Productivity Index">
+          <div class="slide-placeholder" style="display:none">image5.png</div>
+        </div>
+        <div class="slide-text">
           <span class="slide-loc">Key Concept</span>
           <h3>Relative Productivity Index</h3>
-          <p>A remote-sensing indicator derived from NDVI that quantifies vegetation productivity relative to local potential, used to track degradation trajectory across drylands.</p>
+          <p>A remote-sensing indicator derived from NDVI that quantifies vegetation productivity relative to local potential, used to track degradation trajectory across drylands and evaluate restoration outcomes.</p>
         </div>
       </div>
 
       <div class="slide">
-        <img src="img/image6.png"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-             alt="Erosion concept">
-        <div class="slide-placeholder" style="display:none">Erosion concept</div>
-        <div class="slide-caption">
+        <div class="slide-img-wrap">
+          <img src="img/image6.png"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+               alt="Sediment connectivity and erosion">
+          <div class="slide-placeholder" style="display:none">image6.png</div>
+        </div>
+        <div class="slide-text">
           <span class="slide-loc">Key Concept</span>
           <h3>Sediment Connectivity and Erosion</h3>
-          <p>When connectivity between bare patches exceeds a critical threshold, sediment transport shifts from localised to system-spanning, triggering accelerated erosion.</p>
+          <p>When connectivity between bare patches exceeds a critical threshold, sediment transport shifts from localised to system-spanning, triggering accelerated erosion. Identifying this threshold is central to early-warning detection.</p>
         </div>
       </div>
 
       <div class="slide">
-        <img src="img/image7.png"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-             alt="Environment Agency team">
-        <div class="slide-placeholder" style="display:none">EA team photo</div>
-        <div class="slide-caption">
+        <div class="slide-img-wrap">
+          <img src="img/image7.png"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+               alt="Environment Agency team">
+          <div class="slide-placeholder" style="display:none">image7.png</div>
+        </div>
+        <div class="slide-text">
           <span class="slide-loc">Hertfordshire &amp; North London</span>
           <h3>Operational Hydrology</h3>
-          <p>Leading catchment-scale hydrology, drought monitoring, flood incident response, and regulatory permitting at the UK Environment Agency.</p>
+          <p>Leading catchment-scale hydrology, drought monitoring, flood incident response, and regulatory permitting at the UK Environment Agency as one of the youngest Senior Hydrologists in the organisation.</p>
         </div>
       </div>
 
@@ -777,15 +803,13 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
     if (idx < 0) idx = total - 1;
     if (idx >= total) idx = 0;
     current = idx;
-    var slideW = slides[0].offsetWidth + 24;
-    track.style.transform = 'translateX(-' + (current * slideW) + 'px)';
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
     dots.forEach(function (d, i) { d.classList.toggle('active', i === current); });
   }
 
   prevBtn.addEventListener('click', function () { goTo(current - 1); });
   nextBtn.addEventListener('click', function () { goTo(current + 1); });
   dots.forEach(function (d) { d.addEventListener('click', function () { goTo(+d.dataset.idx); }); });
-  window.addEventListener('resize', function () { goTo(current); });
 
 })();
 </script>
