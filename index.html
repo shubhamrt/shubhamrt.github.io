@@ -507,7 +507,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
     </div>
     <div class="stat">
       <span class="stat-number">EA</span>
-      <span class="stat-label">2024 to 2026<br>Senior Hydrologist</span>
+      <span class="stat-label">2024 to 2026<br>Senior Hydrologist<br>Environment Agency</span>
     </div>
   </div>
 </div>
@@ -540,11 +540,18 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 
     <!-- Right: dryland landscape photo -->
     <div class="about-image">
-      <img src="img/banner_contours.jpg" alt="Semi-arid dryland landscape with scattered shrubs and bare soil">
+      <img src="img/banner_contours.jpg" alt="Semi-arid dryland landscape with scattered shrubs and bare soil"
+           id="aboutImg" style="cursor:zoom-in;">
     </div>
 
   </div>
 </section>
+
+<!-- Lightbox -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;align-items:center;justify-content:center;cursor:zoom-out;" onclick="this.style.display='none'">
+  <img id="lightboxImg" src="img/banner_contours.jpg" alt="Dryland landscape enlarged"
+       style="max-width:92vw;max-height:90vh;width:auto;height:auto;display:block;border-radius:4px;box-shadow:0 24px 80px rgba(0,0,0,.6);">
+</div>
 
 <!-- ══ CONTACT ════════════════════════════════════════════════════════════════ -->
 <section class="contact" id="contact" aria-label="Contact">
@@ -607,7 +614,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 </footer>
 
 <!-- ══ SCRIPTS ═════════════════════════════════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 (function () {
   var nav    = document.getElementById('nav');
   var burger = document.getElementById('burger');
@@ -615,4 +622,44 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 
   function onScroll() { nav.classList.toggle('solid', window.scrollY > 60); }
   onScroll();
-  window.addEventListener('scroll', onScroll, { p
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  if (burger) {
+    burger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = nav.classList.toggle('open');
+      burger.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    drawer.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.classList.remove('open'); });
+    });
+  }
+
+  /* Lightbox for about image */
+  var aboutImg = document.getElementById('aboutImg');
+  var lightbox = document.getElementById('lightbox');
+  if (aboutImg && lightbox) {
+    aboutImg.addEventListener('click', function () {
+      lightbox.style.display = 'flex';
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') lightbox.style.display = 'none';
+    });
+  }
+
+  /* Scroll reveals */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+
+})();
+</script>
+
+</body>
+</html>
