@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Ground Beneath Her Feet | Shubham Tiwari</title>
-<meta name="description" content="How land degradation falls hardest on the people who least caused it. An essay on land tenure, gender, and the feedback loops that keep both problems in place.">
+<title>Writing | Shubham Tiwari</title>
+<meta name="description" content="Essays on science, landscapes, and what complex systems teach us about civilization.">
 <link rel="icon" type="image/png" sizes="512x512" href="img/logo.png">
 <link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,6 @@
   --hero-bg:     #0e2420;
   --nav-h:       70px;
   --max:         1100px;
-  --article-w:   720px;
   --serif:       'Cormorant Garamond', Georgia, serif;
   --sans:        'Inter', system-ui, sans-serif;
 }
@@ -32,17 +31,6 @@ html { scroll-behavior: smooth; }
 body { font-family: var(--sans); font-size: 16px; line-height: 1.72; color: var(--ink); background: #fff; overflow-x: hidden; }
 img { display: block; max-width: 100%; }
 a { color: inherit; }
-
-/* ─── READING PROGRESS BAR ─────────────────────── */
-.progress-bar {
-  position: fixed;
-  top: 0; left: 0;
-  width: 0%;
-  height: 3px;
-  background: var(--green);
-  z-index: 100;
-  transition: width .1s linear;
-}
 
 /* ─── NAV ─────────────────────────────────────── */
 .nav { position: fixed; inset: 0 0 auto 0; height: var(--nav-h); z-index: 50; border-bottom: 1px solid rgba(255,255,255,.10); transition: background .35s, border-color .35s; }
@@ -71,295 +59,386 @@ a { color: inherit; }
 .nav.open .nav-drawer { display: block; }
 @media (max-width: 640px) { .nav-links { display: none; } .nav-burger { display: flex; } }
 
-/* ─── ARTICLE HERO ────────────────────────────── */
-.article-hero {
+/* ─── BLOG HERO ───────────────────────────────── */
+.blog-hero {
   background: var(--hero-bg);
   padding: calc(var(--nav-h) + 5rem) 2.5rem 5rem;
   position: relative;
   overflow: hidden;
 }
-.article-hero::before {
+.blog-hero::before {
   content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 75% 40%, rgba(139,90,43,.30) 0%, transparent 55%),
-    radial-gradient(ellipse at 25% 70%, rgba(44,120,115,.20) 0%, transparent 50%);
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(44,120,115,.18) 0%, transparent 65%);
   pointer-events: none;
 }
-.article-hero-inner {
-  max-width: var(--article-w);
+.blog-hero-inner {
+  max-width: var(--max);
   margin: 0 auto;
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
 }
-.article-back {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  font-size: .72rem;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.38);
-  text-decoration: none;
-  margin-bottom: 2.4rem;
-  transition: color .2s;
-}
-.article-back:hover { color: var(--green-light); }
-.article-back svg { width: 12px; height: 12px; }
-.article-tags {
-  display: flex;
-  gap: .5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.6rem;
-}
-.article-tag {
-  font-size: .62rem;
+.blog-hero-label {
+  font-size: .68rem;
   font-weight: 700;
-  letter-spacing: .10em;
+  letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--green-light);
-  border: 1px solid rgba(126,207,201,.28);
-  border-radius: 999px;
-  padding: .28rem .8rem;
-}
-.article-hero h1 {
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(2.4rem, 5vw, 3.8rem);
-  line-height: 1.08;
-  color: #fff;
-  margin-bottom: 1rem;
-}
-.article-subtitle {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: clamp(1.05rem, 2vw, 1.3rem);
-  font-weight: 300;
-  color: rgba(255,255,255,.52);
-  line-height: 1.5;
-  margin-bottom: 2.4rem;
-}
-.article-byline {
+  margin-bottom: 1.2rem;
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  padding-top: 1.8rem;
-  border-top: 1px solid rgba(255,255,255,.10);
+  gap: .75rem;
 }
-.byline-avatar {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  background: var(--green-dark);
-  display: flex; align-items: center; justify-content: center;
+.blog-hero-label::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--green-light); flex-shrink: 0; }
+.blog-hero h1 {
   font-family: var(--serif);
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: rgba(255,255,255,.75);
-  flex-shrink: 0;
-  border: 1px solid rgba(126,207,201,.20);
-}
-.byline-text { display: flex; flex-direction: column; gap: .15rem; }
-.byline-name { font-size: .86rem; font-weight: 600; color: rgba(255,255,255,.78); }
-.byline-meta { font-size: .75rem; color: rgba(255,255,255,.36); letter-spacing: .02em; }
-
-/* ─── ARTICLE BODY ────────────────────────────── */
-.article-body {
-  padding: 5rem 2.5rem 6rem;
-  background: #fff;
-}
-.article-content {
-  max-width: var(--article-w);
-  margin: 0 auto;
-}
-
-/* Typography */
-.article-content p {
-  font-family: var(--serif);
-  font-size: 1.22rem;
-  line-height: 1.82;
-  color: #1e2b27;
-  margin-bottom: 1.8rem;
-}
-.article-content p.lede {
-  font-size: 1.32rem;
   font-weight: 300;
-  color: var(--muted);
-  line-height: 1.72;
-  border-left: 3px solid var(--green);
-  padding-left: 1.3rem;
-  margin-bottom: 2.4rem;
-}
-
-/* Section divider */
-.article-divider {
-  width: 3rem;
-  height: 1px;
-  background: rgba(27,38,34,.18);
-  margin: 3.6rem auto;
-}
-
-/* Section headers */
-.article-content h2 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 1.65rem;
-  line-height: 1.2;
-  color: var(--ink);
+  font-size: clamp(3rem, 6vw, 5rem);
+  line-height: 1.0;
+  color: #fff;
   margin-bottom: 1.4rem;
-  margin-top: 3.2rem;
-  padding-top: .2rem;
 }
-
-/* Pull quote */
-.pull-quote {
-  margin: 3.2rem 0;
-  padding: 2.2rem 2.4rem;
-  border-left: 4px solid var(--green);
-  background: var(--cream);
-  border-radius: 0 4px 4px 0;
+.blog-hero h1 em { font-style: italic; color: var(--green-light); }
+.blog-hero-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(255,255,255,.62);
+  max-width: 52ch;
+  line-height: 1.72;
+  border-left: 2px solid var(--green);
+  padding-left: 1.1rem;
 }
-.pull-quote p {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1.42rem !important;
-  line-height: 1.55 !important;
-  color: var(--ink) !important;
-  margin-bottom: 0 !important;
-}
-
-/* Inline citation link style */
-.cite {
-  color: var(--green);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(44,120,115,.25);
-  transition: border-color .2s, color .2s;
-}
-.cite:hover { color: var(--green-dark); border-bottom-color: var(--green-dark); }
-
-/* Sources section */
-.sources-section {
-  margin-top: 4rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--line);
-}
-.sources-label {
-  font-size: .65rem;
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: rgba(27,38,34,.32);
-  margin-bottom: 1.2rem;
-}
-.sources-list {
-  list-style: none;
+.blog-hero-platforms {
+  margin-top: 2.4rem;
   display: flex;
-  flex-direction: column;
-  gap: .6rem;
-}
-.sources-list li {
-  font-size: .82rem;
-  color: var(--muted);
-  line-height: 1.6;
-  padding-left: 1rem;
-  border-left: 2px solid var(--line);
-}
-.sources-list a {
-  color: var(--green);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(44,120,115,.20);
-}
-.sources-list a:hover { border-bottom-color: var(--green); }
-
-/* Author bio box */
-.author-bio {
-  margin-top: 4.5rem;
-  padding: 2.4rem;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  background: var(--cream);
-  display: flex;
-  gap: 1.6rem;
-  align-items: flex-start;
-}
-.bio-avatar {
-  width: 56px; height: 56px;
-  border-radius: 50%;
-  background: var(--green-dark);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--serif);
-  font-size: 1.35rem;
-  font-weight: 500;
-  color: rgba(255,255,255,.8);
-  flex-shrink: 0;
-  border: 2px solid rgba(44,120,115,.30);
-}
-.bio-text {}
-.bio-name {
-  font-weight: 700;
-  font-size: .9rem;
-  color: var(--ink);
-  margin-bottom: .45rem;
-}
-.bio-desc {
-  font-size: .86rem;
-  line-height: 1.68;
-  color: var(--muted);
-}
-.bio-links {
-  margin-top: .9rem;
-  display: flex;
-  gap: .8rem;
+  gap: .75rem;
   flex-wrap: wrap;
 }
-.bio-link {
+.platform-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
   font-size: .72rem;
   font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--green);
+  color: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  padding: .4rem .95rem;
   text-decoration: none;
-  border-bottom: 1px solid rgba(44,120,115,.25);
-  transition: color .2s, border-color .2s;
+  transition: border-color .2s, color .2s;
 }
-.bio-link:hover { color: var(--green-dark); border-bottom-color: var(--green-dark); }
+.platform-pill:hover { border-color: var(--green-light); color: var(--green-light); }
+.platform-pill svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
 
-/* Back to writing link */
-.back-to-writing {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  font-size: .78rem;
-  font-weight: 600;
+/* ─── ARTICLES ────────────────────────────────── */
+.articles { padding: 5rem 2.5rem 7rem; background: #fff; }
+.articles-inner { max-width: var(--max); margin: 0 auto; }
+.section-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(27,38,34,.35);
+  margin-bottom: 2.4rem;
+  padding-bottom: .8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ─── FEATURED CARD ───────────────────────────── */
+.featured-card {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 4.5rem;
+  text-decoration: none;
+  color: var(--ink);
+  transition: box-shadow .25s;
+}
+.featured-card:hover { box-shadow: 0 12px 48px rgba(0,0,0,.10); }
+.featured-card:hover .fc-read { color: var(--green-dark); }
+.fc-body {
+  padding: 3rem 2.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.8rem;
+}
+.fc-tags { display: flex; gap: .5rem; flex-wrap: wrap; }
+.tag-pill {
+  font-size: .65rem;
+  font-weight: 700;
   letter-spacing: .10em;
   text-transform: uppercase;
   color: var(--green);
-  text-decoration: none;
-  margin-top: 3rem;
+  background: var(--green-dim);
+  border-radius: 999px;
+  padding: .3rem .8rem;
+}
+.fc-content {}
+.fc-number {
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(27,38,34,.32);
+  margin-bottom: .8rem;
+}
+.fc-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  line-height: 1.12;
+  color: var(--ink);
+  margin-bottom: .8rem;
+}
+.fc-subtitle {
+  font-size: .95rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+}
+.fc-excerpt {
+  font-size: .92rem;
+  line-height: 1.76;
+  color: rgba(27,38,34,.72);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.fc-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+}
+.fc-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: .78rem;
+  color: rgba(27,38,34,.45);
+}
+.meta-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(27,38,34,.25); flex-shrink: 0; }
+.fc-read {
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: .4rem;
   transition: color .2s;
 }
-.back-to-writing:hover { color: var(--green-dark); }
-.back-to-writing svg { width: 13px; height: 13px; }
+.fc-read svg { width: 14px; height: 14px; }
+
+/* Featured cover: earthy dryland-inspired CSS art */
+.fc-cover {
+  position: relative;
+  background: #0e2420;
+  overflow: hidden;
+  min-height: 280px;
+}
+.fc-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 80%, rgba(139,90,43,.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(44,120,115,.40) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 60%, rgba(196,132,90,.30) 0%, transparent 45%),
+    linear-gradient(180deg, #0e2420 0%, #1a3628 40%, #2a4a30 100%);
+}
+/* Horizon line */
+.fc-cover::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 38%;
+  height: 1px;
+  background: rgba(126,207,201,.22);
+}
+.fc-cover-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  text-align: center;
+  padding: 2rem;
+}
+.fc-cover-stat {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 3rem;
+  color: rgba(255,255,255,.85);
+  line-height: 1;
+}
+.fc-cover-caption {
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.40);
+  max-width: 16ch;
+  line-height: 1.6;
+}
+.fc-cover-line {
+  width: 2rem;
+  height: 1px;
+  background: var(--green-light);
+  margin: .4rem auto;
+}
+
+@media (max-width: 820px) {
+  .featured-card { grid-template-columns: 1fr; }
+  .fc-cover { min-height: 200px; order: -1; }
+  .fc-body { padding: 2rem 1.6rem; }
+}
+
+/* ─── UPCOMING GRID ───────────────────────────── */
+.upcoming-header {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(27,38,34,.35);
+  margin-bottom: 1.8rem;
+  padding-bottom: .8rem;
+  border-bottom: 1px solid var(--line);
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.8rem;
+}
+.article-card {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: #fff;
+}
+.card-coming { opacity: .52; pointer-events: none; }
+.card-coming-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(27,38,34,.45);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .25rem .65rem;
+}
+.card-stripe {
+  height: 4px;
+  background: var(--green);
+}
+.card-coming .card-stripe { background: rgba(27,38,34,.18); }
+.card-body { padding: 1.6rem 1.4rem; flex: 1; display: flex; flex-direction: column; gap: 1rem; }
+.card-tags { display: flex; gap: .4rem; flex-wrap: wrap; }
+.card-tag {
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: var(--green-dim);
+  border-radius: 999px;
+  padding: .22rem .65rem;
+}
+.card-coming .card-tag { color: rgba(27,38,34,.35); background: rgba(27,38,34,.06); }
+.card-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.card-excerpt {
+  font-size: .84rem;
+  line-height: 1.7;
+  color: var(--muted);
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-meta {
+  font-size: .72rem;
+  color: rgba(27,38,34,.38);
+  padding-top: .8rem;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 860px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .cards-grid { grid-template-columns: 1fr; } }
+
+/* ─── SUBSTACK CTA ────────────────────────────── */
+.substack-cta {
+  background: var(--cream);
+  border-top: 1px solid var(--line);
+  padding: 5rem 2.5rem;
+  text-align: center;
+}
+.substack-cta-inner { max-width: 500px; margin: 0 auto; }
+.substack-cta h2 {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: .9rem;
+}
+.substack-cta h2 em { font-style: italic; color: var(--green); }
+.substack-cta p { font-size: .94rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.7; }
+.btn-substack {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .88rem 2rem;
+  text-decoration: none;
+  transition: background .2s;
+}
+.btn-substack:hover { background: var(--green-dark); }
+.btn-substack svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
 
 /* ─── FOOTER ──────────────────────────────────── */
 footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5rem; display: flex; justify-content: space-between; align-items: center; font-size: .78rem; letter-spacing: .04em; }
 .foot-brand { font-weight: 700; color: rgba(255,255,255,.65); }
 @media (max-width: 480px) { footer { flex-direction: column; gap: .4rem; text-align: center; } }
 
-/* Mobile */
-@media (max-width: 600px) {
-  .article-body { padding: 3.5rem 1.4rem 5rem; }
-  .article-hero { padding-left: 1.4rem; padding-right: 1.4rem; }
-  .pull-quote { padding: 1.6rem 1.6rem; }
-  .author-bio { flex-direction: column; gap: 1rem; }
-}
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.in { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
 
-<!-- ══ PROGRESS BAR ════════════════════════════════ -->
-<div class="progress-bar" id="progress"></div>
-
-<!-- ══ NAV ══════════════════════════════════════════ -->
+<!-- ══ NAV ══════════════════════════════════════ -->
 <nav class="nav" id="nav">
   <div class="nav-inner">
     <a class="nav-brand" href="index.html">Shubham Tiwari</a>
@@ -383,158 +462,130 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
   </div>
 </nav>
 
-<!-- ══ ARTICLE HERO ══════════════════════════════════ -->
-<header class="article-hero">
-  <div class="article-hero-inner">
-    <a class="article-back" href="blogs.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      Back to Writing
-    </a>
-    <div class="article-tags">
-      <span class="article-tag">Land Degradation</span>
-      <span class="article-tag">Gender</span>
-      <span class="article-tag">Systems</span>
-    </div>
-    <h1>The Ground Beneath Her Feet</h1>
-    <p class="article-subtitle">How Land Degradation Falls Hardest on the People Who Least Caused It</p>
-    <div class="article-byline">
-      <div class="byline-avatar">S</div>
-      <div class="byline-text">
-        <span class="byline-name">Shubham Tiwari</span>
-        <span class="byline-meta">May 2026 &nbsp;&middot;&nbsp; 9 min read &nbsp;&middot;&nbsp; Essay No. 01</span>
-      </div>
+<!-- ══ HERO ══════════════════════════════════════ -->
+<section class="blog-hero">
+  <div class="blog-hero-inner">
+    <p class="blog-hero-label">Public Writing</p>
+    <h1>Science,<br><em>Landscapes</em> &amp;<br>Civilisation</h1>
+    <p class="blog-hero-sub">
+      Essays on how complex systems fail, who bears the cost, and what the ground beneath our feet can teach us about the world above it.
+    </p>
+    <div class="blog-hero-platforms">
+      <a class="platform-pill" href="https://shubhamrt.substack.com" target="_blank" rel="noreferrer">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+        Substack
+      </a>
+      <a class="platform-pill" href="https://medium.com/@shubhamrt" target="_blank" rel="noreferrer">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+        Medium
+      </a>
     </div>
   </div>
-</header>
+</section>
 
-<!-- ══ ARTICLE BODY ══════════════════════════════════ -->
-<main class="article-body">
-  <div class="article-content">
+<!-- ══ ARTICLES ════════════════════════════════════ -->
+<section class="articles">
+  <div class="articles-inner">
+    <p class="section-label">Published</p>
 
-    <p class="lede">The soil is disappearing. The question of who pays for that is not random.</p>
-
-    <p>Picture a woman walking.</p>
-
-    <p>She is walking before sunrise because she walked at this hour yesterday and the day before and every day she can remember. She is walking to collect water. The well that used to be twenty minutes from her house now takes forty, because the vegetation that once held the surrounding soil has thinned, the ground has crusted over, and the springs that fed the shallower wells have dried. She carries the water back. Then she goes to her fields.</p>
-
-    <p>The fields are her family's survival, but they are not, legally, hers. Her husband's name is on the land documents, where land documents exist at all. She cannot use the land as collateral. She cannot take out the loan that would let her buy drought-resistant seeds or small-scale irrigation equipment that might slow the degradation she is watching happen in real time. She has no formal claim to the ground she tends every day of her life.</p>
-
-    <p>When the soil fails, she absorbs the cost. When it recovers, she will not own the recovery.</p>
-
-    <p>This story does not belong to one country or one woman. It belongs to hundreds of millions of people, mostly women, mostly in the Global South, who are living at the intersection of two of the largest problems of our time: land degradation and structural inequality. The intersection is not coincidental. It is built slowly by centuries of law, custom, and economic logic that distributed the costs of environmental failure as unevenly as it distributed everything else.</p>
-
-    <div class="article-divider"></div>
-
-    <h2>Who Farms. Who Owns.</h2>
-
-    <p>Women make up 43 percent of the agricultural labor force in developing countries, <a class="cite" href="https://www.fao.org/gender/gender-home/gender-programme/gender-land/en/" target="_blank" rel="noreferrer">according to the UN Food and Agriculture Organization</a>. In sub-Saharan Africa and South Asia, 60 to 70 percent of employed women work in agriculture. Globally, women produce an estimated 60 to 80 percent of the food consumed in the poorest nations.</p>
-
-    <p>They own less than 20 percent of the land they farm. A survey of 34 developing nations by the FAO put the figure closer to 10 percent in some countries. In India, according to agricultural census data, about 11 percent of farms are legally controlled by women. In Senegal, 11 percent. Across sub-Saharan Africa, the proportion of women who own land is roughly 40 percentage points below that of men, <a class="cite" href="https://www.worldbank.org/en/topic/gender/publication/leveling-the-field-improving-opportunities-for-women-farmers-in-africa" target="_blank" rel="noreferrer">according to a World Bank analysis of property ownership data</a>.</p>
-
-    <p><a class="cite" href="https://www.weforum.org/reports/global-gender-gap-report-2023" target="_blank" rel="noreferrer">The World Economic Forum reports</a> that 76 countries worldwide, including 31 in sub-Saharan Africa, legally limit women's property rights. In 43 countries, men and women do not have equal rights to inherit assets as surviving spouses.</p>
-
-    <p>This gap between labor and ownership is not a side note to the land degradation problem. It is the mechanism.</p>
-
-    <div class="article-divider"></div>
-
-    <h2>The Mechanism</h2>
-
-    <p>Land degrades when the investment needed to maintain it is not made. That investment, which includes fallowing, cover cropping, erosion barriers, and water harvesting, requires time, capital, and secure tenure. You do not invest in land you do not own. You do not plant trees whose shade you will not live to see if you cannot guarantee you will still be farming that land in ten years.</p>
-
-    <p>Women farmers, precisely because their land access is insecure, make shorter-horizon decisions. Not because they are less far-sighted, but because security is a precondition of long-term investment. A tenant does not renovate. A sharecropper does not replant. A woman farming land she holds through her husband's name does not build the earthworks that take three years to show a return, because three years from now her legal standing on that plot is not guaranteed.</p>
-
-    <p>The result is a feedback loop: insecure tenure produces underinvestment, underinvestment produces degradation, degradation reduces yields, reduced yields deepen poverty, and poverty makes tenure reform less likely. The loop runs in one direction and runs for generations.</p>
-
-    <div class="article-divider"></div>
-
-    <h2>The Time Poverty Spiral</h2>
-
-    <p>My research focuses on connectivity: the physical links between parts of a landscape and how those links determine whether a disturbance stays local or spreads. I study the moment when bare soil patches grow large enough and close enough that they connect into continuous channels of erosion, the point at which a manageable problem becomes a self-reinforcing collapse.</p>
-
-    <p>The social dynamics of land degradation work by the same logic.</p>
-
-    <p>As land degrades, the time cost of basic survival rises. Wells dry up and women walk further for water. Fuelwood thins and women search wider areas for cooking fuel. Crop yields fall and women spend more hours for less return. Studies across the Sahel, South Asia, and East Africa document that women in degrading drylands spend three to four hours per day on water and fuel collection alone, time that comes directly out of the hours available for productive work, for children's education, for civic participation, for rest.</p>
-
-    <p>This is what researchers call time poverty, and it operates as a connectivity problem. When any one of these burdens, whether water, fuel, food, or childcare, crosses a threshold, it does not simply add to the others. It links with them. The woman who spends four hours collecting water cannot also attend the agricultural extension meeting that would teach her about erosion barriers. The woman who cannot attend the meeting does not learn the technique. The land degrades faster. She walks further tomorrow.</p>
-
-    <div class="pull-quote">
-      <p>Each individual burden is manageable. Their connectivity is not.</p>
-    </div>
-
-    <p>It is also worth noting that the relationship between degradation and climate runs in both directions. When soil organic matter is destroyed by erosion, carbon is released into the atmosphere. When vegetation thins, regional water cycles destabilize and dust increases, disrupting monsoon patterns across thousands of kilometers. The degraded dryland is not only a victim of climate change. It is a driver of the further warming that will degrade it further. The woman at the center of this system is caught in two compounding loops at once.</p>
-
-    <div class="article-divider"></div>
-
-    <h2>Who Caused It. Who Pays.</h2>
-
-    <p>Land degradation does not fall randomly. It concentrates on the drylands of sub-Saharan Africa, South Asia, Central Asia, and Latin America, regions that contributed least to the greenhouse gas emissions now accelerating desertification through rising temperatures and shifting rainfall patterns.</p>
-
-    <p><a class="cite" href="https://www.unccd.int/sites/default/files/2022-04/UNCCD_GLO2_low-res_2.pdf" target="_blank" rel="noreferrer">The UN Convention to Combat Desertification estimates</a> that 12 million hectares of arable land are lost to degradation every year, roughly 23 hectares every minute. The economic cost is $490 billion annually and projected to reach $23 trillion by 2050. Asia and Africa bear the highest share, at $84 billion and $65 billion per year respectively, in countries whose historical carbon contributions are a fraction of those of the industrialized nations whose emissions are driving the climate shifts that make dryland systems more fragile.</p>
-
-    <p>The distribution of cost is almost precisely inverted from the distribution of cause. The countries that built the infrastructure of modern industrial agriculture, the intensive, input-heavy, mechanized systems that emit the carbon that dries the Sahel, are not the countries watching their topsoil blow away. The woman walking forty minutes for water in Niger did not choose those emissions. She is paying for them with time she does not have, on land she does not own, in a country that did not cause the problem.</p>
-
-    <p>This is the structure, not the rhetoric, of what is happening. The logic that allows the costs of one group's choices to be borne invisibly by another, across gender, across geography, across generations, is what makes environmental collapse sustainable for those causing it long after it has become unsurvivable for those absorbing it.</p>
-
-    <div class="article-divider"></div>
-
-    <h2>What Would Actually Change Things, and What Has Not</h2>
-
-    <p>The policy conversation around land degradation focuses primarily on the technical: better land management practices, drought-resistant varieties, restoration funding, carbon markets for soil sequestration. These are real and necessary. They are also insufficient without addressing the structural gap that makes investment in land stability irrational for the people most affected by land instability.</p>
-
-    <p>There is a specific pattern worth naming here. Payment for Ecosystem Services schemes, which compensate communities financially for conserving or restoring degraded land, have in multiple documented cases directed payments to male household heads as the legal land titleholders, even when the restoration work was carried out entirely by women. The intervention treated the technical problem without touching the tenure problem. The women did the labor. The men received the transfer. The degradation slowed. The underlying structure did not change.</p>
-
-    <p>Land tenure reform, giving women formal, legal, inheritable rights to the land they farm, is one of the most consistently effective interventions in the development literature. Research in Ethiopia, Rwanda, and across South Asia shows that women with secure land rights invest more in soil conservation, produce better nutrition outcomes for their children, are less vulnerable to domestic violence, and have more decision-making power in their households. The land right is not only an economic instrument. It is a structural anchor that connects women to the long-term health of the landscape they manage.</p>
-
-    <p>The restoration of degraded land and the restoration of women's rights to that land are not separate projects. They are the same project. Technical interventions that bypass tenure reform will keep producing the same outcome: slower degradation, same structure, same loop.</p>
-
-    <div class="article-divider"></div>
-
-    <h2>Back to the Field</h2>
-
-    <p>I study soil and connectivity from the side of physics and network science. I measure the length of connected pathways across hillslopes, the percolation thresholds at which bare soil transitions from local problem to landscape-scale collapse. The data comes from satellites, sensors, and field measurements taken in drylands from New Mexico to Patagonia.</p>
-
-    <p>But the data has a human address. The threshold I calculate in a semi-arid hillslope corresponds, somewhere, to a woman in the Sahel walking forty minutes instead of twenty. To a child pulled out of school because the household needs more labor as the yield falls. To a family leaving land that has been theirs for generations because the ground can no longer support them.</p>
-
-    <p>The physical collapse and the social collapse are not parallel stories. They are the same story, told in different languages.</p>
-
-    <p>The ground beneath her feet is the same ground I am trying to understand. And the question of who it belongs to, legally and practically, turns out to matter as much as any parameter in my models.</p>
-
-    <!-- Sources -->
-    <div class="sources-section">
-      <p class="sources-label">Sources</p>
-      <ul class="sources-list">
-        <li>FAO. <em>The State of Food and Agriculture: Women in Agriculture.</em> Food and Agriculture Organization of the United Nations, 2011. <a href="https://www.fao.org/3/i2050e/i2050e.pdf" target="_blank" rel="noreferrer">fao.org</a></li>
-        <li>FAO. <em>Governing Land for Women and Men.</em> Food and Agriculture Organization of the United Nations, 2013.</li>
-        <li>World Bank. <em>Leveling the Field: Improving Opportunities for Women Farmers in Africa.</em> World Bank Group, 2014. <a href="https://www.worldbank.org/en/topic/gender/publication/leveling-the-field-improving-opportunities-for-women-farmers-in-africa" target="_blank" rel="noreferrer">worldbank.org</a></li>
-        <li>World Economic Forum. <em>Global Gender Gap Report 2023.</em> WEF, 2023. <a href="https://www.weforum.org/reports/global-gender-gap-report-2023" target="_blank" rel="noreferrer">weforum.org</a></li>
-        <li>UNCCD. <em>The Global Land Outlook 2.</em> United Nations Convention to Combat Desertification, 2022. <a href="https://www.unccd.int/sites/default/files/2022-04/UNCCD_GLO2_low-res_2.pdf" target="_blank" rel="noreferrer">unccd.int</a></li>
-        <li>Doss, C. et al. "Women's Land Rights as a Pathway to Poverty Reduction." <em>Journal of Development Effectiveness</em>, 2014.</li>
-        <li>Quisumbing, A.R., and Pandolfelli, L. "Promising Approaches to Address the Needs of Poor Female Farmers." <em>World Development</em>, 38(4), 2010.</li>
-      </ul>
-    </div>
-
-    <!-- Author bio -->
-    <div class="author-bio">
-      <div class="bio-avatar">S</div>
-      <div class="bio-text">
-        <p class="bio-name">Shubham Tiwari</p>
-        <p class="bio-desc">Early Stage Researcher in the Marie Sklodowska-Curie i-CONN Network and incoming Postdoctoral Researcher at New Mexico State University and the Jornada Experimental Range. He studies dryland connectivity and landscape resilience using network science.</p>
-        <div class="bio-links">
-          <a class="bio-link" href="https://shubhamrt.substack.com" target="_blank" rel="noreferrer">Substack</a>
-          <a class="bio-link" href="https://medium.com/@shubhamrt" target="_blank" rel="noreferrer">Medium</a>
-          <a class="bio-link" href="index.html#contact">Get in Touch</a>
+    <!-- Featured post -->
+    <a class="featured-card reveal" href="blog-01-ground-beneath-her-feet.html">
+      <div class="fc-body">
+        <div>
+          <div class="fc-tags">
+            <span class="tag-pill">Land Degradation</span>
+            <span class="tag-pill">Gender</span>
+            <span class="tag-pill">Systems</span>
+          </div>
+        </div>
+        <div class="fc-content">
+          <p class="fc-number">Essay No. 01</p>
+          <h2 class="fc-title">The Ground Beneath Her Feet</h2>
+          <p class="fc-subtitle">How Land Degradation Falls Hardest on the People Who Least Caused It</p>
+          <p class="fc-excerpt">Picture a woman walking. She is walking before sunrise because she walked at this hour yesterday and the day before and every day she can remember. She is walking to collect water. The well that used to be twenty minutes from her house now takes forty, because the vegetation that once held the surrounding soil has thinned, the ground has crusted over, and the springs that fed the shallower wells have dried.</p>
+        </div>
+        <div class="fc-meta">
+          <div class="fc-meta-left">
+            <span>May 2026</span>
+            <span class="meta-dot"></span>
+            <span>9 min read</span>
+          </div>
+          <span class="fc-read">
+            Read Essay
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
         </div>
       </div>
-    </div>
-
-    <!-- Back to writing -->
-    <a class="back-to-writing" href="blogs.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      All Essays
+      <div class="fc-cover" aria-hidden="true">
+        <div class="fc-cover-text">
+          <span class="fc-cover-stat">12M</span>
+          <div class="fc-cover-line"></div>
+          <p class="fc-cover-caption">hectares of arable land lost every year</p>
+        </div>
+      </div>
     </a>
 
+    <!-- Upcoming grid -->
+    <p class="upcoming-header">Coming Soon</p>
+    <div class="cards-grid">
+
+      <div class="article-card card-coming reveal">
+        <div class="card-coming-badge">Coming Soon</div>
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">Science Communication</span>
+            <span class="card-tag">Academia</span>
+          </div>
+          <h3 class="card-title">Why Scientists Are Bad at Talking to the Public, and What It Costs Us</h3>
+          <p class="card-excerpt">Jargon is not just laziness. It is a membership card — a signal that you belong, written in the only language the club accepts. The problem is what happens when you try to use it outside.</p>
+          <div class="card-meta">Coming to Medium</div>
+        </div>
+      </div>
+
+      <div class="article-card card-coming reveal">
+        <div class="card-coming-badge">Coming Soon</div>
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">India</span>
+            <span class="card-tag">History of Science</span>
+          </div>
+          <h3 class="card-title">The Country That Invented Zero, and What Happened Next</h3>
+          <p class="card-excerpt">India gave the world one of its most consequential intellectual tools. Why does one of history's great scientific civilisations now punch so far below its weight?</p>
+          <div class="card-meta">Coming to Substack</div>
+        </div>
+      </div>
+
+      <div class="article-card card-coming reveal">
+        <div class="card-coming-badge">Coming Soon</div>
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">Network Science</span>
+            <span class="card-tag">Resilience</span>
+          </div>
+          <h3 class="card-title">How Scientists Detect Collapse Before It Happens, and Why Nobody Listens</h3>
+          <p class="card-excerpt">Satellite data can identify the early warning signatures of landscape collapse years before it arrives. The policy frameworks to act on that knowledge largely do not exist.</p>
+          <div class="card-meta">Coming to Substack</div>
+        </div>
+      </div>
+
+    </div>
   </div>
-</main>
+</section>
+
+<!-- ══ SUBSTACK CTA ══════════════════════════════ -->
+<div class="substack-cta">
+  <div class="substack-cta-inner reveal">
+    <h2>Follow along on <em>Substack</em></h2>
+    <p>New essays on science, landscapes, and civilisation. No algorithm. No noise. Just writing, when it is ready.</p>
+    <a class="btn-substack" href="https://shubhamrt.substack.com" target="_blank" rel="noreferrer">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+      Subscribe on Substack
+    </a>
+  </div>
+</div>
 
 <!-- ══ FOOTER ══════════════════════════════════════ -->
 <footer>
@@ -544,17 +595,9 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 
 <script>
 (function () {
-  /* Nav scroll */
-  var nav = document.getElementById('nav');
+  var nav    = document.getElementById('nav');
   var burger = document.getElementById('burger');
-  function onScroll() {
-    nav.classList.toggle('solid', window.scrollY > 60);
-    /* Reading progress */
-    var el = document.documentElement;
-    var scrolled = el.scrollTop || document.body.scrollTop;
-    var total = el.scrollHeight - el.clientHeight;
-    document.getElementById('progress').style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
-  }
+  function onScroll() { nav.classList.toggle('solid', window.scrollY > 60); }
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
   if (burger) {
@@ -570,8 +613,12 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
       a.addEventListener('click', function () { nav.classList.remove('open'); });
     });
   }
-  /* Ensure nav is solid immediately on this page since hero starts at scroll=0 */
-  nav.classList.add('solid');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 })();
 </script>
 </body>
