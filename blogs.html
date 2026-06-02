@@ -31,7 +31,6 @@ html { scroll-behavior: smooth; }
 body { font-family: var(--sans); font-size: 16px; line-height: 1.72; color: var(--ink); background: #fff; overflow-x: hidden; }
 img { display: block; max-width: 100%; }
 a { color: inherit; }
-
 /* ─── NAV ─────────────────────────────────────── */
 .nav { position: fixed; inset: 0 0 auto 0; height: var(--nav-h); z-index: 50; border-bottom: 1px solid rgba(255,255,255,.10); transition: background .35s, border-color .35s; }
 .nav.solid { background: rgba(255,255,255,.96); border-bottom: 1px solid var(--line); backdrop-filter: blur(10px); }
@@ -58,7 +57,6 @@ a { color: inherit; }
 .nav-drawer a:hover { background: var(--green-dim); color: var(--green); }
 .nav.open .nav-drawer { display: block; }
 @media (max-width: 640px) { .nav-links { display: none; } .nav-burger { display: flex; } }
-
 /* ─── BLOG HERO ───────────────────────────────── */
 .blog-hero {
   background: var(--hero-bg);
@@ -132,7 +130,6 @@ a { color: inherit; }
 }
 .platform-pill:hover { border-color: var(--green-light); color: var(--green-light); }
 .platform-pill svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
-
 /* ─── ARTICLES ────────────────────────────────── */
 .articles { padding: 5rem 2.5rem 7rem; background: #fff; }
 .articles-inner { max-width: var(--max); margin: 0 auto; }
@@ -146,90 +143,91 @@ a { color: inherit; }
   padding-bottom: .8rem;
   border-bottom: 1px solid var(--line);
 }
-
-/* ─── FEATURED CARD ───────────────────────────── */
-.featured-card {
+/* ─── ESSAY CARD ──────────────────────────────── */
+.essay-card {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 360px;
   border: 1px solid var(--line);
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 4.5rem;
+  margin-bottom: 2.8rem;
   text-decoration: none;
   color: var(--ink);
   transition: box-shadow .25s;
 }
-.featured-card:hover { box-shadow: 0 12px 48px rgba(0,0,0,.10); }
-.featured-card:hover .fc-read { color: var(--green-dark); }
-.fc-body {
-  padding: 3rem 2.8rem;
+.essay-card:hover { box-shadow: 0 12px 48px rgba(0,0,0,.10); }
+.essay-card:hover .ec-read { color: var(--green-dark); }
+.ec-body {
+  padding: 2.6rem 2.4rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1.8rem;
+  gap: 1.6rem;
 }
-.fc-tags { display: flex; gap: .5rem; flex-wrap: wrap; }
+.ec-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .6rem; }
+.ec-tags { display: flex; gap: .5rem; flex-wrap: wrap; }
 .tag-pill {
-  font-size: .65rem;
+  font-size: .62rem;
   font-weight: 700;
   letter-spacing: .10em;
   text-transform: uppercase;
   color: var(--green);
   background: var(--green-dim);
   border-radius: 999px;
-  padding: .3rem .8rem;
+  padding: .28rem .75rem;
 }
-.fc-content {}
-.fc-number {
-  font-size: .68rem;
-  font-weight: 600;
-  letter-spacing: .12em;
+.platform-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .10em;
   text-transform: uppercase;
-  color: rgba(27,38,34,.32);
-  margin-bottom: .8rem;
+  color: rgba(27,38,34,.40);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .25rem .65rem;
 }
-.fc-title {
+.platform-badge svg { width: 10px; height: 10px; fill: currentColor; flex-shrink: 0; }
+.ec-content {}
+.ec-title {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
-  line-height: 1.12;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.15;
   color: var(--ink);
-  margin-bottom: .8rem;
+  margin-bottom: .55rem;
 }
-.fc-subtitle {
-  font-size: .95rem;
-  font-weight: 400;
+.ec-subtitle {
+  font-size: .9rem;
   font-style: italic;
   color: var(--muted);
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   line-height: 1.6;
 }
-.fc-excerpt {
-  font-size: .92rem;
+.ec-excerpt {
+  font-size: .88rem;
   line-height: 1.76;
-  color: rgba(27,38,34,.72);
+  color: rgba(27,38,34,.68);
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.fc-meta {
+.ec-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 1.4rem;
+  padding-top: 1.2rem;
   border-top: 1px solid var(--line);
 }
-.fc-meta-left {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  font-size: .78rem;
-  color: rgba(27,38,34,.45);
+.ec-meta-left {
+  font-size: .75rem;
+  color: rgba(27,38,34,.40);
 }
-.meta-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(27,38,34,.25); flex-shrink: 0; }
-.fc-read {
-  font-size: .8rem;
+.ec-read {
+  font-size: .78rem;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -239,158 +237,27 @@ a { color: inherit; }
   gap: .4rem;
   transition: color .2s;
 }
-.fc-read svg { width: 14px; height: 14px; }
-
-/* Featured cover: earthy dryland-inspired CSS art */
-.fc-cover {
+.ec-read svg { width: 13px; height: 13px; }
+.ec-cover {
   position: relative;
-  background: #0e2420;
   overflow: hidden;
-  min-height: 280px;
+  min-height: 240px;
 }
-.fc-cover::before {
-  content: '';
+.ec-cover img {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 30% 80%, rgba(139,90,43,.55) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 20%, rgba(44,120,115,.40) 0%, transparent 50%),
-    radial-gradient(ellipse at 60% 60%, rgba(196,132,90,.30) 0%, transparent 45%),
-    linear-gradient(180deg, #0e2420 0%, #1a3628 40%, #2a4a30 100%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease;
 }
-/* Horizon line */
-.fc-cover::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 38%;
-  height: 1px;
-  background: rgba(126,207,201,.22);
-}
-.fc-cover-text {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: .6rem;
-  text-align: center;
-  padding: 2rem;
-}
-.fc-cover-stat {
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: 3rem;
-  color: rgba(255,255,255,.85);
-  line-height: 1;
-}
-.fc-cover-caption {
-  font-size: .68rem;
-  font-weight: 500;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.40);
-  max-width: 16ch;
-  line-height: 1.6;
-}
-.fc-cover-line {
-  width: 2rem;
-  height: 1px;
-  background: var(--green-light);
-  margin: .4rem auto;
-}
-
+.essay-card:hover .ec-cover img { transform: scale(1.03); }
 @media (max-width: 820px) {
-  .featured-card { grid-template-columns: 1fr; }
-  .fc-cover { min-height: 200px; order: -1; }
-  .fc-body { padding: 2rem 1.6rem; }
+  .essay-card { grid-template-columns: 1fr; }
+  .ec-cover { min-height: 200px; order: -1; }
+  .ec-body { padding: 1.8rem 1.6rem; }
 }
-
-/* ─── UPCOMING GRID ───────────────────────────── */
-.upcoming-header {
-  font-size: .65rem;
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: rgba(27,38,34,.35);
-  margin-bottom: 1.8rem;
-  padding-bottom: .8rem;
-  border-bottom: 1px solid var(--line);
-}
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.8rem;
-}
-.article-card {
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  background: #fff;
-}
-.card-coming { opacity: .52; pointer-events: none; }
-.card-coming-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: rgba(27,38,34,.45);
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: .25rem .65rem;
-}
-.card-stripe {
-  height: 4px;
-  background: var(--green);
-}
-.card-coming .card-stripe { background: rgba(27,38,34,.18); }
-.card-body { padding: 1.6rem 1.4rem; flex: 1; display: flex; flex-direction: column; gap: 1rem; }
-.card-tags { display: flex; gap: .4rem; flex-wrap: wrap; }
-.card-tag {
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-  color: var(--green);
-  background: var(--green-dim);
-  border-radius: 999px;
-  padding: .22rem .65rem;
-}
-.card-coming .card-tag { color: rgba(27,38,34,.35); background: rgba(27,38,34,.06); }
-.card-title {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.25;
-  color: var(--ink);
-}
-.card-excerpt {
-  font-size: .84rem;
-  line-height: 1.7;
-  color: var(--muted);
-  flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.card-meta {
-  font-size: .72rem;
-  color: rgba(27,38,34,.38);
-  padding-top: .8rem;
-  border-top: 1px solid var(--line);
-}
-@media (max-width: 860px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 540px) { .cards-grid { grid-template-columns: 1fr; } }
-
 /* ─── SUBSTACK CTA ────────────────────────────── */
 .substack-cta {
   background: var(--cream);
@@ -426,12 +293,10 @@ a { color: inherit; }
 }
 .btn-substack:hover { background: var(--green-dark); }
 .btn-substack svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
-
 /* ─── FOOTER ──────────────────────────────────── */
 footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5rem; display: flex; justify-content: space-between; align-items: center; font-size: .78rem; letter-spacing: .04em; }
 .foot-brand { font-weight: 700; color: rgba(255,255,255,.65); }
 @media (max-width: 480px) { footer { flex-direction: column; gap: .4rem; text-align: center; } }
-
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
 .reveal.in { opacity: 1; transform: none; }
 </style>
@@ -486,37 +351,102 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
 <!-- ══ ARTICLES ════════════════════════════════════ -->
 <section class="articles">
   <div class="articles-inner">
-    <p class="section-label">Published</p>
+    <p class="section-label">Published Essays</p>
 
-    <!-- Featured post -->
-    <a class="featured-card reveal" href="blog-01-ground-beneath-her-feet.html">
-      <div class="fc-body">
-        <div>
-          <div class="fc-tags">
+    <!-- Essay 1: Substack -->
+    <a class="essay-card reveal" href="https://substack.com/@shubhamrt/note/p-199319790" target="_blank" rel="noreferrer">
+      <div class="ec-body">
+        <div class="ec-top">
+          <div class="ec-tags">
+            <span class="tag-pill">Water</span>
+            <span class="tag-pill">Climate</span>
+            <span class="tag-pill">Policy</span>
+          </div>
+          <span class="platform-badge">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+            Substack
+          </span>
+        </div>
+        <div class="ec-content">
+          <h2 class="ec-title">What London Forgot to Learn from Rain</h2>
+          <p class="ec-subtitle">Living with scarcity is a skill. We are all going to need it.</p>
+          <p class="ec-excerpt">The first heavy rain I witnessed in Las Cruces, New Mexico drew people outside to watch it. A neighbor held out her hand to feel it. Someone photographed the arroyos filling. The smell of rain on desert soil rose from streets that had been dry for months. I had moved from London, where rain falls more than twice as often and no one looks up. In England, rain is background. In New Mexico, it is an event. The difference is not only meteorological. It is civilizational.</p>
+        </div>
+        <div class="ec-meta">
+          <span class="ec-meta-left">8 min read</span>
+          <span class="ec-read">
+            Read on Substack
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="ec-cover">
+        <img src="img/image1blog3.png" alt="What London Forgot to Learn from Rain">
+      </div>
+    </a>
+
+    <!-- Essay 2: Medium -->
+    <a class="essay-card reveal" href="https://medium.com/@shubhamrt/why-scientists-are-bad-at-talking-to-the-public-and-what-it-costs-us-e98633130146" target="_blank" rel="noreferrer">
+      <div class="ec-body">
+        <div class="ec-top">
+          <div class="ec-tags">
+            <span class="tag-pill">Science</span>
+            <span class="tag-pill">Communication</span>
+            <span class="tag-pill">Writing</span>
+          </div>
+          <span class="platform-badge">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+            Medium
+          </span>
+        </div>
+        <div class="ec-content">
+          <h2 class="ec-title">Why Scientists Are Bad at Talking to the Public</h2>
+          <p class="ec-subtitle">The problem isn't the science. It's the training.</p>
+          <p class="ec-excerpt">Last year I submitted a paper containing the phrase "non-linear connectivity thresholds in semi-arid geomorphic systems under anthropogenically-mediated disturbance regimes." I knew what it meant. The four peer reviewers who read it probably knew what it meant. Nobody else did. We have built a cathedral of knowledge, and hidden the entrance.</p>
+        </div>
+        <div class="ec-meta">
+          <span class="ec-meta-left">7 min read</span>
+          <span class="ec-read">
+            Read on Medium
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="ec-cover">
+        <img src="img/image1blog2.png" alt="Why Scientists Are Bad at Talking to the Public">
+      </div>
+    </a>
+
+    <!-- Essay 3: Ground Beneath Her Feet (internal) -->
+    <a class="essay-card reveal" href="ground-beneath-her-feet.html">
+      <div class="ec-body">
+        <div class="ec-top">
+          <div class="ec-tags">
             <span class="tag-pill">Land Degradation</span>
             <span class="tag-pill">Gender</span>
             <span class="tag-pill">Systems</span>
           </div>
+          <span class="platform-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+            Website
+          </span>
         </div>
-        <div class="fc-content">
-          <h2 class="fc-title">The Ground Beneath Her Feet</h2>
-          <p class="fc-subtitle">How Land Degradation Falls Hardest on the People Who Least Caused It</p>
-          <p class="fc-excerpt">Picture a woman walking. She is walking before sunrise because she walked at this hour yesterday and the day before and every day she can remember. She is walking to collect water. The well that used to be twenty minutes from her house now takes forty, because the vegetation that once held the surrounding soil has thinned, the ground has crusted over, and the springs that fed the shallower wells have dried.</p>
+        <div class="ec-content">
+          <h2 class="ec-title">The Ground Beneath Her Feet</h2>
+          <p class="ec-subtitle">On land tenure, soil recovery, and why the two problems cannot be solved separately</p>
+          <p class="ec-excerpt">In the Banni grasslands of Kutch, in western India, the Maldhari people have grazed cattle for centuries on land they do not legally own. The state classifies it as wasteland. The Maldharis know it as something else entirely: a living system of seasonal routes, water sources and communal memory that has sustained their herds longer than the Indian state has existed.</p>
         </div>
-        <div class="fc-meta">
-          <div class="fc-meta-left">
-            <span>9 min read</span>
-          </div>
-          <span class="fc-read">
+        <div class="ec-meta">
+          <span class="ec-meta-left">8 min read</span>
+          <span class="ec-read">
             Read Essay
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </span>
         </div>
       </div>
-   <div class="fc-cover">
-  <img src="img/image1blog1.png" alt="The Ground Beneath Her Feet" 
-       style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:1;">
-</div>
+      <div class="ec-cover">
+        <img src="img/image1blog1.png" alt="The Ground Beneath Her Feet">
+      </div>
     </a>
 
   </div>
@@ -566,6 +496,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.38); padding: 2rem 2.5
     });
   }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  nav.classList.add('solid');
 })();
 </script>
 </body>
