@@ -3,43 +3,109 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DustWatch — Live Dust Tracker</title>
+<meta name="theme-color" content="#f4efe6">
+<title>DustWatch</title>
+<meta name="description" content="A live model-based global dust tracker using CAMS data via Open-Meteo.">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-:root{--bg:#efe8dc;--panel:#fffdf9;--ink:#1d2625;--muted:#6d746f;--line:#d8d0c4;--teal:#0c6864;--sand:#c58b4d;--orange:#c96435;--red:#a33d2d;--deep:#6c251d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif}.wrap{max-width:1450px;margin:auto;padding:18px}header{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:16px}h1{margin:0;font-size:23px;letter-spacing:.12em;text-transform:uppercase}.sub{color:var(--muted);font-size:12px;margin-top:4px}.live{font-size:12px;color:var(--muted)}.grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(300px,.7fr);gap:14px}.panel{background:rgba(255,253,249,.84);border:1px solid var(--line);border-radius:16px;overflow:hidden}.mapbox{position:relative}#map{height:640px}.tools{position:absolute;z-index:600;left:14px;top:14px;right:14px;display:flex;gap:8px;pointer-events:none}.search{display:flex;gap:7px;padding:6px;background:#fffdf9;border:1px solid var(--line);border-radius:11px;pointer-events:auto;max-width:520px;flex:1}.search input{border:0;outline:0;background:transparent;padding:8px;flex:1;min-width:0}.btn{border:1px solid var(--ink);background:#fffdf9;border-radius:8px;padding:8px 11px;cursor:pointer}.btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}.locate{pointer-events:auto;margin-left:auto}.legend{position:absolute;z-index:600;left:14px;bottom:14px;background:#fffdf9e8;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:11px;line-height:1.55}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}.side{display:flex;flex-direction:column;gap:14px}.card{padding:20px}.eyebrow{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}.count{font-size:58px;line-height:1;margin:8px 0 4px;font-weight:730}.fact{background:var(--teal);color:#fff}.fact .eyebrow{color:#ffffffaa}.fact p{font-size:21px;line-height:1.25}.small{font-size:11px;line-height:1.5;color:var(--muted)}.fact .small{color:#ffffffb7}.below{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:14px}.events,.detail{padding:20px}.event{display:grid;grid-template-columns:12px 1fr auto;gap:10px;padding:12px 0;border-top:1px solid var(--line);cursor:pointer}.event:first-child{border-top:0}.event strong{font-size:14px}.event span{font-size:11px;color:var(--muted)}.reading{text-align:right}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.metric{background:#f7f3eb;border:1px solid var(--line);border-radius:9px;padding:10px}.metric b{display:block;font-size:18px}.metric span{font-size:9px;text-transform:uppercase;color:var(--muted)}svg{width:100%;height:90px}footer{font-size:10px;color:var(--muted);padding:18px 3px}.dust-icon{border-radius:50%;border:2px solid #fff;box-shadow:0 2px 8px #0003}@media(max-width:900px){.grid,.below{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}.method{grid-column:1/-1}#map{height:560px}}@media(max-width:600px){.wrap{padding:10px}.side{display:flex}.tools{display:grid;grid-template-columns:1fr auto}.search{grid-column:1/-1;max-width:none}.locate{grid-column:2}.event{grid-template-columns:12px 1fr}.reading{grid-column:2;text-align:left}.metrics{grid-template-columns:1fr 1fr}}
+:root{--paper:#f4efe6;--ink:#17211f;--muted:#6d746f;--line:#d6cec1;--white:#fbfaf6;--teal:#1d6964;--teal-soft:#dce9e6;--sand:#b58450;--orange:#be673d;--red:#9f4936;--deep:#6f3027}*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{min-height:100vh}a{color:inherit;text-underline-offset:3px}button,input{font:inherit}.page{max-width:1320px;margin:auto;padding:26px 22px 30px}.mast{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:18px}.brand h1{margin:0;font-size:28px;letter-spacing:-.035em;font-weight:650}.brand p{margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.45;max-width:650px}.status{text-align:right;font-size:11px;line-height:1.6;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.status i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-right:6px}.hero{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(290px,.66fr);gap:24px;align-items:start}.map-shell{background:var(--white);border:1px solid var(--line)}.tools{display:flex;gap:8px;padding:12px;border-bottom:1px solid var(--line)}.search{display:flex;gap:8px;flex:1}.search input{flex:1;min-width:0;border:0;border-bottom:1px solid #aaa095;background:transparent;padding:9px 2px;outline:0;color:var(--ink)}.btn{border:1px solid var(--line);background:transparent;color:var(--ink);padding:8px 11px;cursor:pointer;border-radius:2px}.btn:hover{background:#eee8de}.btn.primary{background:var(--teal);border-color:var(--teal);color:white}.btn.primary:hover{filter:brightness(.96)}#map{height:590px;background:#e8e1d7}.legend{display:flex;gap:16px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}.legend span{display:inline-flex;align-items:center;gap:6px}.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}.side{border-top:1px solid var(--line)}.side section{padding:18px 0;border-bottom:1px solid var(--line)}.label{margin:0 0 8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}.count{font-size:64px;line-height:.95;letter-spacing:-.06em;font-weight:600;margin:6px 0 8px}.small{font-size:12px;line-height:1.55;color:var(--muted)}.fact-text{font-family:Georgia,"Times New Roman",serif;font-size:20px;line-height:1.45;margin:0;color:var(--ink)}.fact-source{font-size:11px;color:var(--muted);margin-top:12px}.teal-rule{width:34px;height:2px;background:var(--teal);margin:0 0 12px}.lower{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(340px,.85fr);gap:24px;margin-top:26px}.section{border-top:1px solid var(--line);padding-top:14px}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:8px}.section h2{font-size:17px;letter-spacing:-.015em;margin:0;font-weight:620}.event{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:11px;align-items:start;padding:13px 0;border-top:1px solid var(--line);cursor:pointer}.event:first-child{border-top:0}.event:hover strong{text-decoration:underline;text-underline-offset:3px}.event strong{font-size:13px;font-weight:620}.event span{font-size:11px;color:var(--muted);line-height:1.45}.reading{text-align:right}.reading b{font-size:15px;font-weight:650}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:15px 0 10px}.metric{border-top:1px solid var(--line);padding-top:9px}.metric b{display:block;font-size:18px}.metric span{font-size:9px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}#chart{width:100%;height:95px;display:block;margin-top:8px}.footer{display:flex;justify-content:space-between;gap:18px;border-top:1px solid var(--line);margin-top:26px;padding-top:14px;font-size:10px;color:var(--muted);line-height:1.5}.dust-icon{border-radius:50%;border:1px solid rgba(255,255,255,.9);box-shadow:0 1px 6px rgba(0,0,0,.15)}.leaflet-popup-content-wrapper{border-radius:3px;box-shadow:0 6px 22px rgba(0,0,0,.12)}.leaflet-popup-content{margin:11px 13px;font-family:Inter,system-ui,sans-serif;font-size:12px}.leaflet-control-attribution{font-size:9px!important}@media(max-width:920px){.hero,.lower{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;border-top:0}.side section{border-top:1px solid var(--line)}#map{height:520px}}@media(max-width:650px){.page{padding:16px 14px 24px}.mast{flex-direction:column;align-items:flex-start}.status{text-align:left}.tools{flex-direction:column}.search{width:100%}.search .btn,.tools>.btn{width:100%}.side{display:block}.count{font-size:52px}#map{height:420px}.lower{gap:22px}.event{grid-template-columns:10px minmax(0,1fr)}.reading{grid-column:2;text-align:left}.metrics{grid-template-columns:repeat(2,1fr)}.footer{flex-direction:column}}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header><div><h1>DustWatch</h1><div class="sub">Live model-based global dust tracker</div></div><div class="live">CAMS via Open-Meteo · refreshes every 30 min</div></header>
-<section class="grid">
-<div class="panel mapbox"><div id="map"></div><div class="tools"><form class="search" id="searchForm"><input id="q" placeholder="Search a city or place…"><button class="btn primary">Check dust</button></form><button class="btn locate" id="locate">Use my location</button></div><div class="legend"><b>Tracker screening</b><br><span class="dot" style="background:#c58b4d"></span>Elevated 50–99 µg/m³<br><span class="dot" style="background:#c96435"></span>High 100–249<br><span class="dot" style="background:#a33d2d"></span>Severe 250–499<br><span class="dot" style="background:#6c251d"></span>Extreme ≥500</div></div>
-<div class="side">
-<div class="panel card"><div class="eyebrow">Current watch</div><div class="count" id="count">—</div><div class="small" id="summary">Scanning major global dust regions…</div></div>
-<div class="panel card fact"><div class="eyebrow">Dust fact</div><p id="fact">Dust can travel hundreds to thousands of kilometres from its source.</p><div class="small" id="factSource">Source: WMO</div></div>
-<div class="panel card method"><div class="eyebrow">How to read this</div><div class="small">This is a screening tool, not an official warning service. It flags high modelled near-surface dust. Confirmed sand and dust storms also depend on observed weather and visibility.</div></div>
-</div>
+<div class="page">
+<header class="mast">
+  <div class="brand">
+    <h1>DustWatch</h1>
+    <p>Live model-based dust conditions across major source and transport regions worldwide.</p>
+  </div>
+  <div class="status"><i></i>Live screening<br>CAMS via Open-Meteo · 30 min refresh</div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="map-shell">
+    <div class="tools">
+      <form class="search" id="searchForm">
+        <input id="q" placeholder="Search a city or place" aria-label="Search a city or place">
+        <button class="btn primary" type="submit">Check dust</button>
+      </form>
+      <button class="btn" id="locate" type="button">Use my location</button>
+    </div>
+    <div id="map"></div>
+    <div class="legend">
+      <span><i class="dot" style="background:#b58450"></i>Elevated 50–99</span>
+      <span><i class="dot" style="background:#be673d"></i>High 100–249</span>
+      <span><i class="dot" style="background:#9f4936"></i>Severe 250–499</span>
+      <span><i class="dot" style="background:#6f3027"></i>Extreme ≥500 µg/m³</span>
+    </div>
+  </div>
+
+  <aside class="side">
+    <section>
+      <p class="label">Current watch</p>
+      <div class="teal-rule"></div>
+      <div class="count" id="count">—</div>
+      <div class="small" id="summary">Scanning major global dust regions…</div>
+    </section>
+    <section>
+      <p class="label">Dust fact</p>
+      <div class="teal-rule"></div>
+      <p class="fact-text" id="fact">Dust can travel hundreds to thousands of kilometres from its source.</p>
+      <div class="fact-source" id="factSource">Source: WMO</div>
+    </section>
+    <section>
+      <p class="label">Note</p>
+      <div class="small">This is a screening tool, not an official warning service. It flags high modelled near-surface dust. Confirmed sand and dust storms also depend on observed weather and visibility.</div>
+    </section>
+  </aside>
 </section>
-<section class="below">
-<div class="panel events"><div class="eyebrow">Active signals</div><h2>Modelled dust events</h2><div id="events"><div class="small">Loading current conditions…</div></div></div>
-<div class="panel detail"><div class="eyebrow">72-hour outlook</div><h2 id="name">Select a location</h2><div class="small" id="region">Click an event marker or search for a place.</div><div class="metrics"><div class="metric"><b id="dust">—</b><span>dust µg/m³</span></div><div class="metric"><b id="pm10">—</b><span>PM₁₀ µg/m³</span></div><div class="metric"><b id="aod">—</b><span>AOD 550 nm</span></div></div><svg id="chart" viewBox="0 0 500 90" preserveAspectRatio="none"></svg><div class="small" id="note">Forecast appears here after selecting a location.</div></div>
+
+<section class="lower">
+  <div class="section">
+    <div class="section-head"><div><p class="label">Active signals</p><h2>Modelled dust events</h2></div></div>
+    <div id="events"><div class="small">Loading current conditions…</div></div>
+  </div>
+  <div class="section">
+    <p class="label">72-hour outlook</p>
+    <h2 id="name">Select a location</h2>
+    <div class="small" id="region">Click an event marker or search for a place.</div>
+    <div class="metrics">
+      <div class="metric"><b id="dust">—</b><span>dust µg/m³</span></div>
+      <div class="metric"><b id="pm10">—</b><span>PM₁₀ µg/m³</span></div>
+      <div class="metric"><b id="aod">—</b><span>AOD 550 nm</span></div>
+    </div>
+    <svg id="chart" viewBox="0 0 500 95" preserveAspectRatio="none"></svg>
+    <div class="small" id="note">Forecast appears here after selecting a location.</div>
+  </div>
 </section>
-<footer>Data: Copernicus Atmosphere Monitoring Service via Open-Meteo Air Quality API. Map © OpenStreetMap contributors. <a href="https://shubhamrt.github.io/">Main website</a></footer>
+</main>
+
+<footer class="footer">
+  <div>Data: Copernicus Atmosphere Monitoring Service via Open-Meteo Air Quality API. Map © OpenStreetMap contributors.</div>
+  <div><a href="https://shubhamrt.github.io/">Main website</a></div>
+</footer>
 </div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const P=[['Ulaanbaatar','Mongolia',47.918,106.917],['Dalanzadgad','South Gobi, Mongolia',43.57,104.42],['Sainshand','Dornogovi, Mongolia',44.89,110.14],['Beijing','Northern China',39.90,116.40],['Dunhuang','Gansu, China',40.14,94.66],['Hotan','Taklamakan, China',37.11,79.94],['Aral region','Kazakhstan / Uzbekistan',45,59.5],['Tehran','Iran',35.69,51.39],['Ahvaz','Iran',31.32,48.67],['Baghdad','Iraq',33.31,44.37],['Riyadh','Saudi Arabia',24.71,46.68],['Jaisalmer','Thar Desert, India',26.92,70.90],['Bodélé Depression','Chad',17,18],['Niamey','Niger',13.51,2.11],['Nouakchott','Mauritania',18.08,-15.98],['Dakar','Senegal',14.72,-17.47],['Cairo','Egypt',30.04,31.24],['Tamanrasset','Algeria',22.79,5.52],['Las Palmas','Canary Islands',28.12,-15.44],['Alice Springs','Australia',-23.70,133.88],['El Paso','Texas, USA',31.76,-106.49],['Las Cruces','New Mexico, USA',32.32,-106.77],['Phoenix','Arizona, USA',33.45,-112.07],['Mendoza','Argentina',-32.89,-68.85]];
 const F=[['Around 2 billion tonnes of dust enter the atmosphere each year, and some plumes travel hundreds to thousands of kilometres.','WMO'],['Sand and dust storms affect hundreds of millions of people across many countries.','WMO'],['The Bodélé Depression in Chad is one of the world’s most active dust source regions.','WMO'],['Dust can influence air quality, transport, agriculture, ecosystems and climate at the same time.','WMO'],['Dust from Mongolia can be transported far into northern and eastern China during major spring events.','WMO'],['Strong winds over dry, sparsely vegetated surfaces are a common ingredient in dust emission.','WMO']];
-const C={background:'#79908d',elevated:'#c58b4d',high:'#c96435',severe:'#a33d2d',extreme:'#6c251d'};let M=[],D=[];const map=L.map('map',{worldCopyJump:true}).setView([28,35],2);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:9,attribution:'&copy; OpenStreetMap'}).addTo(map);
-function sev(x){return x>=500?['extreme','Extreme']:x>=250?['severe','Severe']:x>=100?['high','High']:x>=50?['elevated','Elevated']:['background','Background']}function fmt(x,d=0){return Number.isFinite(x)?x.toFixed(d):'—'}
+const C={background:'#82938f',elevated:'#b58450',high:'#be673d',severe:'#9f4936',extreme:'#6f3027'};
+let M=[],D=[];
+const map=L.map('map',{worldCopyJump:true}).setView([28,35],2);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:9,attribution:'&copy; OpenStreetMap'}).addTo(map);
+function sev(x){return x>=500?['extreme','Extreme']:x>=250?['severe','Severe']:x>=100?['high','High']:x>=50?['elevated','Elevated']:['background','Background']}
+function fmt(x,d=0){return Number.isFinite(x)?x.toFixed(d):'—'}
 async function current(points){const lat=points.map(x=>x[2]).join(','),lon=points.map(x=>x[3]).join(',');const r=await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=dust,pm10,aerosol_optical_depth&timezone=GMT`);if(!r.ok)throw Error();const j=await r.json();return Array.isArray(j)?j:[j]}
 async function load(){let out=[];for(let i=0;i<P.length;i+=12){let ch=P.slice(i,i+12),j=await current(ch);j.forEach((v,k)=>out.push({name:ch[k][0],region:ch[k][1],lat:ch[k][2],lon:ch[k][3],dust:+v.current.dust,pm10:+v.current.pm10,aod:+v.current.aerosol_optical_depth}))}D=out.filter(x=>Number.isFinite(x.dust));render()}
-function render(){M.forEach(x=>map.removeLayer(x));M=[];const a=D.filter(x=>x.dust>=50).sort((x,y)=>y.dust-x.dust);count.textContent=a.length;summary.textContent=a.length?`${a.length} sampled location${a.length===1?' is':'s are'} above the elevated-dust screening level.`:'No sampled location is currently above the elevated-dust screening level.';events.innerHTML=a.length?a.slice(0,12).map((x,i)=>`<div class="event" data-i="${i}"><i class="dot" style="background:${C[sev(x.dust)[0]]}"></i><div><strong>${x.name}</strong><br><span>${x.region} · PM₁₀ ${fmt(x.pm10)} µg/m³ · ${sev(x.dust)[1]}</span></div><div class="reading"><b>${fmt(x.dust)}</b><br><span>µg/m³ dust</span></div></div>`).join(''):'<div class="small">No active signal above 50 µg/m³ in the watch network.</div>';document.querySelectorAll('.event').forEach(e=>e.onclick=()=>select(a[+e.dataset.i],true));D.forEach(x=>{if(x.dust<25)return;let s=sev(x.dust)[0],z=Math.max(9,Math.min(24,8+Math.sqrt(x.dust)*.5)),ic=L.divIcon({className:'',html:`<div class="dust-icon" style="width:${z}px;height:${z}px;background:${C[s]};opacity:${x.dust<50?.55:.9}"></div>`,iconSize:[z,z],iconAnchor:[z/2,z/2]});let m=L.marker([x.lat,x.lon],{icon:ic}).addTo(map).bindPopup(`<b>${x.name}</b><br>${fmt(x.dust)} µg/m³ modelled dust`);m.on('click',()=>select(x,false));M.push(m)});let f=F[Math.floor(Date.now()/1800000)%F.length];fact.textContent=f[0];factSource.textContent='Source: '+f[1];if(a[0])select(a[0],false)}
-async function select(x,pan){name.textContent=x.name;region.textContent=x.region;dust.textContent=fmt(x.dust);pm10.textContent=fmt(x.pm10);aod.textContent=fmt(x.aod,2);if(pan)map.setView([x.lat,x.lon],5);note.textContent='Loading 72-hour model outlook…';try{const r=await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${x.lat}&longitude=${x.lon}&hourly=dust&forecast_hours=72&timezone=auto`),j=await r.json(),arr=(j.hourly?.dust||[]).map(Number).filter(Number.isFinite);draw(arr);note.textContent=arr.length?`72-hour model peak: ${Math.round(Math.max(...arr))} µg/m³. Not an official warning.`:'No forecast data returned.'}catch(e){draw([]);note.textContent='Forecast temporarily unavailable.'}}
-function draw(a){if(!a.length){chart.innerHTML='<text x="0" y="20" fill="#6d746f" font-size="11">No forecast data</text>';return}let mx=Math.max(100,...a),pts=a.map((v,i)=>`${8+i*484/(a.length-1)},${82-v*70/mx}`).join(' ');chart.innerHTML=`<polyline points="${pts}" fill="none" stroke="#0c6864" stroke-width="2.5" vector-effect="non-scaling-stroke"/><text x="8" y="12" fill="#6d746f" font-size="10">peak ${Math.round(Math.max(...a))} µg/m³</text>`}
+function render(){M.forEach(x=>map.removeLayer(x));M=[];const a=D.filter(x=>x.dust>=50).sort((x,y)=>y.dust-x.dust);document.getElementById('count').textContent=a.length;document.getElementById('summary').textContent=a.length?`${a.length} sampled location${a.length===1?' is':'s are'} above the elevated-dust screening level.`:'No sampled location is currently above the elevated-dust screening level.';document.getElementById('events').innerHTML=a.length?a.slice(0,12).map((x,i)=>`<div class="event" data-i="${i}"><i class="dot" style="background:${C[sev(x.dust)[0]]}"></i><div><strong>${x.name}</strong><br><span>${x.region} · PM₁₀ ${fmt(x.pm10)} µg/m³ · ${sev(x.dust)[1]}</span></div><div class="reading"><b>${fmt(x.dust)}</b><br><span>µg/m³ dust</span></div></div>`).join(''):'<div class="small">No active signal above 50 µg/m³ in the watch network.</div>';document.querySelectorAll('.event').forEach(e=>e.onclick=()=>select(a[+e.dataset.i],true));D.forEach(x=>{if(x.dust<25)return;let s=sev(x.dust)[0],z=Math.max(8,Math.min(20,7+Math.sqrt(x.dust)*.45)),ic=L.divIcon({className:'',html:`<div class="dust-icon" style="width:${z}px;height:${z}px;background:${C[s]};opacity:${x.dust<50?.48:.86}"></div>`,iconSize:[z,z],iconAnchor:[z/2,z/2]});let m=L.marker([x.lat,x.lon],{icon:ic}).addTo(map).bindPopup(`<b>${x.name}</b><br>${fmt(x.dust)} µg/m³ modelled dust`);m.on('click',()=>select(x,false));M.push(m)});let f=F[Math.floor(Date.now()/1800000)%F.length];document.getElementById('fact').textContent=f[0];document.getElementById('factSource').textContent='Source: '+f[1];if(a[0])select(a[0],false)}
+async function select(x,pan){document.getElementById('name').textContent=x.name;document.getElementById('region').textContent=x.region;document.getElementById('dust').textContent=fmt(x.dust);document.getElementById('pm10').textContent=fmt(x.pm10);document.getElementById('aod').textContent=fmt(x.aod,2);if(pan)map.setView([x.lat,x.lon],5);document.getElementById('note').textContent='Loading 72-hour model outlook…';try{const r=await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${x.lat}&longitude=${x.lon}&hourly=dust&forecast_hours=72&timezone=auto`),j=await r.json(),arr=(j.hourly?.dust||[]).map(Number).filter(Number.isFinite);draw(arr);document.getElementById('note').textContent=arr.length?`72-hour model peak: ${Math.round(Math.max(...arr))} µg/m³. Not an official warning.`:'No forecast data returned.'}catch(e){draw([]);document.getElementById('note').textContent='Forecast temporarily unavailable.'}}
+function draw(a){const ch=document.getElementById('chart');if(!a.length){ch.innerHTML='<text x="0" y="20" fill="#6d746f" font-size="11">No forecast data</text>';return}let mx=Math.max(100,...a),pts=a.map((v,i)=>`${8+i*484/(a.length-1)},${86-v*72/mx}`).join(' ');ch.innerHTML=`<line x1="8" y1="84" x2="492" y2="84" stroke="#d6cec1"/><polyline points="${pts}" fill="none" stroke="#1d6964" stroke-width="2" vector-effect="non-scaling-stroke"/><text x="8" y="12" fill="#6d746f" font-size="10">peak ${Math.round(Math.max(...a))} µg/m³</text>`}
 async function check(name,region,lat,lon){const [j]=await current([[name,region,lat,lon]]),x={name,region,lat,lon,dust:+j.current.dust,pm10:+j.current.pm10,aod:+j.current.aerosol_optical_depth};select(x,true)}
-searchForm.onsubmit=async e=>{e.preventDefault();let q=document.getElementById('q').value.trim();if(!q)return;try{let r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1&language=en&format=json`),j=await r.json(),p=j.results?.[0];if(!p)throw Error();await check(p.name,[p.admin1,p.country].filter(Boolean).join(', '),p.latitude,p.longitude)}catch(e){alert('Could not find or check that place.')}};
-locate.onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>check('Your location','Current device location',p.coords.latitude,p.coords.longitude),()=>alert('Location permission was not available.')):alert('Geolocation is not supported.');
-load().catch(()=>{summary.textContent='Live dust data could not be loaded right now.';events.innerHTML='<div class="small">Data service temporarily unavailable.</div>'});setInterval(()=>load().catch(()=>{}),1800000);
+document.getElementById('searchForm').onsubmit=async e=>{e.preventDefault();let q=document.getElementById('q').value.trim();if(!q)return;try{let r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1&language=en&format=json`),j=await r.json(),p=j.results?.[0];if(!p)throw Error();await check(p.name,[p.admin1,p.country].filter(Boolean).join(', '),p.latitude,p.longitude)}catch(e){alert('Could not find or check that place.')}};
+document.getElementById('locate').onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>check('Your location','Current device location',p.coords.latitude,p.coords.longitude),()=>alert('Location permission was not available.')):alert('Location is not supported in this browser.');
+load().catch(()=>document.getElementById('summary').textContent='Live data is temporarily unavailable.');
+setInterval(()=>load().catch(()=>{}),1800000);
 </script>
-</body></html>
+</body>
+</html>
