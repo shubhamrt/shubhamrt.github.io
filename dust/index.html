@@ -18,10 +18,11 @@
 </header>
 <main>
 <section class="hero">
-  <div class="map-shell">
+  <div class="map-shell" id="mapShell">
     <div class="tools">
       <form class="search" id="searchForm"><input id="q" placeholder="Search a city or place" aria-label="Search a city or place"><button class="btn primary" type="submit">Check dust</button></form>
       <button class="btn" id="locate" type="button">Use my location</button>
+      <button class="btn" id="mapExpand" type="button" aria-expanded="false">Expand map</button>
     </div>
     <div id="map"></div>
     <div class="legend">
