@@ -65,3 +65,23 @@ window.addPathwayLayers = function(p, selected=false){
   corridor.on('click',()=>select(p.x,true));
   pathwayLayers.set(key(p.x),layers);
 };
+
+/* Full-page map exploration mode. Keeps controls and legend visible. */
+(function(){
+  const shell=document.getElementById('mapShell');
+  const button=document.getElementById('mapExpand');
+  if(!shell||!button)return;
+
+  function setExpanded(expanded){
+    shell.classList.toggle('map-expanded',expanded);
+    document.body.classList.toggle('map-expanded-lock',expanded);
+    button.textContent=expanded?'Exit map':'Expand map';
+    button.setAttribute('aria-expanded',String(expanded));
+    requestAnimationFrame(()=>setTimeout(()=>map.invalidateSize({pan:false}),60));
+  }
+
+  button.addEventListener('click',()=>setExpanded(!shell.classList.contains('map-expanded')));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&shell.classList.contains('map-expanded'))setExpanded(false);
+  });
+})();
