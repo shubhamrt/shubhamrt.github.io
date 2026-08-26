@@ -5,46 +5,65 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f7f7f4">
 <title>DustWatch</title>
-<meta name="description" content="Live model-based dust tracking with first-pass source attribution using wind, surface dryness and MODIS NDVI.">
+<meta name="description" content="Live model-based dust tracking with data-driven dust source pathways using atmospheric winds, surface dryness, vegetation and active dust hotspots.">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="/dustwatch.css">
 </head>
 <body>
 <div class="page">
-<header class="mast"><div class="brand"><h1>DustWatch</h1><p>Live model-based dust conditions with a first-pass estimate of where active dust may be coming from.</p></div><div class="status"><i></i>Live screening<br>CAMS + ECMWF + MODIS · 30 min refresh</div></header>
+<header class="mast">
+  <div class="brand"><h1>DustWatch</h1><p>Live model-based dust conditions with inferred upwind source pathways for active dust signals.</p></div>
+  <div class="status"><i></i>Live screening<br>CAMS + ECMWF + MODIS · 30 min refresh</div>
+</header>
 <main>
 <section class="hero">
-<div class="map-shell">
-<div class="tools"><form class="search" id="searchForm"><input id="q" placeholder="Search a city or place" aria-label="Search a city or place"><button class="btn primary" type="submit">Check dust</button></form><button class="btn" id="locate" type="button">Use my location</button></div>
-<div id="map"></div>
-<div class="legend"><span><i class="dot" style="background:#b98b57"></i>Elevated 50–99</span><span><i class="dot" style="background:#b96a43"></i>High 100–249</span><span><i class="dot" style="background:#934b3b"></i>Severe 250–499</span><span><i class="dot" style="background:#71372e"></i>Extreme ≥500 µg/m³</span></div>
-</div>
-<aside class="side">
-<section><p class="label">Current watch</p><div class="sage-rule"></div><div class="count" id="count">—</div><div class="small" id="summary">Scanning major global dust regions…</div></section>
-<section><p class="label">Current event</p><div class="sage-rule"></div><p class="event-text" id="story">Select an active dust signal to see what is happening now.</p><div class="event-source" id="storySource">Built from current modelled dust and weather conditions.</div></section>
-<section><p class="label">Source estimate</p><div class="small">The map highlights the strongest candidate source zone along an 18-hour surface-wind backtrace. This is a screening estimate, not an official trajectory or warning product.</div></section>
-</aside>
+  <div class="map-shell">
+    <div class="tools">
+      <form class="search" id="searchForm"><input id="q" placeholder="Search a city or place" aria-label="Search a city or place"><button class="btn primary" type="submit">Check dust</button></form>
+      <button class="btn" id="locate" type="button">Use my location</button>
+    </div>
+    <div id="map"></div>
+    <div class="legend">
+      <span><i class="dot" style="background:#b98b57"></i>Elevated 50–99</span>
+      <span><i class="dot" style="background:#b96a43"></i>High 100–249</span>
+      <span><i class="dot" style="background:#934b3b"></i>Severe 250–499</span>
+      <span><i class="dot" style="background:#71372e"></i>Extreme ≥500 µg/m³</span>
+      <span class="path-key"><i></i>Dust pathway</span>
+      <span class="source-key"><i></i>Source-favorable section</span>
+    </div>
+  </div>
+  <aside class="side">
+    <section><p class="label">Current watch</p><div class="sage-rule"></div><div class="count" id="count">—</div><div class="small" id="summary">Scanning major global dust regions…</div></section>
+    <section><p class="label">Current event</p><div class="sage-rule"></div><p class="event-text" id="story">Source pathways will appear automatically for the strongest active dust signals.</p><div class="event-source" id="storySource">Built from current dust, winds and upwind surface conditions.</div></section>
+    <section><p class="label">How source pathways are identified</p><div class="small method-copy">Each pathway is traced backward for 24 hours in 3-hour steps. ECMWF 10 m winds represent near-surface transport and 850 hPa winds represent elevated transport. Upwind sections are ranked using surface wind strength, topsoil dryness, MODIS NDVI and support from other active dust hotspots along the corridor. The first 6 hours are treated mainly as transport so the receptor is not automatically labelled as its own source.</div></section>
+  </aside>
 </section>
 <section class="lower">
-<div class="section"><div class="section-head"><div><p class="label">Active signals</p><h2>Modelled dust events</h2></div></div><div id="events"><div class="small">Loading current conditions…</div></div></div>
-<div class="section"><p class="label">Selected event</p><h2 id="name">Select a location</h2><div class="small" id="region">Click an event marker or search for a place.</div><div class="metrics"><div class="metric"><b id="dust">—</b><span>dust µg/m³</span></div><div class="metric"><b id="pm10">—</b><span>PM₁₀ µg/m³</span></div><div class="metric"><b id="aod">—</b><span>AOD 550 nm</span></div></div><p class="label" style="margin-top:15px">72-hour outlook</p><svg id="chart" viewBox="0 0 500 95" preserveAspectRatio="none"></svg><div class="small" id="note">Forecast appears here after selecting a location.</div>
-<div class="source"><p class="label">Likely source</p><h3 id="sourceTitle">Source estimate appears here</h3><div class="small" id="sourceText">The tracker will trace recent surface winds backward and look for dry, sparsely vegetated upwind terrain.</div><div class="source-grid"><div><b id="sourceDistance">—</b><span>upwind distance</span></div><div><b id="sourceWind">—</b><span>wind speed</span></div><div><b id="sourceNdvi">—</b><span>NDVI</span></div><div><b id="sourceSoil">—</b><span>topsoil moisture</span></div></div><span class="confidence" id="sourceConfidence">not calculated</span>
-<div class="ecology"><p class="label">Source ecology / land surface</p><h3 id="sourceEcology">Ecology estimate appears here</h3><div class="small" id="sourceEcologyText">This description is inferred from current greenness and surface moisture, not from a categorical land-cover map.</div></div></div>
-</div>
-</section>
-<section class="methodology">
-<p class="label">How source identification works</p>
-<h2>From dust signal to likely source</h2>
-<div class="method-grid">
-<div><b>1 · Backtrace</b><span>Starting at the selected dust event, the tracker steps backward every 3 hours for 18 hours using ECMWF 10 m wind speed and direction.</span></div>
-<div><b>2 · Surface screening</b><span>Each upwind point is sampled for shallow soil moisture and MODIS NDVI. Sparse vegetation and dry surface conditions increase source plausibility.</span></div>
-<div><b>3 · Source score</b><span>The present screening score weights wind strength 48%, low vegetation 28% and surface dryness 24%. These weights are heuristic and not yet calibrated.</span></div>
-<div><b>4 · Ecology interpretation</b><span>NDVI and soil moisture are translated into a simple dryland surface description such as bare desert, semi-desert or sparse steppe. It is an ecological inference, not a formal land-cover classification.</span></div>
-</div>
-<div class="method-note">The highlighted source circle is an uncertainty zone, not a mapped emission footprint. Dust transported above the surface can follow winds that differ from 10 m winds, so this first version should be interpreted as source screening rather than definitive attribution.</div>
+  <div class="section">
+    <div class="section-head"><div><p class="label">Active signals</p><h2>Modelled dust events</h2></div><div class="small">Pathways shown automatically for strongest signals</div></div>
+    <div id="events"><div class="small">Loading current conditions…</div></div>
+  </div>
+  <div class="section">
+    <p class="label">Selected event</p><h2 id="name">Select a location</h2><div class="small" id="region">Click an event, marker or pathway.</div>
+    <div class="metrics"><div class="metric"><b id="dust">—</b><span>dust µg/m³</span></div><div class="metric"><b id="pm10">—</b><span>PM₁₀ µg/m³</span></div><div class="metric"><b id="aod">—</b><span>AOD 550 nm</span></div></div>
+    <p class="label" style="margin-top:15px">72-hour outlook</p><svg id="chart" viewBox="0 0 500 95" preserveAspectRatio="none"></svg><div class="small" id="note">Forecast appears here after selecting a location.</div>
+    <div class="source">
+      <p class="label">Dust source pathway</p><h3 id="sourceTitle">Pathway diagnostics appear here</h3><div class="small" id="sourceText">The tracker will identify source-favorable sections along the upwind transport corridor rather than assigning a single source point.</div>
+      <div class="source-grid">
+        <div><b id="sourceDistance">—</b><span>source range</span></div>
+        <div><b id="sourceWindow">—</b><span>travel window</span></div>
+        <div><b id="sourceWind">—</b><span>surface wind</span></div>
+        <div><b id="sourceNdvi">—</b><span>median NDVI</span></div>
+        <div><b id="sourceMoist">—</b><span>topsoil moisture</span></div>
+        <div><b id="sourceHotspots">—</b><span>hotspot support</span></div>
+      </div>
+      <div class="ecology"><p class="label">Source ecology / land surface</p><h4 id="sourceLand">—</h4><div class="small" id="sourceEcology">This is an ecological surface inference from NDVI and topsoil moisture, not a formal land-cover classification.</div></div>
+      <span class="confidence" id="sourceConfidence">not calculated</span>
+    </div>
+  </div>
 </section>
 </main>
-<footer class="footer"><div>Dust: CAMS via Open-Meteo. Wind and soil moisture: ECMWF/Open-Meteo. NDVI used internally for source screening: NASA GIBS MODIS Terra rolling 8-day NDVI. Map © OpenStreetMap contributors.</div><div><a href="https://shubhamrt.github.io/">Main website</a></div></footer>
+<footer class="footer"><div>Dust: CAMS via Open-Meteo. Winds and soil moisture: ECMWF/Open-Meteo. Vegetation signal: NASA MODIS NDVI. Source pathways are screening estimates, not formal atmospheric back-trajectories. Map © OpenStreetMap contributors.</div><div><a href="https://shubhamrt.github.io/">Main website</a></div></footer>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="/dustwatch.js"></script>
