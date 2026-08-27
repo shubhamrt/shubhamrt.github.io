@@ -1,43 +1,112 @@
 # Mongolia Rangeland Watch
 
-Research prototype for transparent grazing decision support in Mongolia.
+Version 0.2 research prototype for transparent grazing decision support in Mongolia.
 
-## Current evidence layers
+## What the model returns
 
-- **Sentinel-2 L2A** (Microsoft Planetary Computer): point-scale B04/B08 surface reflectance and Scene Classification Layer (SCL) for current NDVI screening.
-- **Same-season local baseline:** valid Sentinel-2 observations from approximately the same calendar period in up to five previous years. A relative vegetation class is only shown when at least three prior years are available.
-- **NASA GIBS MODIS Terra 8-day NDVI:** national visualization context only. It is explicitly not treated as a grazing recommendation.
-- **Open-Meteo:** recent precipitation, reference evapotranspiration and modelled near-surface soil moisture. These variables are labelled as model/analysis fields rather than satellite observations.
-- **Mongolia recovery classes I–V:** can be supplied by the user when known and are treated as an ecological constraint that can override temporary greenness.
+Every successful point assessment returns one explicit provisional recommendation:
 
-## Current decision rules
+- **GRAZE**
+- **GRAZE CAUTIOUSLY**
+- **DO NOT GRAZE / REST**
 
-The site separates two questions:
+The recommendation is ecological decision support, not a legal closure and not a stocking-rate authorization.
 
-1. **What is the vegetation signal now relative to this location's recent same-season history?**
-2. **Does ecological recovery status permit routine grazing?**
+## Evidence layers and native resolution
 
-A positive NDVI anomaly never overrides a severe recovery class. If recovery status is unknown, the prototype provides satellite screening rather than a definitive grazing authorization.
+- **Sentinel-2 L2A (~10 m):** B04/B08 surface reflectance and Scene Classification Layer for current NDVI.
+- **Same-season Sentinel-2 history (~10 m):** up to five prior years around the same calendar period. Three valid prior years are required for the full anomaly classification.
+- **Copernicus DEM GLO-30 (~30 m):** local elevation and slope estimated from neighbouring DEM samples.
+- **SoilGrids (~250 m):** 0–5 cm sand, silt, clay and soil organic carbon. USDA surface texture is derived from these fractions.
+- **Open-Meteo:** recent precipitation, reference evapotranspiration, modelled near-surface soil moisture and recent wind gust context.
+- **Mongolia recovery classes I–V:** optional field/official constraint. Classes IV–V are hard rest/restoration constraints in the current model.
+- **NASA GIBS MODIS Terra 8-day NDVI:** national visualization context only, not a decision input.
 
-The application does **not** create legal closures. A future authoritative government closure layer should be represented separately from ecological recommendations.
+The model does not resample a 250 m soil prediction to 10 m and claim 10 m soil knowledge. A soil-informed point decision therefore has an effective soil-information scale of about 250 m even though vegetation and terrain evidence are finer.
 
-## What is intentionally not implemented yet
+## Soil erodibility
 
-- Livestock carrying capacity or animal-unit-day estimates from NDVI alone.
-- Automatic legal grazing bans.
-- A national recovery-class raster inferred from satellite data.
-- Unvalidated biomass conversion coefficients.
+Surface sand, silt, clay and organic carbon are used to estimate the EPIC / Sharpley–Williams soil-erodibility term. SoilGrids mapped units are converted to conventional percentages before the calculation.
+
+This K estimate is used as a **relative erodibility input**, not to claim an absolute annual soil-loss rate.
+
+## Erosion screens
+
+Two pathway-specific screens are kept separate.
+
+### Water-erosion susceptibility
+
+Combines:
+
+- local slope from Copernicus DEM
+- estimated soil erodibility K
+- current vegetation-protection proxy from Sentinel-2 NDVI
+
+The present index is a screening formulation, not a full RUSLE calculation. Rainfall erosivity, slope length, support practices and runoff connectivity are not yet resolved sufficiently for an absolute erosion-rate prediction.
+
+### Aeolian-exposure susceptibility
+
+Combines:
+
+- surface sand/silt/clay composition
+- current vegetation-protection proxy
+- recent wind-gust context
+
+This is not a replacement for AERO or WEPS and does not calculate horizontal mass flux. It is intended to identify locations where additional loss of protective cover is comparatively risky.
+
+## Grazing decision index
+
+The current v0.2 decision combines four blocks:
+
+- vegetation stress: 38%
+- dominant erosion susceptibility: 37%
+- recovery-class constraint: 17%
+- dry-surface / moisture context: 8%
+
+Hard constraints can override the weighted score, including Recovery Class IV–V and combinations of very high erosion susceptibility with vegetation stress.
+
+Current screening thresholds are:
+
+- **< 0.42:** GRAZE
+- **0.42–0.67:** GRAZE CAUTIOUSLY
+- **>= 0.67:** DO NOT GRAZE / REST
+
+These thresholds are deliberately published here because they are model assumptions, not established Mongolian management standards. They must be calibrated and revised with field outcome data before operational use.
+
+## Confidence
+
+Confidence is reduced when one or more of the following are unavailable or weak:
+
+- usable current Sentinel-2 observation
+- at least three same-season historical observations
+- terrain estimate
+- SoilGrids soil data
+- environmental context
+- supplied recovery class
+
+If recovery class is unknown, confidence cannot exceed Moderate in v0.2.
+
+## What is still intentionally not implemented
+
+- livestock carrying capacity or animal-unit-day estimates from NDVI alone
+- automatic legal grazing bans
+- a recovery-class raster inferred from satellite data
+- unvalidated biomass conversions
+- absolute RUSLE soil-loss estimates
+- AERO/WEPS wind erosion flux estimates without the required surface-state inputs
 
 ## Validation priorities before operational use
 
-1. Connect official spatial recovery-class / ecological-site information from Mongolia's national monitoring system.
+1. Connect the official spatial recovery-class / ecological-site layer from Mongolia's national monitoring system.
 2. Connect authoritative temporary and permanent grazing restrictions.
-3. Calibrate satellite vegetation metrics to field-measured usable forage by ecological site, season and year.
-4. Replace single-pixel NDVI with a robust local neighborhood statistic and quantify spatial uncertainty.
-5. Validate recommendations retrospectively against NAMEM/GALAGC field observations and prospectively with herders and local rangeland specialists.
-6. Add livestock class, herd size, water access, distance and seasonal-use constraints only after the forage-demand and utilization assumptions are agreed and documented.
-7. Publish model version, thresholds, validation data and uncertainty for every operational release.
+3. Calibrate Sentinel-2 vegetation metrics to field-measured usable forage by ecological site, season and year.
+4. Validate slope and erosion screens against observed erosion, bare-ground and soil-stability measurements.
+5. Replace single-pixel vegetation sampling with a robust neighbourhood statistic and quantify spatial uncertainty.
+6. Validate GRAZE / CAUTIOUS / REST outcomes retrospectively against NAMEM/GALAGC observations and prospectively with herders and local rangeland specialists.
+7. Add herd composition, animal-unit demand, water access and allowable utilization only after forage calibration is defensible.
+8. Evaluate whether national or local Mongolian soil maps can improve on the current 250 m global soil layer.
+9. Publish validation statistics, confusion matrices, threshold sensitivity and model version for every operational release.
 
 ## Status
 
-Version 0.1 is a **research screening prototype**, not an operational regulatory tool.
+Version 0.2 is an **experimental grazing recommendation model**. It is designed to make every assumption visible and testable rather than to present an unvalidated score as authoritative management advice.
