@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Mongolia Rangeland Watch: an evidence-based grazing decision-support research prototype using satellite and environmental data.">
+<title>Mongolia Rangeland Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+:root{
+  --green:#2c7873;--green-dark:#1f5f5b;--green-pale:#eaf3f1;--ink:#18231f;--muted:#607069;
+  --cream:#f6f7f2;--line:#dfe5e1;--white:#fff;--sand:#d7c8a3;--amber:#a56a2a;--red:#9d463c;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--max:1320px
+}
+*{box-sizing:border-box}html,body{margin:0;padding:0}body{font-family:var(--sans);color:var(--ink);background:#fff;line-height:1.55}a{color:inherit}
+.topbar{border-bottom:1px solid var(--line);background:rgba(255,255,255,.96)}
+.nav{max-width:var(--max);margin:auto;padding:16px 26px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{font-weight:700;letter-spacing:-.02em;text-decoration:none}.brand span{color:var(--green)}
+.navright{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted)}.navright a{text-decoration:none;border-bottom:1px solid var(--line)}
+.hero{max-width:var(--max);margin:auto;padding:42px 26px 24px;display:grid;grid-template-columns:1.2fr .8fr;gap:42px;align-items:end}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:10px}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(44px,6vw,76px);line-height:.95;letter-spacing:-.025em;margin:0;max-width:800px}
+.hero p{color:var(--muted);font-size:15px;max-width:58ch;margin:16px 0 0}.hero-note{border-left:2px solid var(--green);padding-left:18px;color:var(--muted);font-size:13px;line-height:1.65}
+.hero-note strong{display:block;color:var(--ink);font-size:12px;margin-bottom:4px}
+.workspace{max-width:var(--max);margin:auto;padding:12px 26px 48px;display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:20px}
+.mapwrap{position:relative;border:1px solid var(--line);background:var(--cream);min-height:690px;overflow:hidden}.map{height:690px;width:100%}
+.mapbadge{position:absolute;z-index:500;left:14px;top:14px;background:rgba(255,255,255,.94);border:1px solid var(--line);padding:9px 12px;font-size:11px;line-height:1.35;max-width:250px}.mapbadge strong{display:block;font-size:12px;color:var(--ink)}
+.legendnote{position:absolute;z-index:500;left:14px;bottom:14px;background:rgba(255,255,255,.94);border:1px solid var(--line);padding:9px 11px;font-size:10px;color:var(--muted);max-width:270px}
+.panel{border:1px solid var(--line);padding:20px;background:#fff;min-width:0}.panel h2{font-family:var(--serif);font-size:28px;font-weight:500;margin:0 0 4px}.small{font-size:11px;color:var(--muted)}
+.statusline{display:flex;gap:8px;align-items:center;margin:14px 0 16px}.dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.controls{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px}.controls input,.selectrow select{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:0;padding:10px 11px;background:#fff;color:var(--ink);min-width:0}.controls button,.primary,.ghost{font:inherit;font-size:12px;font-weight:700;border:0;padding:10px 13px;cursor:pointer}.controls button,.primary{background:var(--green);color:#fff}.ghost{background:var(--cream);color:var(--ink);border:1px solid var(--line)}button:disabled{opacity:.45;cursor:not-allowed}.hint{font-size:11px;color:var(--muted);margin-bottom:16px}
+.result{border-top:1px solid var(--line);padding-top:16px;margin-top:12px}.result-empty{color:var(--muted);font-size:13px;padding:20px 0}
+.verdict{padding:14px 15px;border-left:4px solid var(--green);background:var(--green-pale);margin-bottom:14px}.verdict.orange{border-color:var(--amber);background:#faf3e8}.verdict.red{border-color:var(--red);background:#faefed}.verdict.gray{border-color:#8b9490;background:#f3f5f4}.verdict-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted)}.verdict-title{font-family:var(--serif);font-size:25px;line-height:1.05;margin:4px 0 6px}.verdict-text{font-size:12px;color:var(--muted)}
+.metrics{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-left:1px solid var(--line);margin:12px 0}.metric{padding:11px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}.metric-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.metric-value{font-size:18px;font-weight:600;margin-top:2px}.metric-sub{font-size:10px;color:var(--muted);overflow-wrap:anywhere}
+.selectrow{margin:13px 0}.selectrow label{display:block;font-size:11px;font-weight:700;margin-bottom:5px}.selectrow select{width:100%}.callout{font-size:11px;line-height:1.55;background:var(--cream);padding:11px 12px;color:var(--muted);margin-top:10px}.callout strong{color:var(--ink)}
+.progress{height:2px;background:var(--line);overflow:hidden;margin:8px 0 14px}.progress i{display:block;height:100%;width:0;background:var(--green);transition:width .25s}
+.method{max-width:var(--max);margin:auto;padding:0 26px 70px;display:grid;grid-template-columns:.75fr 1.25fr;gap:42px;border-top:1px solid var(--line)}.method h3{font-family:var(--serif);font-size:35px;font-weight:500;margin:32px 0 8px}.method p,.method li{font-size:13px;color:var(--muted)}.method ol{margin:32px 0 0;padding-left:20px}.method li{margin-bottom:12px}.sources{margin-top:30px;display:grid;gap:10px}.source{padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}.source a{color:var(--green);font-weight:600;text-decoration:none}.tag{display:inline-block;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);padding:3px 6px;margin-right:5px;color:var(--muted)}
+footer{background:var(--cream);border-top:1px solid var(--line);padding:22px 26px;font-size:11px;color:var(--muted)}footer .inner{max-width:var(--max);margin:auto;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.loading{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:6px}@keyframes spin{to{transform:rotate(360deg)}}
+.leaflet-container{font-family:var(--sans)}.leaflet-control-layers{border-radius:0!important;box-shadow:none!important;border:1px solid var(--line)}
+@media(max-width:980px){.workspace{grid-template-columns:1fr}.mapwrap,.map{min-height:560px;height:560px}.hero{grid-template-columns:1fr}.method{grid-template-columns:1fr}.panel{order:-1}}
+@media(max-width:620px){.nav{padding:14px 16px}.navright span{display:none}.hero{padding:30px 16px 16px}.workspace{padding:8px 16px 36px}.panel{padding:16px}.mapwrap,.map{min-height:480px;height:480px}.method{padding:0 16px 55px;gap:8px}.metrics{grid-template-columns:1fr 1fr}.controls{grid-template-columns:1fr}.controls button{width:100%}h1{font-size:48px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <nav class="nav">
+    <a class="brand" href="../">Shubham Tiwari <span>/ Rangelands</span></a>
+    <div class="navright"><span>Research prototype · Mongolia</span><a href="#method">Method & sources</a></div>
+  </nav>
+</header>
+<section class="hero">
+  <div>
+    <div class="eyebrow">Mongolia Rangeland Watch</div>
+    <h1>Evidence before grazing.</h1>
+    <p>A research prototype combining current satellite vegetation observations with recent moisture conditions and Mongolia’s recovery-class framework to support more transparent rangeland decisions.</p>
+  </div>
+  <div class="hero-note"><strong>What this site does not do</strong>It does not create legal grazing bans and it does not infer carrying capacity from NDVI alone. Official closures must come from competent Mongolian authorities. Stocking-rate estimates will only be added after a validated biomass calibration is available.</div>
+</section>
+<main class="workspace">
+  <section class="mapwrap" aria-label="Interactive Mongolia rangeland map">
+    <div id="map" class="map"></div>
+    <div class="mapbadge"><strong>Click anywhere in Mongolia</strong>Satellite and environmental evidence will be requested live for that point.</div>
+    <div class="legendnote">National overlay: latest available NASA MODIS Terra 8-day NDVI. This is a vegetation layer, <strong>not</strong> a grazing recommendation.</div>
+  </section>
+  <aside class="panel">
+    <h2>Point assessment</h2>
+    <div class="statusline"><span class="dot"></span><span class="small" id="freshness">Data are fetched live when you assess a point.</span></div>
+    <div class="controls">
+      <input id="coords" type="text" inputmode="decimal" placeholder="47.20, 106.80" aria-label="Latitude and longitude">
+      <button id="assessBtn" type="button">Assess</button>
+    </div>
+    <button id="locateBtn" class="ghost" type="button">Use my location</button>
+    <div class="hint">Format: latitude, longitude. Or click the map. Location is processed in your browser and is not stored by this site.</div>
+    <div class="selectrow">
+      <label for="recoveryClass">Official / field recovery class, if known</label>
+      <select id="recoveryClass">
+        <option value="unknown">Unknown — satellite screening only</option>
+        <option value="I">Class I</option><option value="II">Class II</option><option value="III">Class III</option><option value="IV">Class IV</option><option value="V">Class V</option>
+      </select>
+    </div>
+    <div class="progress"><i id="progressBar"></i></div>
+    <div id="result" class="result"><div class="result-empty">Select a point to begin. The site will look for a valid recent Sentinel-2 observation, compare it with the same season in previous years and add recent rainfall and soil-moisture context.</div></div>
+  </aside>
+</main>
+<section id="method" class="method">
+  <div>
+    <h3>Decision logic</h3>
+    <p>The prototype separates <strong>current forage signal</strong> from <strong>ecological recovery need</strong>. That prevents a temporarily green but degraded pasture from automatically being labelled suitable for grazing.</p>
+    <div class="sources">
+      <div class="source"><span class="tag">Satellite</span><a href="https://planetarycomputer.microsoft.com/dataset/sentinel-2-l2a" target="_blank" rel="noopener">Sentinel-2 L2A · Microsoft Planetary Computer</a></div>
+      <div class="source"><span class="tag">National view</span><a href="https://nasa-gibs.github.io/gibs-api-docs/" target="_blank" rel="noopener">NASA GIBS · MODIS Terra NDVI</a></div>
+      <div class="source"><span class="tag">Weather</span><a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener">Open-Meteo forecast / land-surface fields</a></div>
+      <div class="source"><span class="tag">Mongolia</span><a href="https://gazar.gov.mn/pastureland-national-report" target="_blank" rel="noopener">2026 National Rangeland Report · GALAGC</a></div>
+      <div class="source"><span class="tag">Existing DSS</span><a href="https://dss-mongolia.org/" target="_blank" rel="noopener">MOFALI Fodder Decision Support System</a></div>
+    </div>
+  </div>
+  <ol>
+    <li><strong>Find the newest usable Sentinel-2 scene.</strong> Cloud, snow, water and shadow pixels are rejected using the Sentinel-2 Scene Classification Layer.</li>
+    <li><strong>Calculate local NDVI.</strong> Red and near-infrared surface reflectance are sampled at the selected point. Reflectance scaling is applied by the data service.</li>
+    <li><strong>Compare like with like.</strong> The current NDVI is compared with valid observations from approximately the same time of year over up to five previous years. This is more meaningful across Mongolia than one national NDVI threshold.</li>
+    <li><strong>Add current environmental context.</strong> Recent precipitation, reference evapotranspiration and modelled near-surface soil moisture are reported, but are not presented as satellite measurements.</li>
+    <li><strong>Apply the recovery constraint.</strong> If a recovery class is known, it takes priority over temporary greenness. Class IV–V areas are treated as restoration/rest priorities; classes II–III trigger progressively more conservative grazing advice.</li>
+    <li><strong>Keep legal status separate.</strong> A future official closure layer can override all ecological screening. Until an authoritative closure feed is connected, the site never labels a location “legally closed.”</li>
+  </ol>
+</section>
+<footer><div class="inner"><span>Mongolia Rangeland Watch · experimental decision-support prototype</span><span>Built for transparent, evidence-based rangeland management · <a href="../">shubhamrt.github.io</a></span></div></footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(() => {
+  'use strict';
+  const MNG_BOUNDS = L.latLngBounds([41.45, 87.65], [52.18, 119.95]);
+  const map = L.map('map', {zoomControl:true, minZoom:3, maxZoom:16}).setView([46.9, 103.8], 5);
+  const base = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+  const modis = L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_NDVI_8Day/default//GoogleMapsCompatible_Level9/{z}/{y}/{x}.png', {
+    maxNativeZoom:9, maxZoom:16, opacity:.48, attribution:'NASA GIBS / MODIS Terra'
+  }).addTo(map);
+  const layers = L.control.layers({'OpenStreetMap':base},{'Latest MODIS 8-day NDVI':modis},{collapsed:true}).addTo(map);
+  map.fitBounds(MNG_BOUNDS.pad(-0.02));
+
+  const el = id => document.getElementById(id);
+  const coords = el('coords'), btn = el('assessBtn'), locateBtn = el('locateBtn'), result = el('result'), rc = el('recoveryClass'), progress = el('progressBar'), freshness = el('freshness');
+  let marker = null, sentinelLayer = null, lastAssessment = null;
+
+  const setProgress = n => progress.style.width = Math.max(0,Math.min(100,n)) + '%';
+  const iso = d => d.toISOString().slice(0,10);
+  const addDays = (date,n) => { const d=new Date(date); d.setUTCDate(d.getUTCDate()+n); return d; };
+  const median = arr => { const a=[...arr].sort((x,y)=>x-y); if(!a.length)return null; const m=Math.floor(a.length/2); return a.length%2?a[m]:(a[m-1]+a[m])/2; };
+  const fmt = (v,d=2) => Number.isFinite(v) ? v.toFixed(d) : '—';
+  const escapeHtml = s => String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const insideMongoliaBox = (lat,lon) => lat>=41.45&&lat<=52.18&&lon>=87.65&&lon<=119.95;
+
+  async function fetchJSON(url, timeout=18000){
+    const controller = new AbortController(); const timer=setTimeout(()=>controller.abort(),timeout);
+    try{ const r=await fetch(url,{signal:controller.signal,headers:{'Accept':'application/json'}}); if(!r.ok) throw new Error('HTTP '+r.status); return await r.json(); }
+    finally{ clearTimeout(timer); }
+  }
+
+  function stacURL(lat,lon,start,end,cloud=65,limit=10){
+    const q=new URLSearchParams();
+    q.set('collections','sentinel-2-l2a');
+    q.set('bbox',[lon-.006,lat-.006,lon+.006,lat+.006].join(','));
+    q.set('datetime',start+'T00:00:00Z/'+end+'T23:59:59Z');
+    q.set('limit',String(limit)); q.set('sortby','-datetime');
+    q.set('query',JSON.stringify({'eo:cloud_cover':{'lt':cloud}}));
+    return 'https://planetarycomputer.microsoft.com/api/stac/v1/search?'+q.toString();
+  }
+
+  async function sampleItem(item,lat,lon){
+    const q=new URLSearchParams(); q.set('collection','sentinel-2-l2a'); q.set('item',item.id);
+    q.append('assets','B04'); q.append('assets','B08'); q.append('assets','SCL'); q.set('unscale','true'); q.set('resampling','nearest');
+    const url=`https://planetarycomputer.microsoft.com/api/data/v1/item/point/${lon},${lat}?${q.toString()}`;
+    const data=await fetchJSON(url,20000);
+    const names=(data.band_names||[]).map(x=>String(x)); const vals=data.values||[];
+    const findVal = key => { const i=names.findIndex(n=>n.toUpperCase().includes(key)); return i>=0?Number(vals[i]):null; };
+    const red=findVal('B04') ?? Number(vals[0]); const nir=findVal('B08') ?? Number(vals[1]); const scl=findVal('SCL') ?? Number(vals[2]);
+    if(!Number.isFinite(red)||!Number.isFinite(nir)||nir+red===0) throw new Error('Reflectance unavailable');
+    const ndvi=(nir-red)/(nir+red);
+    const good=[4,5].includes(Math.round(scl));
+    const marginal=[2,7].includes(Math.round(scl));
+    return {ndvi, red, nir, scl:Math.round(scl), good, marginal, item, date:(item.properties?.datetime||'').slice(0,10), cloud:Number(item.properties?.['eo:cloud_cover'])};
+  }
+
+  async function findValidObservation(lat,lon,start,end,cloud=65,limit=10,maxTry=5){
+    const search=await fetchJSON(stacURL(lat,lon,start,end,cloud,limit),20000);
+    const items=search.features||[];
+    for(const item of items.slice(0,maxTry)){
+      try{ const s=await sampleItem(item,lat,lon); if(s.good) return s; }
+      catch(e){}
+    }
+    for(const item of items.slice(0,maxTry)){
+      try{ const s=await sampleItem(item,lat,lon); if(s.marginal) return {...s, qualityNote:'Scene classification is uncertain at this pixel.'}; }
+      catch(e){}
+    }
+    return null;
+  }
+
+  async function seasonalBaseline(lat,lon,targetDate){
+    const vals=[]; const years=[]; const currentYear=targetDate.getUTCFullYear();
+    for(let y=currentYear-1;y>=currentYear-5;y--){
+      const center=new Date(Date.UTC(y,targetDate.getUTCMonth(),targetDate.getUTCDate()));
+      const start=iso(addDays(center,-20)), end=iso(addDays(center,20));
+      try{
+        const obs=await findValidObservation(lat,lon,start,end,55,8,4);
+        if(obs && Number.isFinite(obs.ndvi)){ vals.push(obs.ndvi); years.push({year:y,ndvi:obs.ndvi,date:obs.date}); }
+      }catch(e){}
+      setProgress(34 + (currentYear-y)*7);
+    }
+    return {values:vals, details:years, median:median(vals)};
+  }
+
+  async function weatherContext(lat,lon){
+    const q=new URLSearchParams({
+      latitude:String(lat), longitude:String(lon), timezone:'Asia/Ulaanbaatar', past_days:'30', forecast_days:'7',
+      current:'temperature_2m,soil_moisture_0_to_1cm,soil_moisture_3_to_9cm',
+      daily:'precipitation_sum,et0_fao_evapotranspiration'
+    });
+    const w=await fetchJSON('https://api.open-meteo.com/v1/forecast?'+q.toString(),16000);
+    const times=w.daily?.time||[], rain=w.daily?.precipitation_sum||[], et0=w.daily?.et0_fao_evapotranspiration||[];
+    const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ulaanbaatar',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+    const pastIdx=times.map((t,i)=>t<=today?i:-1).filter(i=>i>=0);
+    const last30=pastIdx.slice(-30), last14=pastIdx.slice(-14);
+    const sum=(a,idxs)=>idxs.reduce((s,i)=>s+(Number(a[i])||0),0);
+    return {rain30:sum(rain,last30),rain14:sum(rain,last14),et030:sum(et0,last30),soil1:Number(w.current?.soil_moisture_0_to_1cm),soil9:Number(w.current?.soil_moisture_3_to_9cm),temp:Number(w.current?.temperature_2m),updated:w.current?.time||null};
+  }
+
+  function satelliteClass(current, base){
+    if(!current || !Number.isFinite(current.ndvi)) return {key:'gray',title:'No usable satellite decision',text:'A recent cloud/snow-free vegetation observation could not be verified.'};
+    if(!base || base.values.length<3 || !Number.isFinite(base.median)) return {key:'gray',title:'Current vegetation observed',text:'A seasonal baseline could not be built from at least three previous years, so the site will not assign a relative vegetation class.'};
+    const rank=100*base.values.filter(v=>v<=current.ndvi).length/base.values.length;
+    const ratio=base.median===0?null:current.ndvi/base.median;
+    if(rank<=20 || (Number.isFinite(ratio)&&ratio<.72)) return {key:'red',title:'Well below seasonal baseline',text:'The current green-vegetation signal is unusually low for this location and time of year.',rank,ratio};
+    if(rank<=40 || (Number.isFinite(ratio)&&ratio<.9)) return {key:'orange',title:'Below seasonal baseline',text:'Current greenness is lower than the recent same-season history at this point.',rank,ratio};
+    if(rank>=80 || (Number.isFinite(ratio)&&ratio>1.12)) return {key:'green',title:'Above seasonal baseline',text:'Current greenness is higher than most same-season observations sampled from previous years.',rank,ratio};
+    return {key:'green',title:'Near seasonal baseline',text:'Current greenness is within the recent same-season range for this location.',rank,ratio};
+  }
+
+  function managementAdvice(sat,recovery){
+    if(sat.key==='gray') return {key:'gray',title:'No management recommendation',text:'Satellite evidence is incomplete. Use field observations and official/local management information.'};
+    if(recovery==='IV'||recovery==='V') return {key:'red',title:'Rest / restoration priority',text:`Recovery Class ${recovery} overrides temporary greenness. Routine grazing should not be recommended from satellite conditions alone; restoration and extended rest should be considered within the official local plan.`};
+    if(recovery==='III') return {key:'orange',title:'Defer or substantially reduce grazing',text:'Recovery Class III indicates a need for changed management, including reduced stocking and deferment/rest. Current greenness does not remove that recovery constraint.'};
+    if(recovery==='II') return sat.key==='red'
+      ? {key:'orange',title:'Defer grazing',text:'Recovery Class II already calls for conservative management, and the current vegetation signal is below its seasonal baseline.'}
+      : {key:'orange',title:'Use conservatively',text:'Recovery Class II supports reduced stocking, rotation and/or seasonal deferment. Confirm forage availability on the ground.'};
+    if(recovery==='I') return sat.key==='red'||sat.key==='orange'
+      ? {key:'orange',title:'Delay or reduce use',text:'The ecological state may be resilient, but the current vegetation signal is below its local seasonal baseline. A field forage check is recommended before use.'}
+      : {key:'green',title:'Potential grazing opportunity',text:'Recovery Class I and a normal-to-high current vegetation signal are compatible with grazing, provided stocking rate, water, residual biomass and local rules also support use.'};
+    return sat.key==='red'
+      ? {key:'orange',title:'Precautionary rest / field check',text:'The vegetation signal is unusually low. Because the recovery class is unknown, this is a precautionary screening result rather than a formal closure.'}
+      : {key:'gray',title:'Screening only — recovery class needed',text:'Current vegetation conditions can be described, but a defensible grazing recommendation requires ecological recovery status or equivalent field evidence.'};
+  }
+
+  function render(data){
+    lastAssessment=data;
+    const sat=satelliteClass(data.current,data.baseline); const advice=managementAdvice(sat,rc.value);
+    const baseN=data.baseline?.values?.length||0; const baseMed=data.baseline?.median;
+    const ratio=Number.isFinite(sat.ratio)?sat.ratio:null; const soil=Number.isFinite(data.weather?.soil9)?data.weather.soil9:data.weather?.soil1;
+    const qc=data.current?.qualityNote ? `<div class="callout"><strong>Satellite quality note:</strong> ${escapeHtml(data.current.qualityNote)}</div>` : '';
+    result.innerHTML=`
+      <div class="verdict ${advice.key==='green'?'':advice.key}">
+        <div class="verdict-label">Management result</div><div class="verdict-title">${escapeHtml(advice.title)}</div><div class="verdict-text">${escapeHtml(advice.text)}</div>
+      </div>
+      <div class="verdict ${sat.key==='green'?'':sat.key}">
+        <div class="verdict-label">Satellite screening</div><div class="verdict-title">${escapeHtml(sat.title)}</div><div class="verdict-text">${escapeHtml(sat.text)}</div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-label">Current NDVI</div><div class="metric-value">${fmt(data.current?.ndvi,3)}</div><div class="metric-sub">Sentinel-2 · ${escapeHtml(data.current?.date||'no valid date')}</div></div>
+        <div class="metric"><div class="metric-label">Seasonal median</div><div class="metric-value">${fmt(baseMed,3)}</div><div class="metric-sub">${baseN} valid prior year${baseN===1?'':'s'}</div></div>
+        <div class="metric"><div class="metric-label">Relative signal</div><div class="metric-value">${ratio?fmt((ratio-1)*100,0)+'%':'—'}</div><div class="metric-sub">vs same-season median</div></div>
+        <div class="metric"><div class="metric-label">Scene cloud</div><div class="metric-value">${fmt(data.current?.cloud,0)}%</div><div class="metric-sub">scene-wide; pixel screened with SCL</div></div>
+        <div class="metric"><div class="metric-label">Rain · 30 days</div><div class="metric-value">${fmt(data.weather?.rain30,1)} mm</div><div class="metric-sub">model / analysis field</div></div>
+        <div class="metric"><div class="metric-label">Soil moisture</div><div class="metric-value">${fmt(soil,3)}</div><div class="metric-sub">m³/m³ · modelled near surface</div></div>
+      </div>
+      <div class="callout"><strong>Evidence completeness:</strong> Sentinel-2 ${data.current?'✓':'✕'} · seasonal baseline ${baseN>=3?'✓':'limited'} · weather ${data.weather?'✓':'✕'} · recovery class ${rc.value==='unknown'?'not supplied':'Class '+rc.value} · legal closure layer not yet connected.</div>
+      ${qc}
+      <div class="callout"><strong>Coordinates:</strong> ${data.lat.toFixed(5)}, ${data.lon.toFixed(5)}. NDVI is a greenness indicator, not a direct biomass or carrying-capacity measurement.</div>`;
+  }
+
+  async function addSentinelScene(obs){
+    if(sentinelLayer){ map.removeLayer(sentinelLayer); sentinelLayer=null; }
+    if(!obs?.item?.assets?.tilejson?.href) return;
+    try{
+      const tj=await fetchJSON(obs.item.assets.tilejson.href,12000);
+      if(tj.tiles?.[0]){ sentinelLayer=L.tileLayer(tj.tiles[0],{maxZoom:16,opacity:.72,attribution:'Sentinel-2 / Microsoft Planetary Computer'}); sentinelLayer.addTo(map); layers.addOverlay(sentinelLayer,'Selected Sentinel-2 scene'); }
+    }catch(e){}
+  }
+
+  async function assess(lat,lon){
+    if(!insideMongoliaBox(lat,lon)){ result.innerHTML='<div class="verdict gray"><div class="verdict-title">Outside Mongolia pilot extent</div><div class="verdict-text">Choose a point within Mongolia for this prototype.</div></div>'; return; }
+    btn.disabled=true; locateBtn.disabled=true; setProgress(7); coords.value=lat.toFixed(5)+', '+lon.toFixed(5);
+    if(marker) marker.setLatLng([lat,lon]); else marker=L.circleMarker([lat,lon],{radius:7,color:'#1f5f5b',weight:2,fillColor:'#fff',fillOpacity:1}).addTo(map);
+    result.innerHTML='<div class="result-empty"><span class="loading"></span>Finding a recent valid Sentinel-2 observation…</div>';
+    const now=new Date(); const start=iso(addDays(now,-40)), end=iso(now);
+    let current=null, baseline=null, weather=null;
+    try{
+      current=await findValidObservation(lat,lon,start,end,70,12,7); setProgress(28);
+      result.innerHTML='<div class="result-empty"><span class="loading"></span>Building a same-season satellite baseline…</div>';
+      baseline=await seasonalBaseline(lat,lon,now); setProgress(75);
+      result.innerHTML='<div class="result-empty"><span class="loading"></span>Adding recent rainfall and soil-moisture context…</div>';
+      try{ weather=await weatherContext(lat,lon); }catch(e){ weather=null; }
+      setProgress(90); const data={lat,lon,current,baseline,weather}; render(data); await addSentinelScene(current); setProgress(100);
+      freshness.textContent=current?.date ? `Latest usable Sentinel-2 pixel found: ${current.date}. Assessment fetched ${new Date().toLocaleString()}.` : 'No usable recent Sentinel-2 pixel was found.';
+      map.setView([lat,lon], Math.max(map.getZoom(),9));
+    }catch(err){
+      console.error(err); result.innerHTML=`<div class="verdict gray"><div class="verdict-title">Assessment unavailable</div><div class="verdict-text">One of the live scientific data services did not return usable data. No recommendation has been generated. Try again or choose another point.</div></div>`; setProgress(0);
+    }finally{btn.disabled=false;locateBtn.disabled=false;}
+  }
+
+  function parseCoords(){
+    const p=coords.value.trim().split(/[ ,]+/).filter(Boolean).map(Number); if(p.length<2||!p.every(Number.isFinite)) return null; return {lat:p[0],lon:p[1]};
+  }
+  btn.addEventListener('click',()=>{const p=parseCoords(); if(!p){coords.focus();return;} assess(p.lat,p.lon);});
+  coords.addEventListener('keydown',e=>{if(e.key==='Enter')btn.click();});
+  map.on('click',e=>assess(e.latlng.lat,e.latlng.lng));
+  rc.addEventListener('change',()=>{if(lastAssessment)render(lastAssessment);});
+  locateBtn.addEventListener('click',()=>{
+    if(!navigator.geolocation){result.innerHTML='<div class="result-empty">Geolocation is not available in this browser.</div>';return;}
+    locateBtn.disabled=true; navigator.geolocation.getCurrentPosition(p=>{locateBtn.disabled=false;assess(p.coords.latitude,p.coords.longitude);},()=>{locateBtn.disabled=false;result.innerHTML='<div class="result-empty">Location permission was not granted. Click the map or enter coordinates instead.</div>';},{enableHighAccuracy:true,timeout:10000,maximumAge:60000});
+  });
+})();
+</script>
+</body>
+</html>
