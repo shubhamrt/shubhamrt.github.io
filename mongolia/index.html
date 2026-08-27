@@ -9,11 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="style-v03.css">
-<style>.historic-map{width:100%;height:auto;border:1px solid var(--line);margin:10px 0 6px;display:block}.caption{font-size:9px;line-height:1.45;color:var(--muted);margin-bottom:10px}</style>
+<link rel="stylesheet" href="style-v03.css?v=20260827b">
+<style>.historic-map{width:100%;height:auto;border:1px solid var(--line);margin:10px 0 6px;display:block}.caption{font-size:9px;line-height:1.45;color:var(--muted);margin-bottom:10px}.load-error{padding:24px;font:13px/1.5 Inter,system-ui,sans-serif;color:#607069}</style>
 </head>
 <body>
-<header class="top"><nav><a class="brand" href="../">Shubham Tiwari <span>/ Rangelands</span></a><div class="navmeta">v0.3 · Mongolia research prototype</div></nav></header>
+<header class="top"><nav><a class="brand" href="../">Shubham Tiwari <span>/ Rangelands</span></a><div class="navmeta">v0.3.1 · Mongolia research prototype</div></nav></header>
 <section class="hero"><div><div class="eyebrow">Mongolia Rangeland Watch</div><h1>Where should livestock graze?</h1><p>A transparent decision-support prototype combining 10 m land cover and vegetation, terrain, surface soil, erosion susceptibility and recovery status. Pastures can also be drawn to calculate provisional herd capacity.</p></div><div class="note"><strong>Land-cover gate added</strong>Built-up areas, cropland, water, snow/ice and tree cover are excluded before the grazing model runs. A green park inside a city can no longer be labelled GRAZE simply because its NDVI is high.</div></section>
 <main class="workspace">
 <section class="mapwrap"><div id="map" class="map"></div><div id="mapBadge" class="badge"><strong>Click inside Mongolia</strong>Land cover is checked before any grazing score.</div><div class="legend">Current eligibility: ESA WorldCover ~10 m. Vegetation: Sentinel-2 ~10 m. Terrain: ~30 m. Soil: ~250 m.</div></section>
@@ -26,6 +26,18 @@
 </main>
 <section class="method"><div><h3>What changed</h3><p>The decision chain now starts with land-use eligibility. This prevents an urban lawn, irrigated crop or water body from entering a rangeland suitability calculation. Pasture capacity is kept at management-unit scale.</p><div class="sources"><div class="source"><span class="tag">10 m</span>ESA WorldCover · land-cover eligibility</div><div class="source"><span class="tag">10 m</span>Sentinel-2 · current vegetation</div><div class="source"><span class="tag">30 m</span>Copernicus DEM · terrain</div><div class="source"><span class="tag">250 m</span>SoilGrids · surface soil</div></div></div><ol><li><strong>Eligibility first.</strong> Built-up, cropland, water, snow/ice and tree cover stop the model before a grazing score is produced.</li><li><strong>Current condition.</strong> Eligible rangeland is evaluated against its own same-season Sentinel-2 history.</li><li><strong>Degradation risk.</strong> Slope, mapped soil erodibility, vegetation protection and wind/moisture context contribute to separate water and wind erosion screens.</li><li><strong>Capacity.</strong> A drawn pasture uses supplied biomass, 1.4 kg DM per Mongolian Sheep Unit per day and a 30% baseline harvest efficiency. Cautious/rest conditions reduce that amount.</li><li><strong>Historical stress stays separate.</strong> A decline map is not labelled grazing-caused unless climatic variability and management pressure have been addressed explicitly.</li></ol></section>
 <footer><div><span>Mongolia Rangeland Watch · experimental decision-support model</span><span><a href="../">shubhamrt.github.io</a></span></div></footer>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9coqIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="app-v03.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function(){
+  var mapEl=document.getElementById('map');
+  if(!window.L){
+    if(mapEl) mapEl.innerHTML='<div class="load-error"><strong>Map library failed to load.</strong><br>Please reload the page. If this persists, the external map library may be temporarily unavailable.</div>';
+    return;
+  }
+  var s=document.createElement('script');
+  s.src='app-v03.js?v=20260827b';
+  s.onerror=function(){ if(mapEl) mapEl.innerHTML='<div class="load-error"><strong>Application failed to load.</strong><br>Please reload the page.</div>'; };
+  document.body.appendChild(s);
+})();
+</script>
 </body></html>
